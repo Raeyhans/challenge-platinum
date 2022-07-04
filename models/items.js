@@ -16,23 +16,33 @@ module.exports = (sequelize, DataTypes) => {
       })
       this.hasMany(models.ItemGallery, {
         foreignKey: 'id_item',
-        as: 'itemGallery',
+        as: 'itemGalleries',
+      })
+      this.belongsTo(models.Sellers, {
+        foreignKey: 'created_by',
+        as: 'createdBy',
+      })
+      this.belongsTo(models.Sellers, {
+        foreignKey: 'updated_by',
+        as: 'updatedBy',
       })
     }
   }
   Items.init({
-    customer_code: DataTypes.STRING,
+    seller_code: DataTypes.STRING,
     code: DataTypes.STRING,
     title: DataTypes.STRING,
     price: DataTypes.INTEGER,
     qty: DataTypes.INTEGER,
-    updated_by: DataTypes.INTEGER
+    updated_by: DataTypes.INTEGER,
+    created_by: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Items',
     tableName: 'items',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
+    createdBy: 'created_by',
     updatedBy: 'updated_by',
   });
   return Items;

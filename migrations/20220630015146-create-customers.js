@@ -26,9 +26,6 @@ module.exports = {
       city: {
         type: Sequelize.STRING
       },
-      code: {
-        type: Sequelize.STRING
-      },
       updated_by: {
         type: Sequelize.INTEGER
       },

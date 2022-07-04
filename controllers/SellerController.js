@@ -2,7 +2,7 @@ const db = require('../models');
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 
-exports.registerCustomer = async (req, res, next) => {
+exports.registerSeller = async (req, res, next) => {
     const errors = validationResult(req);
     const { body } = req;
 
@@ -14,7 +14,7 @@ exports.registerCustomer = async (req, res, next) => {
 
     try {
 
-        const user = await db.Customers.findOne({
+        const user = await db.Sellers.findOne({
             where: {
                 email: body.email
             }});
@@ -28,7 +28,7 @@ exports.registerCustomer = async (req, res, next) => {
 
         const hashPass = await bcrypt.hash(body.password, 12);
 
-        await db.Customers.create({
+        await db.Sellers.create({
             firstname: body.firstname,
             lastname: body.lastname,
             email: body.email,
@@ -48,9 +48,9 @@ exports.registerCustomer = async (req, res, next) => {
     }
 };
 
-exports.getAllCustomer = async (req,res,next) => {
+exports.getAllSeller = async (req,res,next) => {
     try{
-        const user = await db.Customers.findAll({
+        const user = await db.Sellers.findAll({
             attributes: {
                 exclude: ['password']
             }
@@ -61,11 +61,11 @@ exports.getAllCustomer = async (req,res,next) => {
     }
 }
 
-exports.editCustomer = async (req,res,next) => {
+exports.editSeller = async (req,res,next) => {
     try{
-        await db.Customers.findByPk(req.params.id).then(function (result) {
-            if (!!result) {
-                db.Customers.update(req.body, {
+        await db.Sellers.findByPk(req.params.id).then(function (result) {
+            if (!result) {
+                db.Sellers.update(req.body, {
                     where: {
                         id: req.params.id
                     }
@@ -85,11 +85,11 @@ exports.editCustomer = async (req,res,next) => {
     }
 }
 
-exports.deleteCustomer = async (req,res,next) => {
+exports.deleteSeller = async (req,res,next) => {
     try{
-        await db.Customers.findByPk(req.params.id).then(function (result) {
+        await db.Sellers.findByPk(req.params.id).then(function (result) {
             if (!!result) {
-                db.Customers.destroy({
+                db.Sellers.destroy({
                     where: {
                         id: req.params.id
                     }
@@ -111,9 +111,9 @@ exports.deleteCustomer = async (req,res,next) => {
     }
 }
 
-exports.getCustomer = async (req,res,next) => {
+exports.getSeller = async (req,res,next) => {
     try{
-        const user = await db.Customers.findOne({
+        const user = await db.Sellers.findOne({
             where: {
                 id: req.params.id
             }

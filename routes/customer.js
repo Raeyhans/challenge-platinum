@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { mustloginJwt } = require('../middlewares/auth');
+const { customerLoginJwt } = require('../middlewares/customerAuth');
 const customers = require('../controllers/CustomerController');
 
-router.get('/', mustloginJwt, customers.getAllCustomer);
-router.get('/:id', mustloginJwt, customers.getCustomer);
-router.put('/:id', mustloginJwt, customers.editCustomer);
-router.delete('/:id', mustloginJwt, customers.deleteCustomer);
+router.get('/', customerLoginJwt, customers.getAllCustomer);
+router.get('/:id', customerLoginJwt, customers.getCustomer);
+router.put('/:id', customerLoginJwt, customers.editCustomer);
+router.delete('/:id', customerLoginJwt, customers.deleteCustomer);
 router.post('/account/register', customers.registerCustomer);
 
 module.exports = router;

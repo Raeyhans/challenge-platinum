@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const db = require('../models');
 const jwt = require('jsonwebtoken');
 
-exports.loginPost = async (req, res, next) => {
+exports.loginAdmin = async (req, res, next) => {
 
     const errors = validationResult(req);
     const { body } = req;
@@ -23,7 +23,7 @@ exports.loginPost = async (req, res, next) => {
 
         if (user == null) {
             return res.json({
-                error: 'Invalid username.'
+                error: 'Invalid email or password.'
             });
         }
 
@@ -41,7 +41,7 @@ exports.loginPost = async (req, res, next) => {
         }
 
         res.json({
-            error: 'Invalid Password.'
+            error: 'Invalid email or password.'
         });
     }
     catch (e) {
@@ -113,7 +113,7 @@ exports.loginCustomer = async (req, res, next) => {
 
         if (customer == null) {
             return res.json({
-                error: 'Invalid email.'
+                error: 'Invalid email or password.'
             });
         }
 
@@ -131,7 +131,54 @@ exports.loginCustomer = async (req, res, next) => {
         }
 
         res.json({
-            error: 'Invalid Password.'
+            error: 'Invalid email or password.'
+        });
+    }
+    catch (e) {
+        next(e);
+    }
+
+};
+
+exports.loginSeller = async (req, res, next) => {
+
+    const errors = validationResult(req);
+    const { body } = req;
+
+    if (!errors.isEmpty()) {
+        return res.json({
+            error: errors.array()[0].msg
+        });
+    }
+
+    try {
+
+        const seller = await db.Sellers.findOne({
+            where: {
+                email: body.email
+            }});
+
+        if (seller == null) {
+            return res.json({
+                error: 'Invalid email or password.'
+            });
+        }
+
+        const checkPass = await bcrypt.compare(body.password, seller.password);
+
+        if (checkPass === true) {
+            const token = jwt.sign({
+                id: seller.id,
+             }, 'secret');
+            return res.json({
+                status: 200,
+                msg: 'You have successfully logged in.',
+                token
+            });
+        }
+
+        res.json({
+            error: 'Invalid email or password.'
         });
     }
     catch (e) {
