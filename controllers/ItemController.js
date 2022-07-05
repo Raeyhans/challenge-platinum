@@ -103,7 +103,11 @@ exports.editItem = async (req,res,next) => {
                 db.Items.update(req.body, {
                     where: {
                         id: req.params.id
-                    }
+                    },
+                    include: [{
+                        model: db.Sellers,
+                        as: 'updatedBy',
+                    }]
                 });
                 return res.json({
                     status: 200,
