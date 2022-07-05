@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { sellerLoginJwt } = require('../middlewares/sellerAuth');
+const { userLoginJwt } = require('../middlewares/auth');
 const order = require('../controllers/OrderController');
 
-router.post('/', sellerLoginJwt, order.createOrder);
-router.get('/', sellerLoginJwt, order.getOrders);
-router.get('/:id', sellerLoginJwt, order.getOneOrder);
-router.put('/:id', sellerLoginJwt, order.updateOrder);
+router.post('/', userLoginJwt (['customer']), order.createOrder);
+router.get('/', userLoginJwt (['admin','seller']), order.getOrders);
+router.get('/:id', userLoginJwt (['admin','seller','customer']), order.getOneOrder);
+router.put('/:id', userLoginJwt (['admin']), order.updateOrder);
 
 module.exports = router;

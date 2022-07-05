@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { adminLoginJwt } = require('../middlewares/adminAuth');
+const { userLoginJwt } = require('../middlewares/auth');
 const category = require('../controllers/CategoryController');
 
-router.get('/', adminLoginJwt, category.getCategories);
-router.post('/', adminLoginJwt, category.createCategory);
-router.get('/:id', adminLoginJwt, category.getCategory);
-router.put('/:id', adminLoginJwt, category.editCategory);
-router.delete('/:id', adminLoginJwt, category.deleteCategory);
+router.get('/', userLoginJwt (['admin','seller','customer']), category.getCategories);
+router.post('/', userLoginJwt (['admin']), category.createCategory);
+router.get('/:id', userLoginJwt (['admin','seller','customer']), category.getCategory);
+router.put('/:id', userLoginJwt (['admin']), category.editCategory);
+router.delete('/:id', userLoginJwt (['admin']), category.deleteCategory);
 
 module.exports = router;

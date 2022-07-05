@@ -32,6 +32,7 @@ exports.loginAdmin = async (req, res, next) => {
         if (checkPass === true) {
             const token = jwt.sign({
                 id: user.id,
+                role: 'admin'
              }, 'secret');
             return res.json({
                 status: 200,
@@ -114,6 +115,7 @@ exports.loginCustomer = async (req, res, next) => {
         if (checkPass === true) {
             const token = jwt.sign({
                 id: customer.id,
+                role: 'customer'
              }, 'secret');
             return res.json({
                 status: 200,
@@ -161,6 +163,7 @@ exports.loginSeller = async (req, res, next) => {
         if (checkPass === true) {
             const token = jwt.sign({
                 id: seller.id,
+                role: 'seller'
              }, 'secret');
             return res.json({
                 status: 200,

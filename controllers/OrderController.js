@@ -1,6 +1,9 @@
 const db = require('../models');
+const { Op } = require('sequelize');
 
 exports.createOrder = async (req, res, next) => {
+    const t = await db.sequelize.transaction();
+
     try {
         const {
             user: {
@@ -32,17 +35,43 @@ exports.createOrder = async (req, res, next) => {
                 }
             })
         }
+
         const order = await db.Orders.create(data, {
             include: [{
                 model: db.Orderdetails,
                 as: 'orderdetails',
-            }]
+            }],
+            transaction: t
         });
+
+        const getitem = await db.Items.findAll({
+            where : {
+                id: {
+                    [Op.in]: items.map(item => item.id)
+                }
+            }
+        });
+
+        await db.Items.bulkCreate(getitem.map(item => {
+            return {
+                    ...item.dataValues,
+                    qty: item.qty - items.find(i => i.id === item.id).qty,
+                }
+            }),
+            {
+                transaction: t,
+                updateOnDuplicate: ['qty']
+            }
+        );
+
+        await t.commit();
+
         return res.json({
             status: 201, 
             data: order
         });
     } catch (e) {
+        await t.rollback();
         next(e);
     }
 }
