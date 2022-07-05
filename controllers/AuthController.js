@@ -50,18 +50,10 @@ exports.loginAdmin = async (req, res, next) => {
 
 }
 
-exports.registerPost = async (req, res, next) => {
+exports.registerUser = async (req, res, next) => {
     const errors = validationResult(req);
     const { body } = req;
-
-    if (!errors.isEmpty()) {
-        return res.render('register', {
-            error: errors.array()[0].msg
-        });
-    }
-
     try {
-
         const user = await db.Users.findOne({
             where: {
                 username: body.username

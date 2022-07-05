@@ -7,7 +7,7 @@ exports.adminLoginJwt = async (req,res,next) => {
         const decoded = jwt.verify(token, 'secret');
         const admin = await db.Users.findByPk(decoded.id);
             
-        if(seller != null){
+        if(admin != null){
             req.user = admin.toJSON();
             return next();
         }
