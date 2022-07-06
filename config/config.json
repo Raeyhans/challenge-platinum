@@ -19,5 +19,14 @@
     "database": "platinum",
     "host": "127.0.0.1",
     "dialect": "postgres"
+  },
+  "emailFrom": "no-reply@domain.com",
+  "smtpOptions": {
+      "host": "smtp.ethereal.email",
+      "port": 587,
+      "auth": {
+          "user": "conrad.hilpert26@ethereal.email",
+          "pass": "5a6vmvsJAjJdydxN1A"
+      }
   }
 }

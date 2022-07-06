@@ -10,12 +10,15 @@ exports.userLoginJwt = (roles = []) => async (req,res,next) => {
         if(!roles.includes(decoded.role)){
             throw new Error('Invalid credentials.');
         }
+        
         if(decoded.role === 'customer'){
             promise = db.Customers.findByPk(decoded.id);
         }else if(decoded.role === 'seller'){
             promise = db.Sellers.findByPk(decoded.id);
         }else if(decoded.role === 'admin'){
             promise = db.Users.findByPk(decoded.id);
+        }else{
+            throw new Error('Invalid credentials.');
         }
         const user = await promise;
             
@@ -27,7 +30,7 @@ exports.userLoginJwt = (roles = []) => async (req,res,next) => {
 
     }catch{
         return res.json({
-            msg: 'You are not logged in.'
+            msg: 'You are not authorized to access this page.'
         });
     }
 }

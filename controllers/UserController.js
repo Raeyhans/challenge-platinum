@@ -21,7 +21,7 @@ exports.getAllUser = async (req,res,next) => {
                 exclude: ['password']
             }
         });
-        res.json(user);
+        res.status(200).json(user);
     }catch (e) {
         next(e);
     }
@@ -36,13 +36,11 @@ exports.editUser = async (req,res,next) => {
                         id: req.params.id
                     }
                 });
-                return res.json({
-                    status: 200,
+                return res.status(200).json({
                     msg: 'User updated.'
                 });
             } 
-            return res.json({
-                status: 404,
+            return res.status(404).json({
                 msg: 'User not found.'
             });
         });
@@ -60,13 +58,11 @@ exports.deleteUser = async (req,res,next) => {
                         id: req.params.id
                     }
                 });
-                return res.json({
-                    status: 200,
+                return res.status(200).json({
                     msg: 'User deleted.'
                 });
             } 
-            return res.json({
-                status: 404,
+            return res.status(404).json({
                 msg: 'User not found.'
             });
         });
@@ -84,11 +80,10 @@ exports.getUser = async (req,res,next) => {
                 id: req.params.id
             }
         });
-        if(!!user){
-            return res.json(user);
+        if(user != null){
+            return res.status(200).json(user);
         }
-        return res.json({
-            status: 404,
+        return res.status(404).json({
             msg: 'User not found.'
         });
     }

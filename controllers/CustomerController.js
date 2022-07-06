@@ -1,6 +1,8 @@
 const db = require('../models');
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
+const sendEmail = require('../_helpers/email');
+const jwt = require('jsonwebtoken');
 
 exports.registerCustomer = async (req, res, next) => {
     const errors = validationResult(req);
@@ -20,13 +22,14 @@ exports.registerCustomer = async (req, res, next) => {
             }});
 
         if (user != null) {
-            return res.json({
-                status: 400,
+            return res.status(400).json({
                 error: 'Please choose another email.'
             });
         }
 
         const hashPass = await bcrypt.hash(body.password, 12);
+        // const hashToken = await bcrypt.hash(body.email, 12);
+        const hashToken = jwt.sign(body.password, body.email);
 
         await db.Customers.create({
             firstname: body.firstname,
@@ -36,11 +39,20 @@ exports.registerCustomer = async (req, res, next) => {
             address: body.address,
             city: body.city,
             code: body.code,
+            token: hashToken,
         });
-        
-        res.json({
-            status: 201,
-            msg: 'You have successfully registered.'
+
+        await sendEmail({
+            to: body.email,
+            subject: 'Sign-up Verification',
+            html: `<h4>Verify Email</h4>
+                    <p>Thanks for registering!</p><p>Please use the below token to verify your email address with the <code>/account/verify/TOKEN</code> api route:</p>
+                    <p><code>${hashToken}</code></p>`
+                    
+        });
+
+        res.status(201).json({
+            msg: 'You have successfully registered, please check your email and verify.'
         });
 
     } catch (e) {
@@ -55,7 +67,7 @@ exports.getAllCustomer = async (req,res,next) => {
                 exclude: ['password']
             }
         });
-        res.json(user);
+        res.status(200).json(user);
     }catch (e) {
         next(e);
     }
@@ -64,21 +76,46 @@ exports.getAllCustomer = async (req,res,next) => {
 exports.editCustomer = async (req,res,next) => {
     try{
         await db.Customers.findByPk(req.params.id).then(function (result) {
-            if (!!result) {
+            if (result != null) {
                 db.Customers.update(req.body, {
                     where: {
                         id: req.params.id
                     }
                 });
-                return res.json({
-                    status: 200,
+                return res.status(200).json({
                     msg: 'User updated.'
                 });
             } 
-            return res.json({
-                status: 404,
+            return res.status(404).json({
                 msg: 'User not found.'
             });
+        });
+    }catch (e) {
+        next(e);
+    }
+}
+
+exports.verifyEmail = async (req,res,next) => {
+    try{
+    
+        const user = await db.Customers.findOne({
+            where: {
+                token: req.params.token,
+                status: 0
+            }
+        });
+        if(user != null){
+            db.Customers.update(
+            { status: 1 },
+            { where: { token: req.params.token } }
+            );
+
+            return res.status(200).json({
+                msg: 'Email has been verify.'
+            });
+        }
+        return res.status(404).json({
+            msg: 'User not found.'
         });
     }catch (e) {
         next(e);
@@ -88,19 +125,17 @@ exports.editCustomer = async (req,res,next) => {
 exports.deleteCustomer = async (req,res,next) => {
     try{
         await db.Customers.findByPk(req.params.id).then(function (result) {
-            if (!!result) {
+            if (result != null) {
                 db.Customers.destroy({
                     where: {
                         id: req.params.id
                     }
                 });
-                return res.json({
-                    status: 200,
+                return res.status(200).json({
                     msg: 'User deleted.'
                 });
             } 
-            return res.json({
-                status: 404,
+            return res.status(404).json({
                 msg: 'User not found.'
             });
         });
@@ -118,11 +153,10 @@ exports.getCustomer = async (req,res,next) => {
                 id: req.params.id
             }
         });
-        if(!!user){
-            return res.json(user);
+        if(user != null){
+            return res.status(200).json(user);
         }
-        return res.json({
-            status: 404,
+        return res.status(404).json({
             msg: 'User not found.'
         });
     }

@@ -17,10 +17,13 @@ exports.createItem = async (req,res,next) => {
                 code: req.body.items.code
             }
         });
-        // if(finder.code != req.body.items.code){
+
+        // if(finder != req.body.items.code){
             const data = {
                 seller_code: sellerCode,
+                category_id: req.body.items.category_id,
                 code: req.body.items.code,
+                seotitle: req.body.items.seotitle,
                 title: req.body.items.title,
                 price: req.body.items.price,
                 qty: req.body.items.qty,
@@ -37,13 +40,11 @@ exports.createItem = async (req,res,next) => {
                     as: 'itemGalleries',
                 }]
             });
-            return res.json({
-                status: 201, 
+            return res.status(201).json({
                 data: item
             });
         // }
-        // return res.json({
-        //     status: 100,
+        // return res.status(100).json({
         //     msg: 'This item has been insert.'
         // })
 
@@ -69,8 +70,7 @@ exports.addImage = async (req,res,next) => {
             created_by: req.body.orders.created_by
         }
         const image = await db.ItemGallery.create(data);
-        return res.json({
-            status: 201, 
+        return res.status(201).json({
             data: image
         });
 
@@ -87,7 +87,7 @@ exports.getItems = async (req,res,next) => {
             ]
         });
         if(item != null){
-            return res.json(item);
+            return res.status(200).json(item);
         }
         throw new Error('Item not found.');
 
@@ -99,7 +99,7 @@ exports.getItems = async (req,res,next) => {
 exports.editItem = async (req,res,next) => {
     try{
         await db.Items.findByPk(req.params.id).then(function (result) {
-            if (!!result) {
+            if (result != null) {
                 db.Items.update(req.body, {
                     where: {
                         id: req.params.id
@@ -109,13 +109,11 @@ exports.editItem = async (req,res,next) => {
                         as: 'updatedBy',
                     }]
                 });
-                return res.json({
-                    status: 200,
+                return res.status(200).json({
                     msg: 'Item updated.'
                 });
             } 
-            return res.json({
-                status: 404,
+            return res.status(404).json({
                 msg: 'Item not found.'
             });
         });
@@ -131,8 +129,7 @@ exports.deleteItem = async (req,res,next) => {
                 id: req.params.id
             }
         });
-        return res.json({
-            status: 200,
+        return res.status(200).json({
             msg: 'Item deleted.'
         });
 
@@ -152,13 +149,11 @@ exports.getItem = async (req,res,next) => {
             ],
         });
         if(item != null){
-            return res.json({
-                status: 200,
+            return res.status(200).json({
                 item
             });
         }
-        return res.json({
-            status: 404,
+        return res.status(404).json({
             msg: 'Item not found.'
         });
     }

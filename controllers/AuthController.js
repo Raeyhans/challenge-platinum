@@ -111,19 +111,24 @@ exports.loginCustomer = async (req, res, next) => {
         }
 
         const checkPass = await bcrypt.compare(body.password, customer.password);
-
-        if (checkPass === true) {
-            const token = jwt.sign({
-                id: customer.id,
-                role: 'customer'
-             }, 'secret');
-            return res.json({
-                status: 200,
-                msg: 'You have successfully logged in.',
-                token
-            });
+        const checkStatus = await db.Customers.findOne({
+            where: {
+                email: body.email,
+                status: 1
+            }
+        });
+        if(checkStatus != null){
+            if (checkPass === true) {
+                const token = jwt.sign({
+                    id: customer.id,
+                    role: 'customer',
+                }, 'secret');
+                return res.status(200).json({
+                    msg: 'You have successfully logged in.',
+                    token
+                });
+            }
         }
-
         res.json({
             error: 'Invalid email or password.'
         });

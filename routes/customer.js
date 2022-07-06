@@ -6,6 +6,7 @@ const customers = require('../controllers/CustomerController');
 router.get('/', userLoginJwt (['admin']), customers.getAllCustomer);
 router.get('/:id', userLoginJwt (['admin','customer']), customers.getCustomer);
 router.put('/:id', userLoginJwt (['admin','customer']), customers.editCustomer);
+router.put('/account/verify/:token', customers.verifyEmail);
 router.delete('/:id', userLoginJwt (['admin']), customers.deleteCustomer);
 router.post('/account/register', customers.registerCustomer);
 

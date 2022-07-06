@@ -26,7 +26,7 @@ exports.createOrder = async (req, res, next) => {
             customer_id: customerId,
             total: total_amount,
             qty: total_qty,
-            status: req.body.orders.status,
+            status: 'UNPAID',
             orderdetails: items.map(item => {
                 return {
                     item_id: item.id,
@@ -87,13 +87,13 @@ exports.getOrders = async (req, res, next) => {
 
 exports.getOneOrder = async (req, res, next) => {
     try {
-        const user = await db.Orders.findOne({
+        const order = await db.Orders.findOne({
             where: {
                 id: req.params.id
             }
         });
-        if (!!user) {
-            return res.json(user);
+        if (order != null) {
+            return res.json(order);
         }
         return res.json({
             status: 404,
@@ -108,7 +108,7 @@ exports.getOneOrder = async (req, res, next) => {
 exports.updateOrder = async (req, res, next) => {
     try {
         await db.Orders.findByPk(req.params.id).then(function (result) {
-            if (!!result) {
+            if (result != null) {
                 db.Orders.update(req.body, {
                     where: {
                         id: req.params.id

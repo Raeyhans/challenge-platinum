@@ -1,6 +1,7 @@
 const db = require('../models');
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
+const nodemailer = require('nodemailer');
 
 exports.registerSeller = async (req, res, next) => {
     const errors = validationResult(req);
@@ -13,6 +14,15 @@ exports.registerSeller = async (req, res, next) => {
     }
 
     try {
+
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.ethereal.email',
+            port: 587,
+            auth: {
+                user: 'conrad.hilpert26@ethereal.email',
+                pass: '5a6vmvsJAjJdydxN1A'
+            }
+        });
 
         const user = await db.Sellers.findOne({
             where: {
