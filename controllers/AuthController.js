@@ -68,7 +68,6 @@ exports.registerUser = async (req, res, next) => {
         }
 
         const hashPass = await bcrypt.hash(body.password, 12);
-
         await db.Users.create({
             username: body.username,
             name: body.name,
@@ -164,19 +163,24 @@ exports.loginSeller = async (req, res, next) => {
         }
 
         const checkPass = await bcrypt.compare(body.password, seller.password);
-
-        if (checkPass === true) {
-            const token = jwt.sign({
-                id: seller.id,
-                role: 'seller'
-             }, 'secret');
-            return res.json({
-                status: 200,
-                msg: 'You have successfully logged in.',
-                token
-            });
+        const checkStatus = await db.Sellers.findOne({
+            where: {
+                email: body.email,
+                status: 1
+            }
+        });
+        if(checkStatus != null){
+            if (checkPass === true) {
+                const token = jwt.sign({
+                    id: seller.id,
+                    role: 'seller'
+                }, 'secret');
+                return res.status(200).json({
+                    msg: 'You have successfully logged in.',
+                    token
+                });
+            }
         }
-
         res.json({
             error: 'Invalid email or password.'
         });

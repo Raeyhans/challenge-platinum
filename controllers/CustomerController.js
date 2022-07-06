@@ -28,7 +28,6 @@ exports.registerCustomer = async (req, res, next) => {
         }
 
         const hashPass = await bcrypt.hash(body.password, 12);
-        // const hashToken = await bcrypt.hash(body.email, 12);
         const hashToken = jwt.sign(body.password, body.email);
 
         await db.Customers.create({

@@ -29,6 +29,12 @@ module.exports = {
       code: {
         type: Sequelize.STRING
       },
+      token: {
+        type: Sequelize.STRING
+      },
+      status: {
+        type: Sequelize.INTEGER
+      },
       updated_by: {
         type: Sequelize.INTEGER
       },

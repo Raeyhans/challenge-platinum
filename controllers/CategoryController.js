@@ -16,8 +16,7 @@ exports.createCategory = async (req,res,next) => {
         }
 
         await db.Categories.create(data);
-        return res.json({
-            status: 201, 
+        return res.status(201).json({
             msg: 'Category created.',
         });
 
@@ -48,13 +47,11 @@ exports.editCategory = async (req,res,next) => {
                         id: req.params.id
                     }
                 });
-                return res.json({
-                    status: 200,
+                return res.status(200).json({
                     msg: 'Category updated.'
                 });
             } 
-            return res.json({
-                status: 404,
+            return res.status(404).json({
                 msg: 'Category not found.'
             });
         });
@@ -70,8 +67,7 @@ exports.deleteCategory = async (req,res,next) => {
                 id: req.params.id
             }
         });
-        return res.json({
-            status: 200,
+        return res.status(200).json({
             msg: 'Category deleted.'
         });
 
@@ -88,13 +84,11 @@ exports.getCategory = async (req,res,next) => {
             }
         });
         if(category != null){
-            return res.json({
-                status: 200,
+            return res.status(200).json({
                 category
             });
         }
-        return res.json({
-            status: 404,
+        return res.status(404).json({
             msg: 'Category not found.'
         });
     }

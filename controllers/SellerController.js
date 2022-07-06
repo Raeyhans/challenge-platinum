@@ -1,7 +1,8 @@
 const db = require('../models');
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
+const sendEmail = require('../_helpers/email');
 
 exports.registerSeller = async (req, res, next) => {
     const errors = validationResult(req);
@@ -14,15 +15,6 @@ exports.registerSeller = async (req, res, next) => {
     }
 
     try {
-
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
-            auth: {
-                user: 'conrad.hilpert26@ethereal.email',
-                pass: '5a6vmvsJAjJdydxN1A'
-            }
-        });
 
         const user = await db.Sellers.findOne({
             where: {
@@ -37,6 +29,7 @@ exports.registerSeller = async (req, res, next) => {
         }
 
         const hashPass = await bcrypt.hash(body.password, 12);
+        const hashToken = jwt.sign(body.password, body.email);
 
         await db.Sellers.create({
             firstname: body.firstname,
@@ -46,10 +39,19 @@ exports.registerSeller = async (req, res, next) => {
             address: body.address,
             city: body.city,
             code: body.code,
+            token: hashToken,
+        });
+
+        await sendEmail({
+            to: body.email,
+            subject: 'Sign-up Verification',
+            html: `<h4>Verify Email</h4>
+                    <p>Thanks for being seller!</p><p>Please use the below token to verify your email address with the <code>/account/verify/TOKEN</code> api route:</p>
+                    <p><code>${hashToken}</code></p>`
+                    
         });
         
-        res.json({
-            status: 201,
+        res.status(200).json({
             msg: 'You have successfully registered.'
         });
 
@@ -95,6 +97,53 @@ exports.editSeller = async (req,res,next) => {
     }
 }
 
+exports.getSeller = async (req,res,next) => {
+    try{
+        const user = await db.Sellers.findOne({
+            where: {
+                id: req.params.id
+            }
+        });
+        if(!!user){
+            return res.json(user);
+        }
+        return res.json({
+            status: 404,
+            msg: 'User not found.'
+        });
+    }
+    catch (e) {
+        next(e);
+    }
+}
+
+exports.verifyEmail = async (req,res,next) => {
+    try{
+    
+        const user = await db.Sellers.findOne({
+            where: {
+                token: req.params.token,
+                status: 0
+            }
+        });
+        if(user != null){
+            db.Sellers.update(
+            { status: 1 },
+            { where: { token: req.params.token } }
+            );
+
+            return res.status(200).json({
+                msg: 'Email has been verify.'
+            });
+        }
+        return res.status(404).json({
+            msg: 'User not found.'
+        });
+    }catch (e) {
+        next(e);
+    }
+}
+
 exports.deleteSeller = async (req,res,next) => {
     try{
         await db.Sellers.findByPk(req.params.id).then(function (result) {
@@ -117,26 +166,6 @@ exports.deleteSeller = async (req,res,next) => {
 
 
     }catch (e) {
-        next(e);
-    }
-}
-
-exports.getSeller = async (req,res,next) => {
-    try{
-        const user = await db.Sellers.findOne({
-            where: {
-                id: req.params.id
-            }
-        });
-        if(!!user){
-            return res.json(user);
-        }
-        return res.json({
-            status: 404,
-            msg: 'User not found.'
-        });
-    }
-    catch (e) {
         next(e);
     }
 }

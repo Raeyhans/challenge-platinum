@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.STRING,
     city: DataTypes.STRING,
     code: DataTypes.STRING,
+    token: DataTypes.STRING,
+    status: DataTypes.INTEGER,
     created_at: DataTypes.DATE,
     updated_at: DataTypes.DATE,
     updated_by: DataTypes.INTEGER
