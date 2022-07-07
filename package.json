@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "nodemon app.js",
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
@@ -23,10 +23,12 @@
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.20.1",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.4.0",
     "touch-cli": "^0.0.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16",
+    "nodemon": "^2.0.19",
     "sequelize-cli": "^6.4.1"
   }
 }
