@@ -34,8 +34,7 @@ exports.loginAdmin = async (req, res, next) => {
                 id: user.id,
                 role: 'admin'
              }, 'secret');
-            return res.json({
-                status: 200,
+            return res.status(200).json({
                 msg: 'You have successfully logged in.',
                 token
             });
@@ -61,8 +60,7 @@ exports.registerUser = async (req, res, next) => {
             }});
 
         if (user != null) {
-            return res.json({
-                status: 400,
+            return res.status(400).json({
                 error: 'Please choose another username.'
             });
         }
@@ -75,8 +73,7 @@ exports.registerUser = async (req, res, next) => {
             password: hashPass
         });
         
-        res.json({
-            status: 201,
+        res.status(201).json({
             msg: 'You have successfully registered.'
         });
 
@@ -104,7 +101,7 @@ exports.loginCustomer = async (req, res, next) => {
             }});
 
         if (customer == null) {
-            return res.json({
+            return res.status(400).json({
                 error: 'Invalid email or password.'
             });
         }
@@ -128,7 +125,7 @@ exports.loginCustomer = async (req, res, next) => {
                 });
             }
         }
-        res.json({
+        res.status(400).json({
             error: 'Invalid email or password.'
         });
     }
