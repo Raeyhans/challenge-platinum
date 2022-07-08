@@ -4,6 +4,8 @@ const customerSchema= require ('./schema/customers-schema');
 const customerPath= require('./paths/customers-path');
 const sellerSchema= require ('./schema/sellers-schema');
 const sellerPath= require('./paths/sellers-path');
+const authPath= require('./paths/auth-path');
+const authSchema= require ('./schema/auth-schema');
 
 module.exports = {
     // swagger: '2.0',
@@ -16,6 +18,10 @@ module.exports = {
     host: 'localhost:3000',
 tags: [
     {
+    name: "Auth",
+    description: "Auth Control"
+    },
+    {
       name: "User",
       description: "Everything about User Access"
     },
@@ -26,15 +32,17 @@ tags: [
     {
       name: "Seller",
       description: "Everything about Seller Access"
-    }
+    },
   ],
   paths: {
+    ...authPath,
     ...userPath,
     ...customerPath,
     ...sellerPath,
   },
   components: {
     schemas: {
+      ...authSchema,
       ...userSchema,
       ...customerSchema,
       ...sellerSchema,
