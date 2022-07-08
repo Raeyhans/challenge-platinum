@@ -1,10 +1,10 @@
 module.exports = {
-    '/users': {
+    '/customers': {
       post: {
-        tags: ["User"],
-        summary: "Create User",
-        description: "An endpoint to add User",
-        operationId: "addUser",
+        tags: ["Customer"],
+        summary: "Create Customer",
+        description: "An endpoint to add Customer",
+        operationId: "addCustomer",
         consumes: [
           "application/json"
         ],
@@ -14,7 +14,7 @@ module.exports = {
         parameters: [
           {
             in: "body",
-            name: "Username",
+            name: "firstname",
             description: "username yang akan digunakan",
             required: true,
             schema: {
@@ -23,7 +23,7 @@ module.exports = {
           },
           {
             in: "body",
-            name: "Name",
+            name: "lastname",
             description: "Nama yang akan digunakan",
             required: true,
             schema: {
@@ -48,14 +48,32 @@ module.exports = {
               type: "string",
             }
           },
+          {
+            in: "body",
+            name: "address",
+            description: "Address yang akan digunakan",
+            required: true,
+            schema: {
+              type: "string",
+            }
+          },
+          {
+            in: "body",
+            name: "city",
+            description: "City yang akan digunakan",
+            required: true,
+            schema: {
+              type: "string",
+            }
+          },
         ],
         responses: {
           201: {
-            description: "Success add new User",
+            description: "Success add new Customer",
             content: {
                 'application/json': {
                   schema: {
-                    $ref: '#/components/schemas/User'
+                    $ref: '#/components/schemas/Customer'
                   }
                 }
               },
@@ -66,9 +84,9 @@ module.exports = {
         },
       },
       get: {
-        tags: ['User'],
-        summary: 'get all User',
-        operationId: "getallUser",
+        tags: ['Customer'],
+        summary: 'get all Customer',
+        operationId: "getallCustomer",
         consumes: [
           "application/json"
         ],
@@ -77,11 +95,11 @@ module.exports = {
         ],
         responses: {
           200: {
-            description: "Success get all User",
+            description: "Success get all Customer",
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/Customer'
                 }
               }
             },
@@ -89,12 +107,12 @@ module.exports = {
         },
       }
     },
-    "/users/{userId}": {
+    "/customers/{customerId}": {
       get: {
-        tags: ['User'],
-        summary: "Find user by ID",
-        description: "Returns a single user",
-        operationId: "getUserById",
+        tags: ['Customer'],
+        summary: "Find customer by ID",
+        description: "Returns a single Customer",
+        operationId: "getCustomerById",
         produces: [
           "application/json"
         ],
@@ -108,11 +126,11 @@ module.exports = {
         ],
         responses: {
           200: {
-            description: "successfuly find user",
+            description: "successfuly find customer",
             content: {
               'application/json': {
                 schema: {
-                  $ref: "#/components/schemas/User"
+                  $ref: "#/components/schemas/Customer"
                 }
               }
             }
@@ -121,15 +139,15 @@ module.exports = {
             description: "Invalid"
           },
           404: {
-            description: "User not found"
+            description: "Customer not found"
           }
         }
       },
       put: {
-        tags: ['User'],
-        summary: "Edit user by ID",
-        description: "Edit a single user",
-        operationId: "editUserById",
+        tags: ['Customer'],
+        summary: "Edit customer by ID",
+        description: "Edit a single Customer",
+        operationId: "editCustomerById",
         produces: [
           "application/json"
         ],
@@ -163,15 +181,27 @@ module.exports = {
             in: "path",
             required: true,
             type: "string",
-          }
+          },
+          {
+            name: "address",
+            in: "path",
+            required: true,
+            type: "string",
+          },
+          {
+            name: "city",
+            in: "path",
+            required: true,
+            type: "string",
+          },
         ],
         responses: {
           200: {
-            description: "successfuly Edit user",
+            description: "successfuly Edit customer",
             content: {
               'application/json': {
                 schema: {
-                  $ref: "#/components/schemas/User"
+                  $ref: "#/components/schemas/customer"
                 }
               }
             }
@@ -185,10 +215,10 @@ module.exports = {
         }
       },
       delete: {
-        tags: ['User'],
-        summary: "delete user by ID",
-        description: "delete a single user",
-        operationId: "deleteUserById",
+        tags: ['Customer'],
+        summary: "delete customer by ID",
+        description: "delete a single customer",
+        operationId: "deleteCustomerById",
         produces: [
           "application/json"
         ],
@@ -202,7 +232,7 @@ module.exports = {
         ],
         responses: {
           200: {
-            description: "successfuly delete user",
+            description: "successfuly delete customer",
             content: {
               'application/json': {
               }
@@ -212,7 +242,7 @@ module.exports = {
             description: "Invalid"
           },
           404: {
-            description: "User not found"
+            description: "customer not found"
           }
         }
       }

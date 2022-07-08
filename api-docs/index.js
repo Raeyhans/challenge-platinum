@@ -1,5 +1,9 @@
 const userPath= require('./paths/users-path');
-const userSchema= require ('./schema/users-schema')
+const userSchema= require ('./schema/users-schema');
+const customerSchema= require ('./schema/customers-schema');
+const customerPath= require('./paths/customers-path');
+const sellerSchema= require ('./schema/sellers-schema');
+const sellerPath= require('./paths/sellers-path');
 
 module.exports = {
     // swagger: '2.0',
@@ -25,11 +29,15 @@ tags: [
     }
   ],
   paths: {
-    ...userPath
+    ...userPath,
+    ...customerPath,
+    ...sellerPath,
   },
   components: {
     schemas: {
       ...userSchema,
+      ...customerSchema,
+      ...sellerSchema,
     }
   },
 }

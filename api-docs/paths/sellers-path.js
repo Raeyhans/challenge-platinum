@@ -1,10 +1,10 @@
 module.exports = {
-    '/users': {
+    '/sellers': {
       post: {
-        tags: ["User"],
-        summary: "Create User",
-        description: "An endpoint to add User",
-        operationId: "addUser",
+        tags: ["Seller"],
+        summary: "Register Seller",
+        description: "An endpoint to create Seller",
+        operationId: "addSeller",
         consumes: [
           "application/json"
         ],
@@ -14,7 +14,7 @@ module.exports = {
         parameters: [
           {
             in: "body",
-            name: "Username",
+            name: "firstname",
             description: "username yang akan digunakan",
             required: true,
             schema: {
@@ -23,7 +23,7 @@ module.exports = {
           },
           {
             in: "body",
-            name: "Name",
+            name: "lastname",
             description: "Nama yang akan digunakan",
             required: true,
             schema: {
@@ -48,6 +48,24 @@ module.exports = {
               type: "string",
             }
           },
+          {
+            in: "body",
+            name: "address",
+            description: "Address yang akan digunakan",
+            required: true,
+            schema: {
+              type: "string",
+            }
+          },
+          {
+            in: "body",
+            name: "city",
+            description: "City yang akan digunakan",
+            required: true,
+            schema: {
+              type: "string",
+            }
+          },
         ],
         responses: {
           201: {
@@ -55,7 +73,7 @@ module.exports = {
             content: {
                 'application/json': {
                   schema: {
-                    $ref: '#/components/schemas/User'
+                    $ref: '#/components/schemas/Seller'
                   }
                 }
               },
@@ -66,9 +84,9 @@ module.exports = {
         },
       },
       get: {
-        tags: ['User'],
-        summary: 'get all User',
-        operationId: "getallUser",
+        tags: ['Seller'],
+        summary: 'get all Seller',
+        operationId: "getallSeller",
         consumes: [
           "application/json"
         ],
@@ -77,7 +95,7 @@ module.exports = {
         ],
         responses: {
           200: {
-            description: "Success get all User",
+            description: "Success get all Seller",
             content: {
               'application/json': {
                 schema: {
@@ -89,12 +107,12 @@ module.exports = {
         },
       }
     },
-    "/users/{userId}": {
+    "/sellers/{sellerId}": {
       get: {
-        tags: ['User'],
-        summary: "Find user by ID",
-        description: "Returns a single user",
-        operationId: "getUserById",
+        tags: ['Seller'],
+        summary: "Find seller by ID",
+        description: "Returns a single seller",
+        operationId: "getSellerById",
         produces: [
           "application/json"
         ],
@@ -108,11 +126,11 @@ module.exports = {
         ],
         responses: {
           200: {
-            description: "successfuly find user",
+            description: "successfuly find seller",
             content: {
               'application/json': {
                 schema: {
-                  $ref: "#/components/schemas/User"
+                  $ref: "#/components/schemas/Seller"
                 }
               }
             }
@@ -121,15 +139,15 @@ module.exports = {
             description: "Invalid"
           },
           404: {
-            description: "User not found"
+            description: "Seller not found"
           }
         }
       },
       put: {
-        tags: ['User'],
-        summary: "Edit user by ID",
-        description: "Edit a single user",
-        operationId: "editUserById",
+        tags: ['Seller'],
+        summary: "Edit seller by ID",
+        description: "Edit a single seller",
+        operationId: "editSellerById",
         produces: [
           "application/json"
         ],
@@ -163,15 +181,27 @@ module.exports = {
             in: "path",
             required: true,
             type: "string",
-          }
+          },
+          {
+            name: "address",
+            in: "path",
+            required: true,
+            type: "string",
+          },
+          {
+            name: "city",
+            in: "path",
+            required: true,
+            type: "string",
+          },
         ],
         responses: {
           200: {
-            description: "successfuly Edit user",
+            description: "successfuly Edit seller",
             content: {
               'application/json': {
                 schema: {
-                  $ref: "#/components/schemas/User"
+                  $ref: "#/components/schemas/Seller"
                 }
               }
             }
@@ -180,15 +210,15 @@ module.exports = {
             description: "Invalid"
           },
           404: {
-            description: "User not found"
+            description: "Seller not found"
           }
         }
       },
       delete: {
-        tags: ['User'],
-        summary: "delete user by ID",
-        description: "delete a single user",
-        operationId: "deleteUserById",
+        tags: ['Seller'],
+        summary: "delete seller by ID",
+        description: "delete a single seller",
+        operationId: "deleteSellerById",
         produces: [
           "application/json"
         ],
@@ -202,7 +232,7 @@ module.exports = {
         ],
         responses: {
           200: {
-            description: "successfuly delete user",
+            description: "successfuly delete seller",
             content: {
               'application/json': {
               }
@@ -212,7 +242,7 @@ module.exports = {
             description: "Invalid"
           },
           404: {
-            description: "User not found"
+            description: "Seller not found"
           }
         }
       }
