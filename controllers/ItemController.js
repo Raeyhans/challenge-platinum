@@ -1,4 +1,5 @@
 const db = require('../models');
+const multer = require('multer');
 
 exports.createItem = async (req,res,next) => {
     try{
@@ -56,22 +57,41 @@ exports.createItem = async (req,res,next) => {
 exports.addImage = async (req,res,next) => {
     try{
         const {
-            itemID: {
-                id: itemId
-            },
-            body: {
-                items
+            user: {
+                id: sellerId
             }
         } = req;
 
+        const storage = multer.diskStorage({
+            destination: function(req, file, cb) {
+                cb(null, 'uploads/');
+            },
+          
+            // filename: function(req, file, cb) {
+            //     cb(null, file.picture + '-' + Date.now() + path.extname(file.originalname));
+            // }
+
+            filename: (req, file, callback) => {
+                const match = ["image/png", "image/jpeg"];
+                if (match.indexOf(file.mimetype) === -1) {
+                  var message = `${file.originalname} is invalid. Only accept png/jpeg.`;
+                  return callback(message, null);
+                }
+                const filename = `${Date.now()}-${file.originalname}`;
+                callback(null, filename);
+              }
+        });
+        
+        const upload = multer({ storage: storage })
+
         const data = {
-            item_id: itemId,
-            picture: req.body.orders.picture,
-            created_by: req.body.orders.created_by
+            item_id: req.body.item_id,
+            picture: upload.array('multi-files'),
+            created_by: sellerId
         }
-        const image = await db.ItemGallery.create(data);
+        await db.ItemGallery.create(data);
         return res.status(201).json({
-            data: image
+            msg: 'Image added.'
         });
 
     }catch (e) {

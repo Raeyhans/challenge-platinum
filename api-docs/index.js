@@ -6,14 +6,28 @@ const sellerSchema= require ('./schema/sellers-schema');
 const sellerPath= require('./paths/sellers-path');
 const authPath= require('./paths/auth-path');
 const authSchema= require ('./schema/auth-schema');
+const itemPath= require('./paths/item-path');
+const itemSchema= require ('./schema/item-schema');
+const orderPath= require('./paths/order-path');
+const orderSchema= require ('./schema/order-schema');
+
 
 module.exports = {
-    // swagger: '2.0',
     openapi: '3.0.0',
     info: {
-      title: 'E-Commerce API DOCS',
-      description: 'How to use E-Commerce API',
-      version: '1.0.0'
+      title: 'Bingle API Documentation',
+      description: 'How to use Bingle API',
+      version: '1.0.0',
+      termsOfService: 'https://google.com',
+      contact:{
+        name: "Bingle",
+        url:'https://google.com',
+        email: 'test123@mail.com',
+      },
+      license:{
+        name: "Team 1 License",
+        url: "https://google.com",
+      }
     },
     host: 'localhost:3000',
 tags: [
@@ -33,12 +47,22 @@ tags: [
       name: "Seller",
       description: "Everything about Seller Access"
     },
+    {
+      name: "Item",
+      description: "Everything about Item API"
+    },
+    {
+      name: "Order",
+      description: "Everything about Order API"
+    },
   ],
   paths: {
     ...authPath,
     ...userPath,
     ...customerPath,
     ...sellerPath,
+    ...itemPath,
+    ...orderPath,
   },
   components: {
     schemas: {
@@ -46,6 +70,8 @@ tags: [
       ...userSchema,
       ...customerSchema,
       ...sellerSchema,
+      ...itemSchema,
+      ...orderSchema,
     }
   },
 }
