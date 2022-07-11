@@ -23,6 +23,12 @@ module.exports = (sequelize, DataTypes) => {
   ItemGallery.init({
     id_item: DataTypes.INTEGER,
     picture: DataTypes.STRING,
+    picture_url: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return `${process.env.APP_URL||'http://localhost:3000'}/${this.picture}`
+      }
+    },
     created_by: DataTypes.INTEGER,
     updated_by: DataTypes.INTEGER,
     created_at: DataTypes.DATE,
