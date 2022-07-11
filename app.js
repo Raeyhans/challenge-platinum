@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const swaggerUI = require('swagger-ui-express');
 
 const indexRouter = require('./routes/index');
 const customerRouter = require('./routes/customer');
@@ -12,6 +13,7 @@ const authRouter = require('./routes/auth');
 const itemRouter = require('./routes/item');
 const orderRoute = require('./routes/order');
 const categoryRouter = require('./routes/category');
+const swaggerDoc = require ('./api-docs');
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 app.use('/', indexRouter);
 app.use('/customers', customerRouter);

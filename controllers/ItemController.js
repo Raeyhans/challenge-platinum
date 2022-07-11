@@ -27,7 +27,7 @@ exports.createItem = async (req,res,next) => {
                 title: req.body.items.title,
                 price: req.body.items.price,
                 qty: req.body.items.qty,
-                itemGalleries: pictures.map(item => {
+                itemGalleries: pictures?.map(item => {
                     return {
                         picture: item.picture,
                         created_by: sellerId
