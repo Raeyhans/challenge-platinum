@@ -48,12 +48,12 @@ module.exports = {
           },            
       }     
     },
-    '/auth/admin/register':{
+      '/auth/account/login':{
         post:{
           tags: ["Auth"],
-          summary: "Register Admin",
-          description: "An endpoint to register Admin",
-          operationId: "registerAdmin",
+          summary: "Login Customer",
+          description: "An endpoint to login Customer",
+          operationId: "loginCustomer",
           consumes: [
             "application/json"
           ],
@@ -63,17 +63,8 @@ module.exports = {
           parameters: [
               {
                 in: "path",
-                name: "username",
-                description: "Username",
-                required: true,
-                schema: {
-                  type: "string"
-                }
-              },
-              {
-                in: "path",
                 name: "email",
-                description: "Username",
+                description: "Email",
                 required: true,
                 schema: {
                   type: "string"
@@ -91,27 +82,27 @@ module.exports = {
           ],
           responses: {
               201: {
-                description: "Successfully Register",
+                description: "Successfully Login",
                 content: {
                     'application/json': {
                       schema: {
-                        $ref: '#/components/schemas/Auth2'
+                        $ref: '#/components/schemas/Auth'
                       }
                     }
                   },
               },
-              401: {
-                description: "invalid"
+              404: {
+                description: "Wrong Username or Password"
               }
             },            
         }     
       },
-          '/auth/admin/register':{
+      '/auth/seller/login':{
         post:{
           tags: ["Auth"],
-          summary: "Register Admin",
-          description: "An endpoint to register Admin",
-          operationId: "registerAdmin",
+          summary: "Login Seller",
+          description: "An endpoint to login Seller",
+          operationId: "loginSeller",
           consumes: [
             "application/json"
           ],
@@ -121,17 +112,8 @@ module.exports = {
           parameters: [
               {
                 in: "path",
-                name: "username",
-                description: "Username",
-                required: true,
-                schema: {
-                  type: "string"
-                }
-              },
-              {
-                in: "path",
                 name: "email",
-                description: "Username",
+                description: "Email",
                 required: true,
                 schema: {
                   type: "string"
@@ -149,19 +131,19 @@ module.exports = {
           ],
           responses: {
               201: {
-                description: "Successfully Register",
+                description: "Successfully Login",
                 content: {
                     'application/json': {
                       schema: {
-                        $ref: '#/components/schemas/Auth2'
+                        $ref: '#/components/schemas/Auth'
                       }
                     }
                   },
               },
-              401: {
-                description: "invalid"
+              404: {
+                description: "Wrong Username or Password"
               }
             },            
         }     
       },
-}
+  }

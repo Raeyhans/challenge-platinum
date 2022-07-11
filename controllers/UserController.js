@@ -14,6 +14,38 @@ exports.createUser = async (req,res,next) => {
     }
 }
 
+exports.registerUser = async (req, res, next) => {
+    const errors = validationResult(req);
+    const { body } = req;
+    try {
+        const user = await db.Users.findOne({
+            where: {
+                username: body.username
+            }});
+
+        if (user != null) {
+            return res.status(400).json({
+                error: 'Please choose another username.'
+            });
+        }
+
+        const hashPass = await bcrypt.hash(body.password, 12);
+        await db.Users.create({
+            username: body.username,
+            name: body.name,
+            email: body.email,
+            password: hashPass
+        });
+        
+        res.status(201).json({
+            msg: 'You have successfully registered.'
+        });
+
+    } catch (e) {
+        next(e);
+    }
+}
+
 exports.getAllUser = async (req,res,next) => {
     try{
         const user = await db.Users.findAll({
