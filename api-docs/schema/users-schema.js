@@ -2,7 +2,7 @@ module.exports = {
     User: {
       type: 'object',
       required: [
-        "name"
+        "username","name","password","email"
       ],
       properties: {
         id: {
@@ -13,10 +13,13 @@ module.exports = {
         },
         name: {
             type: "string",
-          },
+        },
         email: {
             type: "string",
-          },
+        },
+        password: {
+          type: "string",
+      },
       }
     }
   }

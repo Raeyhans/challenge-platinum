@@ -1,31 +1,42 @@
 module.exports = {
-    Auth: {
+    AuthAdmin: {
       type: 'object',
       required: [
-        "name"
+        "username","password"
       ],
       properties: {
-        id: {
-          type: "integer",
-        },
         username: {
+          type: "string",
+        },
+        password: {
           type: "string",
         },
       }
     },
-    Auth2: {
+    AuthCustomer: {
       type: 'object',
       required: [
-        "name"
+        "email","password"
       ],
       properties: {
-        id: {
-          type: "integer",
-        },
-        username: {
+        email: {
           type: "string",
         },
+        password: {
+          type: "string",
+        },
+      }
+    },
+    AuthSeller: {
+      type: 'object',
+      required: [
+        "email","password"
+      ],
+      properties: {
         email: {
+          type: "string",
+        },
+        password: {
           type: "string",
         },
       }

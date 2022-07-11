@@ -2,9 +2,12 @@ module.exports = {
     Item: {
       type: 'object',
       required: [
-        "name"
+        "seller_code","code","seotitle","title","price","qty"
       ],
       properties: {
+        seller_code: {
+          type: "string",
+        },
         category: {
           type: "integer",
           enum:[
@@ -30,55 +33,15 @@ module.exports = {
         },
       }
     },
-    Item2:{
+    ItemGallery:{
       type: 'object',
       required: [
-        "name"
+        "item_id","picture"
       ],
       properties: {
-        category: {
+        item_id: {
           type: "integer",
-          enum:[
-            'kategori 1',
-            'kategori 2',
-            'kategori 3',
-          ]
-        },
-        title: {
-          type: "string",
-        },
-        price: {
-          type: "integer",
-        },
-        qty: {
-          type: "integer",
-        },
+        }
       }   
     },
-    Item3:{
-      type: 'object',
-      required: [
-        "name"
-      ],
-      properties: {
-        itemID: {
-          type: "integer",
-        },
-  
-      }   
-    },
-    Item4:{
-      type: 'object',
-      required: [
-        "name"
-      ],
-      properties: {
-        item_ID: {
-          type: "integer",
-        },
-        picture: {
-          type: "string",
-        },
-      }   
-    }
   }

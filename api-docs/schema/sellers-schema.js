@@ -2,7 +2,7 @@ module.exports = {
     Seller: {
       type: 'object',
       required: [
-        "name"
+        "firstname","email","password","address","city","code"
       ],
       properties: {
         id: {
@@ -13,16 +13,19 @@ module.exports = {
         },
         lastname: {
             type: "string",
-          },
+        },
         email: {
             type: "string",
-          },
+        },
         address: {
             type: "string",
-          },
+        },
         city: {
             type: "string",
-          },
+        },
+        code: {
+          type: "string",
+        },
       }
     }
   }

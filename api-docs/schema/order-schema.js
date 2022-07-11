@@ -1,20 +1,17 @@
 module.exports = {
-    Order: {
+    Orders: {
       type: 'object',
       required: [
-        "name"
+        "customer_id","total","qty","status"
       ],
       properties: {
-        customer_ID: {
+        customer_id: {
           type: "integer",
-        },
-        item_ID: {
-          type: "integer",
-        },
-        qty: {
-          type: "string",
         },
         total: {
+          type: "string",
+        },
+        qty: {
           type: "string",
         },
         status: {
@@ -26,30 +23,23 @@ module.exports = {
         },
       }
     },
-    Order2: {
+    OrderDetail: {
       type: 'object',
       required: [
-        "name"
+        "order_id","item_id","price","qty"
       ],
       properties: {
-        customer_ID: {
+        order_id: {
           type: "integer",
         },
-        item_ID: {
+        item_id: {
+          type: "integer",
+        },
+        price: {
           type: "integer",
         },
         qty: {
-          type: "string",
-        },
-        total: {
-          type: "string",
-        },
-        status: {
-          type: "string",
-          enum: [
-            "Paid",
-            "Unpaid",
-          ]
+          type: "integer",
         },
       }
     },
