@@ -105,7 +105,7 @@ module.exports = {
               content: {
                   'application/json': {
                     schema: {
-                      $ref: '#/components/schemas/Item2'
+                      $ref: '#/components/schemas/Item'
                     }
                   }
                 },
@@ -145,7 +145,7 @@ module.exports = {
                 content: {
                     'application/json': {
                       schema: {
-                        $ref: '#/components/schemas/Item2'
+                        $ref: '#/components/schemas/Item'
                       }
                     }
                   },
@@ -186,7 +186,7 @@ module.exports = {
                 content: {
                     'application/json': {
                       schema: {
-                        $ref: '#/components/schemas/Item2'
+                        $ref: '#/components/schemas/Item'
                       }
                     }
                   },
@@ -202,7 +202,7 @@ module.exports = {
         delete:{
           tags: ["Item"],
           summary: "Delete Item by ID",
-          description: "An endpoint to delete Item by ID (Seller/Admin/Cust Access)",
+          description: "An endpoint to delete Item by ID (Seller/Admin Access)",
           operationId: "DeleteItembyID",
           consumes: [
             "application/json"
@@ -227,7 +227,7 @@ module.exports = {
                 content: {
                     'application/json': {
                       schema: {
-                        $ref: '#/components/schemas/Item3'
+                        $ref: '#/components/schemas/Item'
                       }
                     }
                   },
@@ -279,7 +279,7 @@ module.exports = {
                 content: {
                     'application/json': {
                       schema: {
-                        $ref: '#/components/schemas/Item4'
+                        $ref: '#/components/schemas/Item'
                       }
                     }
                   },

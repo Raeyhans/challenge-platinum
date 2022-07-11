@@ -37,7 +37,7 @@ module.exports = {
               content: {
                   'application/json': {
                     schema: {
-                      $ref: '#/components/schemas/Auth'
+                      $ref: '#/components/schemas/AuthAdmin'
                     }
                   }
                 },
@@ -48,102 +48,102 @@ module.exports = {
           },            
       }     
     },
-      '/auth/account/login':{
-        post:{
-          tags: ["Auth"],
-          summary: "Login Customer",
-          description: "An endpoint to login Customer",
-          operationId: "loginCustomer",
-          consumes: [
-            "application/json"
-          ],
-          produces: [
-            "application/json"
-          ],   
-          parameters: [
-              {
-                in: "path",
-                name: "email",
-                description: "Email",
-                required: true,
-                schema: {
-                  type: "string"
-                }
-              },
-              {
-                in: "path",
-                name: "password",
-                description: "Password",
-                required: true,
-                schema: {
-                  type: "string"
-                }
-              },
-          ],
-          responses: {
-              201: {
-                description: "Successfully Login",
-                content: {
-                    'application/json': {
-                      schema: {
-                        $ref: '#/components/schemas/Auth'
-                      }
-                    }
-                  },
-              },
-              404: {
-                description: "Wrong Username or Password"
+    '/auth/account/login':{
+      post:{
+        tags: ["Auth"],
+        summary: "Login Customer",
+        description: "An endpoint to login Customer",
+        operationId: "loginCustomer",
+        consumes: [
+          "application/json"
+        ],
+        produces: [
+          "application/json"
+        ],   
+        parameters: [
+            {
+              in: "path",
+              name: "email",
+              description: "Email",
+              required: true,
+              schema: {
+                type: "string"
               }
-            },            
-        }     
-      },
-      '/auth/seller/login':{
-        post:{
-          tags: ["Auth"],
-          summary: "Login Seller",
-          description: "An endpoint to login Seller",
-          operationId: "loginSeller",
-          consumes: [
-            "application/json"
-          ],
-          produces: [
-            "application/json"
-          ],   
-          parameters: [
-              {
-                in: "path",
-                name: "email",
-                description: "Email",
-                required: true,
-                schema: {
-                  type: "string"
-                }
-              },
-              {
-                in: "path",
-                name: "password",
-                description: "Password",
-                required: true,
-                schema: {
-                  type: "string"
-                }
-              },
-          ],
-          responses: {
-              201: {
-                description: "Successfully Login",
-                content: {
-                    'application/json': {
-                      schema: {
-                        $ref: '#/components/schemas/Auth'
-                      }
-                    }
-                  },
-              },
-              404: {
-                description: "Wrong Username or Password"
+            },
+            {
+              in: "path",
+              name: "password",
+              description: "Password",
+              required: true,
+              schema: {
+                type: "string"
               }
-            },            
-        }     
-      },
+            },
+        ],
+        responses: {
+            201: {
+              description: "Successfully Login",
+              content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/AuthCustomer'
+                    }
+                  }
+                },
+            },
+            404: {
+              description: "Wrong Username or Password"
+            }
+          },            
+      }     
+    },
+    '/auth/seller/login':{
+      post:{
+        tags: ["Auth"],
+        summary: "Login Seller",
+        description: "An endpoint to login Seller",
+        operationId: "loginSeller",
+        consumes: [
+          "application/json"
+        ],
+        produces: [
+          "application/json"
+        ],   
+        parameters: [
+            {
+              in: "path",
+              name: "email",
+              description: "Email",
+              required: true,
+              schema: {
+                type: "string"
+              }
+            },
+            {
+              in: "path",
+              name: "password",
+              description: "Password",
+              required: true,
+              schema: {
+                type: "string"
+              }
+            },
+        ],
+        responses: {
+            201: {
+              description: "Successfully Login",
+              content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/AuthSeller'
+                    }
+                  }
+                },
+            },
+            404: {
+              description: "Wrong Username or Password"
+            }
+          },            
+      }     
+    },
   }

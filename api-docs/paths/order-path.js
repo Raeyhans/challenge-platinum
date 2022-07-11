@@ -80,8 +80,8 @@ module.exports = {
       },
       get:{
         tags: ["Order"],
-        summary: "Get Order",
-        description: "An endpoint to Get All Order (Seller/Admin Access)",
+        summary: "Get All Order",
+        description: "An endpoint to Get All Order (Admin/Seller Access)",
         operationId: "GetOrder",
         consumes: [
           "application/json"
@@ -106,11 +106,11 @@ module.exports = {
           }, 
         }     
     },
-    '/Orders/{orderID}':{
+    '/orders/{orderID}':{
         get:{
           tags: ["Order"],
           summary: "Get Order by ID",
-          description: "An endpoint to get Order by ID (Seller/Admin Access)",
+          description: "An endpoint to get Order by ID (Seller/Admin/Customer Access)",
           operationId: "GetOrderbyID",
           consumes: [
             "application/json"
@@ -151,7 +151,7 @@ module.exports = {
         put:{
           tags: ["Order"],
           summary: "Edit Order by ID",
-          description: "An endpoint to edit Item by ID (Seller/Admin Access)",
+          description: "An endpoint to update status (Paid, Unpaid) by ID (Seller/Admin Access)",
           operationId: "EditOrderbyID",
           consumes: [
             "application/json"
@@ -162,8 +162,8 @@ module.exports = {
           parameters: [
               {
                 in: "path",
-                name: "ItemID",
-                description: "ItemID",
+                name: "order_id",
+                description: "order id",
                 required: true,
                 schema: {
                   type: "integer"
@@ -185,99 +185,10 @@ module.exports = {
                 description: "Invalid"
               },
               404: {
-                description: "Item not Found"
-              }
-            },            
-        },
-        delete:{
-          tags: ["Item"],
-          summary: "Delete Item by ID",
-          description: "An endpoint to delete Item by ID (Seller/Admin/Cust Access)",
-          operationId: "DeleteItembyID",
-          consumes: [
-            "application/json"
-          ],
-          produces: [
-            "application/json"
-          ],   
-          parameters: [
-              {
-                in: "path",
-                name: "ItemID",
-                description: "ItemID",
-                required: true,
-                schema: {
-                  type: "integer"
-                }
-              },
-          ],
-          responses: {
-              201: {
-                description: "Successfully Delete Item",
-                content: {
-                    'application/json': {
-                      schema: {
-                        $ref: '#/components/schemas/Item3'
-                      }
-                    }
-                  },
-              },
-              401: {
-                description: "Invalid"
-              },
-              404: {
-                description: "Item not Found"
+                description: "Order not Found"
               }
             },            
         },
       },
-      '/items/addImage':{
-        post:{
-          tags: ["Item"],
-          summary: "Add Image",
-          description: "An endpoint to add Image to Item",
-          operationId: "addImageItem",
-          consumes: [
-            "application/json"
-          ],
-          produces: [
-            "application/json"
-          ],   
-          parameters: [
-              {
-                in: "path",
-                name: "item_ID",
-                description: "Item ID",
-                required: true,
-                schema: {
-                  type: "string"
-                }
-              },
-              {
-                in: "path",
-                name: "Picture",
-                description: "Link of Picture",
-                required: true,
-                schema: {
-                  type: "string"
-                }
-              },
-          ],
-          responses: {
-              201: {
-                description: "Successfully Register",
-                content: {
-                    'application/json': {
-                      schema: {
-                        $ref: '#/components/schemas/Item4'
-                      }
-                    }
-                  },
-              },
-              401: {
-                description: "invalid"
-              }
-            },            
-        }     
-      },
+
 }

@@ -11,7 +11,6 @@ const itemSchema= require ('./schema/item-schema');
 const orderPath= require('./paths/order-path');
 const orderSchema= require ('./schema/order-schema');
 
-
 module.exports = {
     openapi: '3.0.0',
     info: {

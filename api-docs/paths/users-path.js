@@ -136,7 +136,7 @@ module.exports = {
               content: {
                   'application/json': {
                     schema: {
-                      $ref: '#/components/schemas/Auth2'
+                      $ref: '#/components/schemas/User'
                     }
                   }
                 },

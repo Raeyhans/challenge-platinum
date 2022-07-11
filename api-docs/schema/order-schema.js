@@ -1,5 +1,5 @@
 module.exports = {
-    Orders: {
+    Order: {
       type: 'object',
       required: [
         "customer_id","total","qty","status"

@@ -1,5 +1,6 @@
 const db = require('../models');
 const bcrypt = require("bcrypt");
+const { validationResult } = require("express-validator");
 
 exports.createUser = async (req,res,next) => {
     try{
@@ -25,7 +26,7 @@ exports.registerUser = async (req, res, next) => {
 
         if (user != null) {
             return res.status(400).json({
-                error: 'Please choose another username.'
+                msg: 'Please choose another username.'
             });
         }
 

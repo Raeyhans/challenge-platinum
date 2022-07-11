@@ -71,22 +71,22 @@ exports.addImage = async (req,res,next) => {
             //     cb(null, file.picture + '-' + Date.now() + path.extname(file.originalname));
             // }
 
-            filename: (req, file, callback) => {
+            filename: (req, file, cb) => {
                 const match = ["image/png", "image/jpeg"];
                 if (match.indexOf(file.mimetype) === -1) {
                   var message = `${file.originalname} is invalid. Only accept png/jpeg.`;
-                  return callback(message, null);
+                  return cb(message, null);
                 }
                 const filename = `${Date.now()}-${file.originalname}`;
-                callback(null, filename);
+                cb(null, filename);
               }
         });
         
         const upload = multer({ storage: storage })
 
         const data = {
-            item_id: req.body.item_id,
-            picture: upload.array('multi-files'),
+            id_item: req.body.id_item,
+            picture: req.body.picture,
             created_by: sellerId
         }
         await db.ItemGallery.create(data);
