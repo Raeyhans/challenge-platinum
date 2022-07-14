@@ -22,20 +22,18 @@ exports.registerSeller = async (req, res, next) => {
             }});
 
         if (user != null) {
-            return res.json({
-                status: 400,
+            return res.status(400).json({
                 error: 'Please choose another email.'
             });
         }
 
-        const hashPass = await bcrypt.hash(body.password, 12);
-        const hashToken = jwt.sign(body.password, body.email);
+        const hashToken = jwt.sign(body.email, body.password);
 
         await db.Sellers.create({
             firstname: body.firstname,
             lastname: body.lastname,
             email: body.email,
-            password: hashPass,
+            password: body.password,
             address: body.address,
             city: body.city,
             code: body.code,
@@ -51,7 +49,7 @@ exports.registerSeller = async (req, res, next) => {
                     
         });
         
-        res.status(200).json({
+        res.status(201).json({
             msg: 'You have successfully registered.'
         });
 
@@ -75,20 +73,33 @@ exports.getAllSeller = async (req,res,next) => {
 
 exports.editSeller = async (req,res,next) => {
     try{
-        await db.Sellers.findByPk(req.params.id).then(function (result) {
-            if (!result) {
+        const {
+            user: {
+                id: sellerId
+            },
+            params: {
+                id
+            }
+        } = req;
+
+        if(sellerId != id){
+            return res.status(404).json({
+                msg: 'User not found.'
+            });
+        }
+
+        await db.Sellers.findByPk(id).then(function (result) {
+            if (result != null) {
                 db.Sellers.update(req.body, {
                     where: {
-                        id: req.params.id
+                        id: id
                     }
                 });
-                return res.json({
-                    status: 200,
+                return res.status(200).json({
                     msg: 'User updated.'
                 });
             } 
-            return res.json({
-                status: 404,
+            return res.status(404).json({
                 msg: 'User not found.'
             });
         });
@@ -99,18 +110,25 @@ exports.editSeller = async (req,res,next) => {
 
 exports.getSeller = async (req,res,next) => {
     try{
-        const user = await db.Sellers.findOne({
-            where: {
-                id: req.params.id
+        const {
+            user: {
+                id: sellerId
+            },
+            params: {
+                id
             }
-        });
-        if(!!user){
-            return res.json(user);
+        } = req;
+
+        if(sellerId != id){
+            return res.status(404).json({
+                msg: 'User not found.'
+            });
         }
-        return res.json({
-            status: 404,
-            msg: 'User not found.'
-        });
+
+        const user = await db.Sellers.findByPk(id);
+        if(user != null){
+            return res.status(200).json(user);
+        }
     }
     catch (e) {
         next(e);
@@ -119,7 +137,6 @@ exports.getSeller = async (req,res,next) => {
 
 exports.verifyEmail = async (req,res,next) => {
     try{
-    
         const user = await db.Sellers.findOne({
             where: {
                 token: req.params.token,
@@ -133,7 +150,7 @@ exports.verifyEmail = async (req,res,next) => {
             );
 
             return res.status(200).json({
-                msg: 'Email has been verify.'
+                msg: 'Your account successfuly activated.'
             });
         }
         return res.status(404).json({
@@ -146,24 +163,36 @@ exports.verifyEmail = async (req,res,next) => {
 
 exports.deleteSeller = async (req,res,next) => {
     try{
-        await db.Sellers.findByPk(req.params.id).then(function (result) {
-            if (!!result) {
+        const {
+            user: {
+                id: sellerId
+            },
+            params: {
+                id
+            }
+        } = req;
+
+        if(sellerId != id){
+            return res.status(404).json({
+                msg: 'User not found.'
+            });
+        }
+
+        await db.Sellers.findByPk(id).then(function (result) {
+            if (result != null) {
                 db.Sellers.destroy({
                     where: {
-                        id: req.params.id
+                        id: id
                     }
                 });
-                return res.json({
-                    status: 200,
+                return res.status(200).json({
                     msg: 'User deleted.'
                 });
-            } 
-            return res.json({
-                status: 404,
+            }
+            return res.status(404).json({
                 msg: 'User not found.'
             });
         });
-
 
     }catch (e) {
         next(e);

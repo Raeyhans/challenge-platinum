@@ -1,5 +1,5 @@
 module.exports = {
-    '/customers': {
+    '/customers/account/register': {
       post: {
         tags: ["Customer"],
         summary: "Create Customer",
@@ -11,65 +11,45 @@ module.exports = {
         produces: [
           "application/json"
         ],
-        parameters: [
-          {
-            in: "body",
-            name: "firstname",
-            description: "username yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string"
+        requestBody: {
+          content: {
+            "application/x-www-form-urlencoded": {
+              schema: {
+                type: "object",
+                properties: {
+                  firstname: { 
+                    description: "First Name",
+                    type: "string"
+                  },
+                  lastname: { 
+                    description: "Last Name",
+                    type: "string"
+                  },
+                  email: { 
+                    description: "Email",
+                    type: "string"
+                  },
+                  password: { 
+                    description: "Password",
+                    type: "string"
+                  },
+                  address: { 
+                    description: "Address",
+                    type: "string"
+                  },
+                  city: { 
+                    description: "City",
+                    type: "string"
+                  }
+                },
+                required: ["firstname","email","password","address","city"] 
+              }
             }
-          },
-          {
-            in: "body",
-            name: "lastname",
-            description: "Nama yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string"
-            }
-          },
-          {
-            in: "body",
-            name: "Email",
-            description: "email yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string",
-            }
-          },
-          {
-            in: "body",
-            name: "Password",
-            description: "Password yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string",
-            }
-          },
-          {
-            in: "body",
-            name: "address",
-            description: "Address yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string",
-            }
-          },
-          {
-            in: "body",
-            name: "city",
-            description: "City yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string",
-            }
-          },
-        ],
+          }
+        },
         responses: {
           201: {
-            description: "Success add new Customer",
+            description: "Successfully register.",
             content: {
                 'application/json': {
                   schema: {
@@ -83,10 +63,15 @@ module.exports = {
           }
         },
       },
+    },
+    '/customers': {
       get: {
         tags: ['Customer'],
         summary: 'get all Customer',
         operationId: "getallCustomer",
+        security: [{
+          bearerAuth: []
+        }],
         consumes: [
           "application/json"
         ],
@@ -107,19 +92,22 @@ module.exports = {
         },
       }
     },
-    "/customers/{customerId}": {
+    "/customers/{id}": {
       get: {
         tags: ['Customer'],
         summary: "Find customer by ID",
         description: "Returns a single Customer",
         operationId: "getCustomerById",
+        security: [{
+          bearerAuth: []
+        }],
         produces: [
           "application/json"
         ],
-        "parameters": [
+        parameters: [
           {
-            name: "id",
             in: "path",
+            name: "id",
             required: true,
             type: "integer",
           }
@@ -135,8 +123,8 @@ module.exports = {
               }
             }
           },
-          400: {
-            description: "Invalid"
+          401: {
+            description: "Unauthorized"
           },
           404: {
             description: "Customer not found"
@@ -148,6 +136,9 @@ module.exports = {
         summary: "Edit customer by ID",
         description: "Edit a single Customer",
         operationId: "editCustomerById",
+        security: [{
+          bearerAuth: []
+        }],
         produces: [
           "application/json"
         ],
@@ -219,13 +210,16 @@ module.exports = {
         summary: "delete customer by ID",
         description: "delete a single customer",
         operationId: "deleteCustomerById",
+        security: [{
+          bearerAuth: []
+        }],
         produces: [
           "application/json"
         ],
         "parameters": [
           {
-            name: "id",
             in: "path",
+            name: "id",
             required: true,
             type: "integer",
           }
@@ -246,6 +240,42 @@ module.exports = {
           }
         }
       }
+    },
+    '/customers/account/verify/{token}': {
+      put: {
+        tags: ['Customer'],
+        summary: "Activated account by token",
+        description: "Activated account customer",
+        operationId: "ActivatedAccount",
+        produces: [
+          "application/json"
+        ],
+        parameters: [
+          {
+            name: "token",
+            in: "path",
+            required: true,
+            type: "integer",
+          },
+        ],
+        responses: {
+          200: {
+            description: "Your account successfuly activated.",
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          400: {
+            description: "Invalid"
+          },
+          404: {
+            description: "404 not found"
+          }
+        }
+      }
     }
-    
   }

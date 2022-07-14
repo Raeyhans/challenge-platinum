@@ -5,21 +5,30 @@ module.exports = {
         "customer_id","total","qty","status"
       ],
       properties: {
-        customer_id: {
+        // customer_id: {
+        //   type: "integer",
+        // },
+        // total: {
+        //   type: "string",
+        // },
+        // qty: {
+        //   type: "string",
+        // },
+        // status: {
+        //   type: "string",
+        //   enum: [
+        //     "Paid",
+        //     "Unpaid",
+        //   ]
+        // },
+        id: {
           type: "integer",
         },
-        total: {
-          type: "string",
+        price: {
+          type: "integer",
         },
         qty: {
-          type: "string",
-        },
-        status: {
-          type: "string",
-          enum: [
-            "Paid",
-            "Unpaid",
-          ]
+          type: "integer",
         },
       }
     },

@@ -116,7 +116,7 @@ module.exports = {
           }, 
         }     
     },
-    '/items/{itemID}':{
+    '/items/{id}':{
         get:{
           tags: ["Item"],
           summary: "Get Item by ID",
@@ -131,7 +131,7 @@ module.exports = {
           parameters: [
               {
                 in: "path",
-                name: "ItemID",
+                name: "id",
                 description: "ItemID",
                 required: true,
                 schema: {
@@ -172,7 +172,7 @@ module.exports = {
           parameters: [
               {
                 in: "path",
-                name: "ItemID",
+                name: "id",
                 description: "ItemID",
                 required: true,
                 schema: {
@@ -213,7 +213,7 @@ module.exports = {
           parameters: [
               {
                 in: "path",
-                name: "ItemID",
+                name: "id",
                 description: "ItemID",
                 required: true,
                 schema: {

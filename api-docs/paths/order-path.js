@@ -5,63 +5,39 @@ module.exports = {
         summary: "Create Order",
         description: "An endpoint to Create Order (Customer Access)",
         operationId: "CreateOrder",
+        security: [{
+          bearerAuth: []
+        }],
         consumes: [
           "application/json"
         ],
         produces: [
           "application/json"
-        ],   
-        parameters: [
-            {
-              in: "path",
-              name: "customer_id",
-              description: "Customer ID",
-              required: true,
-              schema: {
-                type: "integer"
-              },
-            },
-            {
-              in: "path",
-              name: "item_id",
-              description: "Item ID",
-              required: true,
-              schema: {
-                type: "integer"
-              },
-            },
-            {
-              in: "path",
-              name: "qty",
-              description: "Total Quantity",
-              required: true,
-              schema: {
-                type: "integer"
-              },
-            },
-            {
-              in: "path",
-              name: "total",
-              description: "Total Price",
-              required: true,
-              schema: {
-                type: "integer"
-              }
-            },
-            {
-              in: "path",
-              name: "status",
-              description: "Payment Status",
-              required: true,
-              schema: {
-                type: "string"
-              },
-              enum: [
-                "Paid",
-                "Unpaid",
-              ]
-            },
         ],
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  id: { 
+                    description: "ID",
+                    type: "integer"
+                  },
+                  price: {
+                    description: "Price",
+                    type: "integer"
+                  },
+                  qty: {
+                    description: "Qty",
+                    type: "integer"
+                  }
+                },
+                required: ["username","name","email","password"] 
+              }
+            }
+          }
+        },
         responses: {
             201: {
               description: "Successfully Created Order",
@@ -83,6 +59,9 @@ module.exports = {
         summary: "Get All Order",
         description: "An endpoint to Get All Order (Admin/Seller Access)",
         operationId: "GetOrder",
+        security: [{
+          bearerAuth: []
+        }],
         consumes: [
           "application/json"
         ],
@@ -112,6 +91,9 @@ module.exports = {
           summary: "Get Order by ID",
           description: "An endpoint to get Order by ID (Seller/Admin/Customer Access)",
           operationId: "GetOrderbyID",
+          security: [{
+            bearerAuth: []
+          }],
           consumes: [
             "application/json"
           ],
@@ -153,6 +135,9 @@ module.exports = {
           summary: "Edit Order by ID",
           description: "An endpoint to update status (Paid, Unpaid) by ID (Seller/Admin Access)",
           operationId: "EditOrderbyID",
+          security: [{
+            bearerAuth: []
+          }],
           consumes: [
             "application/json"
           ],
@@ -190,5 +175,4 @@ module.exports = {
             },            
         },
       },
-
 }

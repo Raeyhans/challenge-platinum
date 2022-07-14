@@ -1,5 +1,5 @@
 module.exports = {
-    '/sellers': {
+    '/sellers/register': {
       post: {
         tags: ["Seller"],
         summary: "Register Seller",
@@ -11,65 +11,105 @@ module.exports = {
         produces: [
           "application/json"
         ],
-        parameters: [
-          {
-            in: "path",
-            name: "firstname",
-            description: "username yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string"
+        requestBody: {
+          content: {
+            "application/x-www-form-urlencoded": {
+              schema: {
+                type: "object",
+                properties: {
+                  firstname: { 
+                    description: "First Name",
+                    type: "string"
+                  },
+                  lastname: { 
+                    description: "Last Name",
+                    type: "string"
+                  },
+                  email: { 
+                    description: "Email",
+                    type: "string"
+                  },
+                  password: { 
+                    description: "Password",
+                    type: "string"
+                  },
+                  address: { 
+                    description: "Address",
+                    type: "string"
+                  },
+                  city: { 
+                    description: "City",
+                    type: "string"
+                  },
+                  code: { 
+                    description: "Seller Code",
+                    type: "string"
+                  }
+                },
+                required: ["firstname","email","password","address","city","code"] 
+              }
             }
-          },
-          {
-            in: "path",
-            name: "lastname",
-            description: "Nama yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string"
-            }
-          },
-          {
-            in: "path",
-            name: "Email",
-            description: "email yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string",
-            }
-          },
-          {
-            in: "path",
-            name: "Password",
-            description: "Password yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string",
-            }
-          },
-          {
-            in: "path",
-            name: "address",
-            description: "Address yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string",
-            }
-          },
-          {
-            in: "path",
-            name: "city",
-            description: "City yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string",
-            }
-          },
-        ],
+          }
+        },
+        // parameters: [
+        //   {
+        //     in: "path",
+        //     name: "firstname",
+        //     description: "username yang akan digunakan",
+        //     required: true,
+        //     schema: {
+        //       type: "string"
+        //     }
+        //   },
+        //   {
+        //     in: "path",
+        //     name: "lastname",
+        //     description: "Nama yang akan digunakan",
+        //     required: true,
+        //     schema: {
+        //       type: "string"
+        //     }
+        //   },
+        //   {
+        //     in: "path",
+        //     name: "Email",
+        //     description: "email yang akan digunakan",
+        //     required: true,
+        //     schema: {
+        //       type: "string",
+        //     }
+        //   },
+        //   {
+        //     in: "path",
+        //     name: "Password",
+        //     description: "Password yang akan digunakan",
+        //     required: true,
+        //     schema: {
+        //       type: "string",
+        //     }
+        //   },
+        //   {
+        //     in: "path",
+        //     name: "address",
+        //     description: "Address yang akan digunakan",
+        //     required: true,
+        //     schema: {
+        //       type: "string",
+        //     }
+        //   },
+        //   {
+        //     in: "path",
+        //     name: "city",
+        //     description: "City yang akan digunakan",
+        //     required: true,
+        //     schema: {
+        //       type: "string",
+        //     }
+        //   },
+        // ],
         responses: {
           201: {
-            description: "Success add new User",
+            description: "You have successfully registered.",
             content: {
                 'application/json': {
                   schema: {
@@ -87,6 +127,9 @@ module.exports = {
         tags: ['Seller'],
         summary: 'get all Seller',
         operationId: "getallSeller",
+        security: [{
+          bearerAuth: []
+        }],
         consumes: [
           "application/json"
         ],
@@ -107,12 +150,15 @@ module.exports = {
         },
       }
     },
-    "/sellers/{sellerId}": {
+    "/sellers/{id}": {
       get: {
         tags: ['Seller'],
         summary: "Find seller by ID",
         description: "Returns a single seller",
         operationId: "getSellerById",
+        security: [{
+          bearerAuth: []
+        }],
         produces: [
           "application/json"
         ],
@@ -148,53 +194,56 @@ module.exports = {
         summary: "Edit seller by ID",
         description: "Edit a single seller",
         operationId: "editSellerById",
+        security: [{
+          bearerAuth: []
+        }],
         produces: [
           "application/json"
         ],
-        "parameters": [
+        parameters: [
           {
             name: "id",
             in: "path",
             required: true,
             type: "integer",
           },
-          {
-            name: "name",
-            in: "path",
-            required: true,
-            type: "string",
-          },
-          {
-            name: "username",
-            in: "path",
-            required: true,
-            type: "string",
-          },
-          {
-            name: "email",
-            in: "path",
-            required: true,
-            type: "string",
-          },
-          {
-            name: "password",
-            in: "path",
-            required: true,
-            type: "string",
-          },
-          {
-            name: "address",
-            in: "path",
-            required: true,
-            type: "string",
-          },
-          {
-            name: "city",
-            in: "path",
-            required: true,
-            type: "string",
-          },
         ],
+        requestBody: {
+          content: {
+            "application/x-www-form-urlencoded": {
+              schema: {
+                type: "object",
+                properties: {
+                  firstname: { 
+                    description: "First Name",
+                    type: "string"
+                  },
+                  lastname: { 
+                    description: "Last Name",
+                    type: "string"
+                  },
+                  email: { 
+                    description: "Email",
+                    type: "string"
+                  },
+                  password: { 
+                    description: "Password",
+                    type: "string"
+                  },
+                  address: { 
+                    description: "Address",
+                    type: "string"
+                  },
+                  city: { 
+                    description: "City",
+                    type: "string"
+                  }
+                },
+                required: ["firstname","lastname","email","password","address","city"] 
+              }
+            }
+          }
+        },
         responses: {
           200: {
             description: "successfuly Edit seller",
@@ -219,10 +268,13 @@ module.exports = {
         summary: "delete seller by ID",
         description: "delete a single seller",
         operationId: "deleteSellerById",
+        security: [{
+          bearerAuth: []
+        }],
         produces: [
           "application/json"
         ],
-        "parameters": [
+        parameters: [
           {
             name: "id",
             in: "path",
@@ -246,6 +298,42 @@ module.exports = {
           }
         }
       }
+    },
+    '/sellers/account/verify/{token}': {
+      put: {
+        tags: ['Seller'],
+        summary: "Activated account by token",
+        description: "Activated account seller",
+        operationId: "ActivatedAccount",
+        produces: [
+          "application/json"
+        ],
+        parameters: [
+          {
+            name: "token",
+            in: "path",
+            required: true,
+            type: "integer",
+          },
+        ],
+        responses: {
+          200: {
+            description: "Your account successfuly activated.",
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: "#/components/schemas/Seller"
+                }
+              }
+            }
+          },
+          400: {
+            description: "Invalid"
+          },
+          404: {
+            description: "404 not found"
+          }
+        }
+      }
     }
-    
   }

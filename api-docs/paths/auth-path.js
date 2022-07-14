@@ -4,33 +4,33 @@ module.exports = {
         tags: ["Auth"],
         summary: "Login Admin",
         description: "An endpoint to login Admin",
-        operationId: "loginAdmin",
+        operationId: "AuthAdmin",
         consumes: [
           "application/json"
         ],
         produces: [
           "application/json"
-        ],   
-        parameters: [
-            {
-              in: "path",
-              name: "username",
-              description: "Username",
-              required: true,
-              schema: {
-                type: "string"
-              }
-            },
-            {
-              in: "path",
-              name: "password",
-              description: "Password",
-              required: true,
-              schema: {
-                type: "string"
-              }
-            },
         ],
+        requestBody: {
+          content: {
+            "application/x-www-form-urlencoded": {
+              schema: {
+                type: "object",
+                properties: {
+                  username: { 
+                    description: "Username",
+                    type: "string"
+                  },
+                  password: {
+                    description: "Password",
+                    type: "string"
+                  }
+                },
+                required: ["username","password"] 
+              }
+            }
+          }
+        },
         responses: {
             201: {
               description: "Successfully Login",
@@ -42,7 +42,7 @@ module.exports = {
                   }
                 },
             },
-            404: {
+            400: {
               description: "Wrong Username or Password"
             }
           },            
@@ -53,33 +53,33 @@ module.exports = {
         tags: ["Auth"],
         summary: "Login Customer",
         description: "An endpoint to login Customer",
-        operationId: "loginCustomer",
+        operationId: "AuthCustomer",
         consumes: [
           "application/json"
         ],
         produces: [
           "application/json"
         ],   
-        parameters: [
-            {
-              in: "path",
-              name: "email",
-              description: "Email",
-              required: true,
+        requestBody: {
+          content: {
+            "application/x-www-form-urlencoded": {
               schema: {
-                type: "string"
+                type: "object",
+                properties: {
+                  email: { 
+                    description: "Email",
+                    type: "string"
+                  },
+                  password: {
+                    description: "Password",
+                    type: "string"
+                  }
+                },
+                required: ["email","password"] 
               }
-            },
-            {
-              in: "path",
-              name: "password",
-              description: "Password",
-              required: true,
-              schema: {
-                type: "string"
-              }
-            },
-        ],
+            }
+          }
+        },
         responses: {
             201: {
               description: "Successfully Login",
@@ -91,8 +91,8 @@ module.exports = {
                   }
                 },
             },
-            404: {
-              description: "Wrong Username or Password"
+            400: {
+              description: "Wrong Email or Password"
             }
           },            
       }     
@@ -102,33 +102,33 @@ module.exports = {
         tags: ["Auth"],
         summary: "Login Seller",
         description: "An endpoint to login Seller",
-        operationId: "loginSeller",
+        operationId: "AuthSeller",
         consumes: [
           "application/json"
         ],
         produces: [
           "application/json"
         ],   
-        parameters: [
-            {
-              in: "path",
-              name: "email",
-              description: "Email",
-              required: true,
+        requestBody: {
+          content: {
+            "application/x-www-form-urlencoded": {
               schema: {
-                type: "string"
+                type: "object",
+                properties: {
+                  email: { 
+                    description: "Email",
+                    type: "string"
+                  },
+                  password: {
+                    description: "Password",
+                    type: "string"
+                  }
+                },
+                required: ["email","password"] 
               }
-            },
-            {
-              in: "path",
-              name: "password",
-              description: "Password",
-              required: true,
-              schema: {
-                type: "string"
-              }
-            },
-        ],
+            }
+          }
+        },
         responses: {
             201: {
               description: "Successfully Login",
@@ -140,8 +140,8 @@ module.exports = {
                   }
                 },
             },
-            404: {
-              description: "Wrong Username or Password"
+            400: {
+              description: "Wrong Email or Password"
             }
           },            
       }     

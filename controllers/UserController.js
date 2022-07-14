@@ -1,21 +1,7 @@
 const db = require('../models');
-const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 
 exports.createUser = async (req,res,next) => {
-    try{
-        const user = await db.Users.create(req.body);
-        // res.json(user);
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(user.password, salt);
-        user.save().then((user) => res.status(201).send(user));
-
-    }catch (e) {
-        next(e);
-    }
-}
-
-exports.registerUser = async (req, res, next) => {
     const errors = validationResult(req);
     const { body } = req;
     try {
@@ -30,19 +16,18 @@ exports.registerUser = async (req, res, next) => {
             });
         }
 
-        const hashPass = await bcrypt.hash(body.password, 12);
         await db.Users.create({
             username: body.username,
             name: body.name,
             email: body.email,
-            password: hashPass
+            password: body.password
         });
         
         res.status(201).json({
             msg: 'You have successfully registered.'
         });
 
-    } catch (e) {
+    }catch (e) {
         next(e);
     }
 }
