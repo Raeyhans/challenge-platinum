@@ -66,8 +66,7 @@ exports.createOrder = async (req, res, next) => {
 
         await t.commit();
 
-        return res.json({
-            status: 201, 
+        return res.status(201).json({
             data: order
         });
     } catch (e) {
@@ -79,7 +78,7 @@ exports.createOrder = async (req, res, next) => {
 exports.getOrders = async (req, res, next) => {
     try {
         const orders = await db.Orders.findAll();
-        res.json(orders);
+        res.status(200).json(orders);
     } catch (e) {
         next(e);
     }
@@ -93,10 +92,9 @@ exports.getOneOrder = async (req, res, next) => {
             }
         });
         if (order != null) {
-            return res.json(order);
+            return res.status(200).json(order);
         }
-        return res.json({
-            status: 404,
+        return res.status(404).json({
             msg: 'Order not found.'
         });
             

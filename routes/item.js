@@ -31,7 +31,7 @@ const doUploadFile = (req, res, next) => {
       req.body.image = paths;
       next();
     });
-  };
+};
 
 router.get('/', item.getItems);
 router.get('/:id/images', item.getImage);

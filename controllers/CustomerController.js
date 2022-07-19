@@ -27,17 +27,15 @@ exports.registerCustomer = async (req, res, next) => {
             });
         }
 
-        const hashPass = await bcrypt.hash(body.password, 12);
-        const hashToken = jwt.sign(body.password, body.email);
+        const hashToken = jwt.sign(body.email, body.password);
 
         await db.Customers.create({
             firstname: body.firstname,
             lastname: body.lastname,
             email: body.email,
-            password: hashPass,
+            password: body.password,
             address: body.address,
             city: body.city,
-            code: body.code,
             token: hashToken,
         });
 
@@ -94,6 +92,38 @@ exports.editCustomer = async (req,res,next) => {
     }
 }
 
+exports.getCustomer = async (req,res,next) => {
+    try{
+        const {
+            user: {
+                id: customerId
+            },
+            params: {
+                id
+            }
+        } = req;
+
+        if(customerId != id){
+            return res.status(404).json({
+                msg: 'User not found.'
+            });
+        }
+
+        const user = await db.Customers.findOne({
+            where: {
+                id: id,
+                status: 1
+            }
+        });
+        if(user != null){
+            return res.status(200).json(user);
+        }
+    }
+    catch (e) {
+        next(e);
+    }
+}
+
 exports.verifyEmail = async (req,res,next) => {
     try{
     
@@ -110,7 +140,7 @@ exports.verifyEmail = async (req,res,next) => {
             );
 
             return res.status(200).json({
-                msg: 'Email has been verify.'
+                msg: 'Your account successfuly activated.'
             });
         }
         return res.status(404).json({
@@ -141,25 +171,6 @@ exports.deleteCustomer = async (req,res,next) => {
 
 
     }catch (e) {
-        next(e);
-    }
-}
-
-exports.getCustomer = async (req,res,next) => {
-    try{
-        const user = await db.Customers.findOne({
-            where: {
-                id: req.params.id
-            }
-        });
-        if(user != null){
-            return res.status(200).json(user);
-        }
-        return res.status(404).json({
-            msg: 'User not found.'
-        });
-    }
-    catch (e) {
         next(e);
     }
 }

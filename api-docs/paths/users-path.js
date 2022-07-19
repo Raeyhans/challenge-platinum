@@ -11,44 +11,34 @@ module.exports = {
         produces: [
           "application/json"
         ],
-        parameters: [
-          {
-            in: "body",
-            name: "Username",
-            description: "username yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string"
+        requestBody: {
+          content: {
+            "application/x-www-form-urlencoded": {
+              schema: {
+                type: "object",
+                properties: {
+                  username: { 
+                    description: "Username",
+                    type: "string"
+                  },
+                  name: {
+                    description: "Name",
+                    type: "string"
+                  },
+                  email: {
+                    description: "Email",
+                    type: "string"
+                  },
+                  password: {
+                    description: "Password",
+                    type: "string"
+                  }
+                },
+                required: ["username","name","email","password"] 
+              }
             }
-          },
-          {
-            in: "body",
-            name: "Name",
-            description: "Nama yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string"
-            }
-          },
-          {
-            in: "body",
-            name: "Email",
-            description: "email yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string",
-            }
-          },
-          {
-            in: "body",
-            name: "Password",
-            description: "Password yang akan digunakan",
-            required: true,
-            schema: {
-              type: "string",
-            }
-          },
-        ],
+          }
+        },
         responses: {
           201: {
             description: "Success add new User",
@@ -69,6 +59,9 @@ module.exports = {
         tags: ['User'],
         summary: 'get all User',
         operationId: "getallUser",
+        security: [{
+          bearerAuth: []
+        }],
         consumes: [
           "application/json"
         ],
@@ -89,70 +82,15 @@ module.exports = {
         },
       }
     },
-    '/users/admin/register':{
-      post:{
-        tags: ["User"],
-        summary: "Register Admin",
-        description: "An endpoint to register Admin",
-        operationId: "registerAdmin",
-        consumes: [
-          "application/json"
-        ],
-        produces: [
-          "application/json"
-        ],   
-        parameters: [
-            {
-              in: "path",
-              name: "username",
-              description: "Username",
-              required: true,
-              schema: {
-                type: "string"
-              }
-            },
-            {
-              in: "path",
-              name: "email",
-              description: "Username",
-              required: true,
-              schema: {
-                type: "string"
-              }
-            },
-            {
-              in: "path",
-              name: "password",
-              description: "Password",
-              required: true,
-              schema: {
-                type: "string"
-              }
-            },
-        ],
-        responses: {
-            201: {
-              description: "Successfully Register",
-              content: {
-                  'application/json': {
-                    schema: {
-                      $ref: '#/components/schemas/User'
-                    }
-                  }
-                },
-            },
-            401: {
-              description: "invalid"
-            }
-          },            
-      }     
-    },
-    "/users/{userId}": {
+    "/users/{id}": {
       get: {
         tags: ['User'],
         summary: "Find user by ID",
         description: "Returns a single user",
         operationId: "getUserById",
+        security: [{
+          bearerAuth: []
+        }],
         produces: [
           "application/json"
         ],
@@ -188,41 +126,48 @@ module.exports = {
         summary: "Edit user by ID",
         description: "Edit a single user",
         operationId: "editUserById",
+        security: [{
+          bearerAuth: []
+        }],
         produces: [
           "application/json"
         ],
-        "parameters": [
+        parameters: [
           {
             name: "id",
             in: "path",
             required: true,
             type: "integer",
-          },
-          {
-            name: "name",
-            in: "path",
-            required: true,
-            type: "string",
-          },
-          {
-            name: "username",
-            in: "path",
-            required: true,
-            type: "string",
-          },
-          {
-            name: "email",
-            in: "path",
-            required: true,
-            type: "string",
-          },
-          {
-            name: "password",
-            in: "path",
-            required: true,
-            type: "string",
           }
         ],
+        requestBody: {
+          content: {
+            "application/x-www-form-urlencoded": {
+              schema: {
+                type: "object",
+                properties: {
+                  id: { 
+                    description: "User ID",
+                    type: "integer"
+                  },
+                  name: {
+                    description: "Name",
+                    type: "string"
+                  },
+                  email: {
+                    description: "Email",
+                    type: "string"
+                  },
+                  password: {
+                    description: "Password",
+                    type: "string"
+                  }
+                },
+                required: ["id","name","email","password"] 
+              }
+            }
+          }
+        },
         responses: {
           200: {
             description: "successfuly Edit user",
@@ -247,13 +192,16 @@ module.exports = {
         summary: "delete user by ID",
         description: "delete a single user",
         operationId: "deleteUserById",
+        security: [{
+          bearerAuth: []
+        }],
         produces: [
           "application/json"
         ],
-        "parameters": [
+        parameters: [
           {
-            name: "id",
             in: "path",
+            name: "id",
             required: true,
             type: "integer",
           }

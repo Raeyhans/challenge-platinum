@@ -19,11 +19,12 @@ exports.loginAdmin = async (req, res, next) => {
         const user = await db.Users.findOne({
             where: {
                 username: body.username
-            }});
+            }
+        });
 
         if (user == null) {
-            return res.json({
-                error: 'Invalid email or password.'
+            return res.status(400).json({
+                error: 'Invalid username or password.'
             });
         }
 
@@ -40,8 +41,8 @@ exports.loginAdmin = async (req, res, next) => {
             });
         }
 
-        res.json({
-            error: 'Invalid email or password.'
+        res.status(400).json({
+            error: 'Invalid username or password.'
         });
     }
     catch (e) {

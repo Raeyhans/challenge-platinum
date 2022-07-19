@@ -71,6 +71,12 @@ tags: [
       ...sellerSchema,
       ...itemSchema,
       ...orderSchema,
-    }
+    },
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+      }
+   }
   },
 }

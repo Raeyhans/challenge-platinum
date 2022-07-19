@@ -3,7 +3,7 @@ const router = express.Router();
 const { userLoginJwt } = require('../middlewares/auth');
 const seller = require('../controllers/SellerController');
 
-router.get('/', userLoginJwt (['admin','seller']), seller.getAllSeller);
+router.get('/', userLoginJwt (['admin']), seller.getAllSeller);
 router.get('/:id', userLoginJwt (['admin','seller']), seller.getSeller);
 router.put('/:id', userLoginJwt (['admin','seller']), seller.editSeller);
 router.put('/account/verify/:token', seller.verifyEmail);

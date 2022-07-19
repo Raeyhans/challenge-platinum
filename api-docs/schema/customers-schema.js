@@ -2,7 +2,7 @@ module.exports = {
     Customer: {
       type: 'object',
       required: [
-        "firstname","email","password","address","city","code"
+        "firstname","email","password","address","city"
       ],
       properties: {
         id: {
@@ -25,9 +25,6 @@ module.exports = {
         },
         city: {
             type: "string",
-        },
-        code: {
-          type: "string",
         },
       }
     }
