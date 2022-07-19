@@ -13,6 +13,7 @@ const authRouter = require('./routes/auth');
 const itemRouter = require('./routes/item');
 const orderRoute = require('./routes/order');
 const categoryRouter = require('./routes/category');
+const swaggerDoc = require ('./api-docs');
 
 const swaggerDoc = require ('./api-docs');
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
@@ -27,7 +28,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 app.use('/', indexRouter);
 app.use('/customers', customerRouter);

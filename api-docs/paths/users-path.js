@@ -89,6 +89,67 @@ module.exports = {
         },
       }
     },
+<<<<<<< HEAD
+=======
+    '/users/admin/register':{
+      post:{
+        tags: ["User"],
+        summary: "Register Admin",
+        description: "An endpoint to register Admin",
+        operationId: "registerAdmin",
+        consumes: [
+          "application/json"
+        ],
+        produces: [
+          "application/json"
+        ],   
+        parameters: [
+            {
+              in: "path",
+              name: "username",
+              description: "Username",
+              required: true,
+              schema: {
+                type: "string"
+              }
+            },
+            {
+              in: "path",
+              name: "email",
+              description: "Username",
+              required: true,
+              schema: {
+                type: "string"
+              }
+            },
+            {
+              in: "path",
+              name: "password",
+              description: "Password",
+              required: true,
+              schema: {
+                type: "string"
+              }
+            },
+        ],
+        responses: {
+            201: {
+              description: "Successfully Register",
+              content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/User'
+                    }
+                  }
+                },
+            },
+            401: {
+              description: "invalid"
+            }
+          },            
+      }     
+    },
+>>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
     "/users/{userId}": {
       get: {
         tags: ['User'],
@@ -216,6 +277,10 @@ module.exports = {
           }
         }
       }
+<<<<<<< HEAD
     }
+=======
+    },
+>>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
     
   }

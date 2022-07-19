@@ -13,7 +13,11 @@ module.exports = {
         ],
         parameters: [
           {
+<<<<<<< HEAD
             in: "body",
+=======
+            in: "path",
+>>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
             name: "firstname",
             description: "username yang akan digunakan",
             required: true,
@@ -22,7 +26,11 @@ module.exports = {
             }
           },
           {
+<<<<<<< HEAD
             in: "body",
+=======
+            in: "path",
+>>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
             name: "lastname",
             description: "Nama yang akan digunakan",
             required: true,
@@ -31,7 +39,11 @@ module.exports = {
             }
           },
           {
+<<<<<<< HEAD
             in: "body",
+=======
+            in: "path",
+>>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
             name: "Email",
             description: "email yang akan digunakan",
             required: true,
@@ -40,7 +52,11 @@ module.exports = {
             }
           },
           {
+<<<<<<< HEAD
             in: "body",
+=======
+            in: "path",
+>>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
             name: "Password",
             description: "Password yang akan digunakan",
             required: true,
@@ -49,7 +65,11 @@ module.exports = {
             }
           },
           {
+<<<<<<< HEAD
             in: "body",
+=======
+            in: "path",
+>>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
             name: "address",
             description: "Address yang akan digunakan",
             required: true,
@@ -58,7 +78,11 @@ module.exports = {
             }
           },
           {
+<<<<<<< HEAD
             in: "body",
+=======
+            in: "path",
+>>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
             name: "city",
             description: "City yang akan digunakan",
             required: true,

@@ -201,7 +201,7 @@ module.exports = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: "#/components/schemas/customer"
+                  $ref: "#/components/schemas/Customer"
                 }
               }
             }

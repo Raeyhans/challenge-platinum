@@ -2,9 +2,18 @@ module.exports = {
     Item: {
       type: 'object',
       required: [
+<<<<<<< HEAD
         "name"
       ],
       properties: {
+=======
+        "seller_code","code","seotitle","title","price","qty"
+      ],
+      properties: {
+        seller_code: {
+          type: "string",
+        },
+>>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
         category: {
           type: "integer",
           enum:[
@@ -30,6 +39,7 @@ module.exports = {
         },
       }
     },
+<<<<<<< HEAD
     Item2:{
       type: 'object',
       required: [
@@ -81,4 +91,17 @@ module.exports = {
         },
       }   
     }
+=======
+    ItemGallery:{
+      type: 'object',
+      required: [
+        "item_id","picture"
+      ],
+      properties: {
+        item_id: {
+          type: "integer",
+        }
+      }   
+    },
+>>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
   }

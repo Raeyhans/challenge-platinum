@@ -1,5 +1,6 @@
 const db = require('../models');
 const bcrypt = require("bcrypt");
+const { validationResult } = require("express-validator");
 
 exports.createUser = async (req,res,next) => {
     try{
@@ -10,6 +11,38 @@ exports.createUser = async (req,res,next) => {
         user.save().then((user) => res.status(201).send(user));
 
     }catch (e) {
+        next(e);
+    }
+}
+
+exports.registerUser = async (req, res, next) => {
+    const errors = validationResult(req);
+    const { body } = req;
+    try {
+        const user = await db.Users.findOne({
+            where: {
+                username: body.username
+            }});
+
+        if (user != null) {
+            return res.status(400).json({
+                msg: 'Please choose another username.'
+            });
+        }
+
+        const hashPass = await bcrypt.hash(body.password, 12);
+        await db.Users.create({
+            username: body.username,
+            name: body.name,
+            email: body.email,
+            password: hashPass
+        });
+        
+        res.status(201).json({
+            msg: 'You have successfully registered.'
+        });
+
+    } catch (e) {
         next(e);
     }
 }
