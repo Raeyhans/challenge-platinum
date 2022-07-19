@@ -13,7 +13,7 @@ module.exports = {
         ],
         parameters: [
           {
-            in: "body",
+            in: "path",
             name: "firstname",
             description: "username yang akan digunakan",
             required: true,
@@ -22,7 +22,7 @@ module.exports = {
             }
           },
           {
-            in: "body",
+            in: "path",
             name: "lastname",
             description: "Nama yang akan digunakan",
             required: true,
@@ -31,7 +31,7 @@ module.exports = {
             }
           },
           {
-            in: "body",
+            in: "path",
             name: "Email",
             description: "email yang akan digunakan",
             required: true,
@@ -40,7 +40,7 @@ module.exports = {
             }
           },
           {
-            in: "body",
+            in: "path",
             name: "Password",
             description: "Password yang akan digunakan",
             required: true,
@@ -49,7 +49,7 @@ module.exports = {
             }
           },
           {
-            in: "body",
+            in: "path",
             name: "address",
             description: "Address yang akan digunakan",
             required: true,
@@ -58,7 +58,7 @@ module.exports = {
             }
           },
           {
-            in: "body",
+            in: "path",
             name: "city",
             description: "City yang akan digunakan",
             required: true,

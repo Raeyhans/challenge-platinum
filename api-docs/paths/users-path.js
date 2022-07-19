@@ -89,8 +89,6 @@ module.exports = {
         },
       }
     },
-<<<<<<< HEAD
-=======
     '/users/admin/register':{
       post:{
         tags: ["User"],
@@ -149,7 +147,6 @@ module.exports = {
           },            
       }     
     },
->>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
     "/users/{userId}": {
       get: {
         tags: ['User'],
@@ -277,10 +274,6 @@ module.exports = {
           }
         }
       }
-<<<<<<< HEAD
-    }
-=======
     },
->>>>>>> bf4066e71c168bdc34947da6052c3993d978feb0
     
   }
