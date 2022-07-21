@@ -77,8 +77,32 @@ exports.createOrder = async (req, res, next) => {
 
 exports.getOrders = async (req, res, next) => {
     try {
-        const orders = await db.Orders.findAll();
-        res.status(200).json(orders);
+        const {
+            user: {
+                id: customerId
+            }
+        } = req;
+
+        const orders = await db.Orders.findAll({
+            where: {
+                customer_id: customerId
+            },
+            order: [
+                ['id', 'DESC'],
+            ],
+            include: [{
+                model: db.Orderdetails,
+                as: 'orderdetails',
+            }]
+        });
+
+        if (orders.length === 0) {
+            return res.status(404).json({
+                msg: 'Your order is empty.'
+            });
+        }
+        return res.status(200).json(orders);
+            
     } catch (e) {
         next(e);
     }
@@ -86,10 +110,21 @@ exports.getOrders = async (req, res, next) => {
 
 exports.getOneOrder = async (req, res, next) => {
     try {
+        const {
+            user: {
+                id: customerId
+            }
+        } = req;
+
         const order = await db.Orders.findOne({
             where: {
-                id: req.params.id
-            }
+                id: req.params.id,
+                customer_id: customerId
+            },
+            include: [{
+                model: db.Orderdetails,
+                as: 'orderdetails',
+            }],
         });
         if (order != null) {
             return res.status(200).json(order);
@@ -112,14 +147,12 @@ exports.updateOrder = async (req, res, next) => {
                         id: req.params.id
                     }
                 });
-                return res.json({
-                    status: 200,
+                return res.status(200).json({
                     msg: 'Status updated.',
                     status: req.body.status
                 });
             } 
-            return res.json({
-                status: 404,
+            return res.status(404).json({
                 msg: 'Order not found.'
             });
         });

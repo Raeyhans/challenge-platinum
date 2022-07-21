@@ -5,6 +5,9 @@ module.exports = {
         summary: "Create User",
         description: "An endpoint to add User",
         operationId: "addUser",
+        security: [{
+          bearerAuth: []
+        }],
         consumes: [
           "application/json"
         ],

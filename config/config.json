@@ -25,8 +25,11 @@
       "host": "smtp.ethereal.email",
       "port": 587,
       "auth": {
-          "user": "conrad.hilpert26@ethereal.email",
-          "pass": "5a6vmvsJAjJdydxN1A"
+          "user": "jermey.thompson@ethereal.email",
+          "pass": "19s8CjbF5StNgVsjPm"
       }
+  },
+  "socket": {
+    "path": "/socket"
   }
 }

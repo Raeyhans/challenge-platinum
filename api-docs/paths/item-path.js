@@ -5,83 +5,44 @@ module.exports = {
         summary: "Create Item",
         description: "An endpoint to Create Item (Seller/Admin Access)",
         operationId: "CreateItem",
+        security: [{
+          bearerAuth: []
+        }],
         consumes: [
           "application/json"
         ],
         produces: [
           "application/json"
         ],   
-        parameters: [
-            {
-              in: "path",
-              name: "category_id",
-              description: "Item Category",
-              required: true,
+        requestBody: {
+          content: {
+            "application/json": {
               schema: {
-                type: "string"
-              },
-              enum: [
-                "kategori 1",
-                "kategori 2",
-                "kategori 3"
-              ]
-            },
-            {
-              in: "path",
-              name: "code",
-              description: "Item Code",
-              required: true,
-              schema: {
-                type: "integer"
+                type: "object",
+                properties: {
+                    items: {
+                      $ref: "#/components/schemas/AddItem"
+                    }
+                }
               }
-            },
-            {
-              in: "path",
-              name: "seotitle",
-              description: "SEO Title",
-              required: true,
-              schema: {
-                type: "string"
-              }
-            },
-            {
-              in: "path",
-              name: "title",
-              description: "Title of Item",
-              required: true,
-              schema: {
-                type: "string"
-              }
-            },
-            {
-              in: "path",
-              name: "price",
-              description: "Price of Item",
-              required: true,
-              schema: {
-                type: "integer"
-              }
-            },
-            {
-              in: "path",
-              name: "qty",
-              description: "Quantity of Item",
-              required: true,
-              schema: {
-                type: "integer"
-              }
-            },
-        ],
+            }
+          }
+        },
         responses: {
             201: {
               description: "Successfully Created Item",
               content: {
-                  'application/json': {
-                    schema: {
-                      $ref: '#/components/schemas/Item'
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      items: {
+                        $ref: "#/components/schemas/AddItem"
+                      }
                     }
                   }
-                },
+                }
+              }
             },
             400: {
               description: "Invalid"
@@ -90,8 +51,8 @@ module.exports = {
       },
       get:{
         tags: ["Item"],
-        summary: "Get Item",
-        description: "An endpoint to Get All Items (Seller/Admin/Cust Access)",
+        summary: "Get all Item",
+        description: "An endpoint to Get All Items",
         operationId: "GetItem",
         consumes: [
           "application/json"
@@ -100,7 +61,7 @@ module.exports = {
           "application/json"
         ],   
         responses: {
-            201: {
+            200: {
               description: "Successfully Get All Items",
               content: {
                   'application/json': {
@@ -120,7 +81,7 @@ module.exports = {
         get:{
           tags: ["Item"],
           summary: "Get Item by ID",
-          description: "An endpoint to get Item by ID (Seller/Admin/Cust Access)",
+          description: "An endpoint to get Item by ID",
           operationId: "GetItembyID",
           consumes: [
             "application/json"
@@ -163,6 +124,9 @@ module.exports = {
           summary: "Edit item by ID",
           description: "An endpoint to edit Item by ID (Seller/Admin/Cust Access)",
           operationId: "EditItembyID",
+          security: [{
+            bearerAuth: []
+          }],
           consumes: [
             "application/json"
           ],
@@ -180,13 +144,43 @@ module.exports = {
                 }
               },
           ],
+          requestBody: {
+            content: {
+              "application/x-www-form-urlencoded": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    price: { 
+                      description: "price",
+                      type: "integer"
+                    },
+                    qty: { 
+                      description: "qty",
+                      type: "integer"
+                    }
+                  },
+                  required: ["price","qty"] 
+                }
+              }
+            }
+          },
           responses: {
               201: {
                 description: "Successfully Edited Item",
                 content: {
                     'application/json': {
                       schema: {
-                        $ref: '#/components/schemas/Item'
+                        type: "object",
+                        properties: {
+                          price: { 
+                            description: "price",
+                            type: "integer"
+                          },
+                          qty: { 
+                            description: "qty",
+                            type: "integer"
+                          }
+                        },
                       }
                     }
                   },
@@ -204,6 +198,9 @@ module.exports = {
           summary: "Delete Item by ID",
           description: "An endpoint to delete Item by ID (Seller/Admin Access)",
           operationId: "DeleteItembyID",
+          security: [{
+            bearerAuth: []
+          }],
           consumes: [
             "application/json"
           ],
@@ -222,15 +219,8 @@ module.exports = {
               },
           ],
           responses: {
-              201: {
+              200: {
                 description: "Successfully Delete Item",
-                content: {
-                    'application/json': {
-                      schema: {
-                        $ref: '#/components/schemas/Item'
-                      }
-                    }
-                  },
               },
               401: {
                 description: "Invalid"
@@ -247,45 +237,59 @@ module.exports = {
           summary: "Add Image",
           description: "An endpoint to add Image to Item",
           operationId: "addImageItem",
+          security: [{
+            bearerAuth: []
+          }],
           consumes: [
-            "application/json"
+            "multipart/form-data"
           ],
           produces: [
             "application/json"
-          ],   
-          parameters: [
-              {
-                in: "path",
-                name: "item_ID",
-                description: "Item ID",
-                required: true,
-                schema: {
-                  type: "string"
-                }
-              },
-              {
-                in: "path",
-                name: "Picture",
-                description: "Link of Picture",
-                required: true,
-                schema: {
-                  type: "string"
-                }
-              },
           ],
-          responses: {
-              201: {
-                description: "Successfully Register",
-                content: {
-                    'application/json': {
-                      schema: {
-                        $ref: '#/components/schemas/Item'
-                      }
+          requestBody: {
+            content: {
+              "multipart/form-data": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    id_item: { 
+                      description: "id item",
+                      type: "integer"
+                    },
+                    image: { 
+                      description: "image",
+                      type: "file"
                     }
                   },
+                  required: ["id_item","image"] 
+                }
+              }
+            }
+          },
+          responses: {
+              201: {
+                description: "Image added",
+                content: {
+                  "multipart/form-data": {
+                    schema: {
+                      type: "object",
+                      properties: {
+                        id_item: { 
+                          description: "id item",
+                          type: "integer"
+                        },
+                        image: {
+                          description: "image",
+                          type: "file"
+                        },
+                      },
+                      required: ["id_item","image"] 
+                    }
+                  }
+                }
               },
-              401: {
-                description: "invalid"
+              400: {
+                description: "Image is required"
               }
             },            
         }     

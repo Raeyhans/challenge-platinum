@@ -29,6 +29,12 @@ module.exports = {
       }
     },
     host: 'localhost:3000',
+    servers: [
+      {
+        url: 'http://localhost:3000',
+        description: 'Server Dev',
+      },
+    ],
 tags: [
     {
     name: "Auth",

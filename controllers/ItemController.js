@@ -13,33 +13,33 @@ exports.createItem = async (req, res, next) => {
             }
         } = req;
 
-        const finder = await db.Items.findOne({
-            where: {
-                code: req.body.items.code
-            }
-        });
+        // const finder = await db.Items.findOne({
+        //     where: {
+        //         code: req.body.items.code
+        //     }
+        // });
 
         // if(finder != req.body.items.code){
         const data = {
             seller_code: sellerCode,
             category_id: req.body.items.category_id,
             code: req.body.items.code,
-            seotitle: req.body.items.seotitle,
             title: req.body.items.title,
             price: req.body.items.price,
             qty: req.body.items.qty,
-            itemGalleries: pictures?.map(item => {
-                return {
-                    picture: item.picture,
-                    created_by: sellerId
-                }
-            })
+            // itemGalleries: pictures?.map(item => {
+            //     return {
+            //         picture: item.picture,
+            //         created_by: sellerId
+            //     }
+            // })
         }
+        console.log(data);
         const item = await db.Items.create(data, {
-            include: [{
-                model: db.ItemGallery,
-                as: 'itemGalleries',
-            }]
+            // include: [{
+            //     model: db.ItemGallery,
+            //     as: 'itemGalleries',
+            // }]
         });
         return res.status(201).json({
             data: item
@@ -96,7 +96,10 @@ exports.getItems = async (req, res, next) => {
             include: [{
                 model: db.ItemGallery,
                 as: 'itemGalleries'
-            }]
+            }],
+            order: [
+                ['id', 'DESC']
+            ]
         });
         if (item != null) {
             return res.status(200).json(item);
@@ -136,13 +139,20 @@ exports.editItem = async (req, res, next) => {
 
 exports.deleteItem = async (req, res, next) => {
     try {
-        const item = await db.Items.destroy({
-            where: {
-                id: req.params.id
+        await db.Items.findByPk(req.params.id).then(function (result) {
+            if (result != null) {
+                db.Items.destroy({
+                    where: {
+                        id: req.params.id
+                    },
+                });
+                return res.status(200).json({
+                    msg: 'Item deleted.'
+                });
             }
-        });
-        return res.status(200).json({
-            msg: 'Item deleted.'
+            return res.status(404).json({
+                msg: 'Item not found.'
+            });
         });
 
     } catch (e) {
