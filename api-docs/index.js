@@ -6,6 +6,8 @@ const sellerSchema= require ('./schema/sellers-schema');
 const sellerPath= require('./paths/sellers-path');
 const authPath= require('./paths/auth-path');
 const authSchema= require ('./schema/auth-schema');
+const categoryPath= require('./paths/category-path');
+const categorySchema= require ('./schema/category-schema');
 const itemPath= require('./paths/item-path');
 const itemSchema= require ('./schema/item-schema');
 const orderPath= require('./paths/order-path');
@@ -35,14 +37,14 @@ module.exports = {
         description: 'Server Dev',
       },
     ],
-tags: [
+    tags: [
     {
-    name: "Auth",
-    description: "Auth Control"
+      name: "Auth",
+      description: "Auth Control"
     },
     {
       name: "User",
-      description: "Everything about User Access"
+      description: "Everything about User Admin Access"
     },
     {
       name: "Customer",
@@ -51,6 +53,10 @@ tags: [
     {
       name: "Seller",
       description: "Everything about Seller Access"
+    },
+    {
+      name: "Category",
+      description: "Everything about Category API"
     },
     {
       name: "Item",
@@ -66,6 +72,7 @@ tags: [
     ...userPath,
     ...customerPath,
     ...sellerPath,
+    ...categoryPath,
     ...itemPath,
     ...orderPath,
   },
@@ -75,6 +82,7 @@ tags: [
       ...userSchema,
       ...customerSchema,
       ...sellerSchema,
+      ...categorySchema,
       ...itemSchema,
       ...orderSchema,
     },

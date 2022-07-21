@@ -13,13 +13,18 @@ exports.createItem = async (req, res, next) => {
             }
         } = req;
 
-        // const finder = await db.Items.findOne({
-        //     where: {
-        //         code: req.body.items.code
-        //     }
-        // });
-
-        // if(finder != req.body.items.code){
+        const finder = await db.Items.findOne({
+            where: {
+                code: req.body.items.code
+            }
+        });
+        console.log(req.body.items.code);
+        if(finder != null){
+            return res.status(100).json({
+                msg: 'This item has been insert.'
+            });
+            
+        }
         const data = {
             seller_code: sellerCode,
             category_id: req.body.items.category_id,
@@ -34,7 +39,7 @@ exports.createItem = async (req, res, next) => {
             //     }
             // })
         }
-        console.log(data);
+        
         const item = await db.Items.create(data, {
             // include: [{
             //     model: db.ItemGallery,
@@ -42,12 +47,9 @@ exports.createItem = async (req, res, next) => {
             // }]
         });
         return res.status(201).json({
+            msg: 'New item successfully insert.',
             data: item
         });
-        // }
-        // return res.status(100).json({
-        //     msg: 'This item has been insert.'
-        // })
 
     } catch (e) {
         next(e);
