@@ -1,4 +1,7 @@
 const db = require('../models');
+const fs = require("fs");
+const cloudinary = require("../config/cloudinary");
+
 
 exports.createItem = async (req, res, next) => {
     try {
@@ -67,7 +70,17 @@ exports.addImage = async (req, res, next) => {
                 image
             }
         } = req;
+        
+        console.log("di addImage " + image);
 
+        const file = image[0];
+        const result = await cloudinary.uploader.upload(file, {
+            overwrite: true,
+            use_filename: true,
+            unique_filename: true
+          });
+
+        fs.unlinkSync(image[0]);
         if(!image.length) {
             return res.status(400).json({
                 msg: 'Image is required.'

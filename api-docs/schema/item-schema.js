@@ -25,7 +25,7 @@ module.exports = {
     Item: {
       type: 'object',
       required: [
-        "seller_code","code","seotitle","title","price","qty"
+        "seller_code","code","title","price","qty"
       ],
       properties: {
         seller_code: {
