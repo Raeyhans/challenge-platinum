@@ -1,4 +1,6 @@
 const db = require('../models');
+const fs = require("fs");
+const cloudinary = require('../config/cloudinary');
 
 exports.createItem = async (req, res, next) => {
     try {
@@ -67,7 +69,17 @@ exports.addImage = async (req, res, next) => {
                 image
             }
         } = req;
+        
+        console.log("di addImage " + image);
+        
+        const file = image[0];
+        const result = await cloudinary.uploader.upload(file, {
+            overwrite: true,
+            use_filename: true,
+            unique_filename: true
+          });
 
+        fs.unlinkSync(image[0]);
         if(!image.length) {
             return res.status(400).json({
                 msg: 'Image is required.'
@@ -77,20 +89,60 @@ exports.addImage = async (req, res, next) => {
         const data = image.map(item => {
             return {
                 id_item,
-                picture: item,
+                picture: result.secure_url,
+                public_id: result.public_id,
+                asset_id: result.asset_id,
                 created_by: sellerId
             }
         });
         
         await db.ItemGallery.bulkCreate(data);
+
         return res.status(201).json({
             msg: 'Image added.'
         });
+    
 
     } catch (e) {
         next(e);
     }
 }
+
+// exports.addImage = async (req, res, next) => {
+//     try {
+//         const {
+//             user: {
+//                 id: sellerId
+//             },
+//             body: {
+//                 id_item,
+//                 image
+//             }
+//         } = req;
+
+//         if(!image.length) {
+//             return res.status(400).json({
+//                 msg: 'Image is required.'
+//             })
+//         }
+        
+//         const data = image.map(item => {
+//             return {
+//                 id_item,
+//                 picture: item,
+//                 created_by: sellerId
+//             }
+//         });
+        
+//         await db.ItemGallery.bulkCreate(data);
+//         return res.status(201).json({
+//             msg: 'Image added.'
+//         });
+
+//     } catch (e) {
+//         next(e);
+//     }
+// }
 
 exports.getItems = async (req, res, next) => {
     try {
@@ -155,6 +207,18 @@ exports.deleteItem = async (req, res, next) => {
             return res.status(404).json({
                 msg: 'Item not found.'
             });
+        });
+
+    } catch (e) {
+        next(e);
+    }
+}
+
+exports.deleteImage = async (publicID) => {
+    try {
+        const res = await cloudinary.uploader.destroy(publicID);
+        return res.status(200).json({
+            msg: 'Image deleted.'
         });
 
     } catch (e) {

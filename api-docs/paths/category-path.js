@@ -46,9 +46,6 @@ module.exports = {
         tags: ['Category'],
         summary: 'get all categories',
         operationId: "getAllCategory",
-        security: [{
-          bearerAuth: []
-        }],
         consumes: [
           "application/json"
         ],
@@ -75,9 +72,6 @@ module.exports = {
         summary: "Find categories by ID",
         description: "Returns a single categories",
         operationId: "getCategoryById",
-        security: [{
-          bearerAuth: []
-        }],
         produces: [
           "application/json"
         ],

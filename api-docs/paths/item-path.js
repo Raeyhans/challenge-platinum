@@ -290,6 +290,9 @@ module.exports = {
               },
               400: {
                 description: "Image is required"
+              },
+              500: {
+                description: "Error: Internal Server Error"
               }
             },            
         }     

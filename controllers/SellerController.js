@@ -63,7 +63,10 @@ exports.getAllSeller = async (req,res,next) => {
         const user = await db.Sellers.findAll({
             attributes: {
                 exclude: ['password']
-            }
+            },
+            order: [
+                ['id', 'DESC']
+            ]
         });
         res.json(user);
     }catch (e) {
@@ -75,17 +78,20 @@ exports.editSeller = async (req,res,next) => {
     try{
         const {
             user: {
-                id: sellerId
+                id: sellerId,
+                role: roleID
             },
             params: {
                 id
             }
         } = req;
-
-        if(sellerId != id){
-            return res.status(404).json({
-                msg: 'User not found.'
-            });
+console.log(roleID);
+        if(roleID === 'seller'){
+            if(sellerId != id){
+                return res.status(404).json({
+                    msg: 'User not found.'
+                });
+            }
         }
 
         await db.Sellers.findByPk(id).then(function (result) {
@@ -121,16 +127,26 @@ exports.getSeller = async (req,res,next) => {
 
         if(sellerId != id){
             return res.status(404).json({
-                msg: 'User not found.'
+                msg: 'Seller not found.'
             });
         }
 
-        const user = await db.Sellers.findByPk(id);
-        if(user != null){
+        const user = await db.Sellers.findOne({
+            attributes: {
+                exclude: ['password']
+            },
+            where: {
+                id: req.params.id
+            }
+        });
+        if (user != null) {
             return res.status(200).json(user);
-        }
-    }
-    catch (e) {
+        } 
+        return res.status(404).json({
+            msg: 'Seller not found.'
+        });
+
+    } catch (e) {
         next(e);
     }
 }

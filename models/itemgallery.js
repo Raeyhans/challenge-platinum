@@ -32,7 +32,9 @@ module.exports = (sequelize, DataTypes) => {
     created_by: DataTypes.INTEGER,
     updated_by: DataTypes.INTEGER,
     created_at: DataTypes.DATE,
-    updated_at: DataTypes.DATE
+    updated_at: DataTypes.DATE,
+    public_id: DataTypes.STRING,
+    asset_id: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'ItemGallery',
