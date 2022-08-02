@@ -20,23 +20,29 @@ exports.getMessage = async (req,res,next) => {
     }
 }
 
-exports.createMessage = async (req,res,next) => {
+exports.getSellerContactChat = async (req,res,next) => {
     try{
         const {
             user: {
-                id: adminId
+                id: customerId
             }
         } = req;
 
         const data = {
-            id_customer: adminId,
+            id_customer: customerId,
             id_seller: 3,
-            created_by: adminId,
-            updated_by: adminId,
+            created_by: customerId,
+            updated_by: customerId,
         }
+console.log(data);
+        const messages = await db.sequelize.query('SELECT distinct chat_group FROM messages WHERE id_customer = :id_customer', {
+            replacements: {
+                id_customer: customerId
+            },
+            type: db.sequelize.QueryTypes.SELECT
+        });
 
-        await db.Messages.create(data);
-        return res.status(201);
+        res.json(messages);
 
     }catch (e) {
         next(e);

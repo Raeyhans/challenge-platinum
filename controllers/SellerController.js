@@ -214,3 +214,19 @@ exports.deleteSeller = async (req,res,next) => {
         next(e);
     }
 }
+
+exports.getAllSeller = async (req,res,next) => {
+    try{
+        const user = await db.Sellers.findAll({
+            attributes: {
+                exclude: ['password']
+            },
+            order: [
+                ['id', 'DESC']
+            ]
+        });
+        res.json(user);
+    }catch (e) {
+        next(e);
+    }
+}

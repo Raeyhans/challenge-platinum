@@ -1,4 +1,4 @@
-const config = require('../config/config.json');
+const config = require('../config/config');
 const mustAuthenticated = require('./middlewares/mustAuthentication');
 const Server = require('socket.io').Server;
 const room = require('./functions/room');
