@@ -132,7 +132,7 @@ exports.loginSeller = async (req, res, next) => {
         const checkStatus = await db.Sellers.findOne({
             where: {
                 email: body.email,
-                status: 1
+                // status: 1
             }
         });
         if(checkStatus != null){

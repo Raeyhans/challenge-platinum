@@ -27,7 +27,7 @@ exports.registerSeller = async (req, res, next) => {
             });
         }
 
-        const hashToken = jwt.sign(body.email, body.password);
+        // const hashToken = jwt.sign(body.email, body.password);
 
         await db.Sellers.create({
             firstname: body.firstname,
@@ -37,17 +37,17 @@ exports.registerSeller = async (req, res, next) => {
             address: body.address,
             city: body.city,
             code: body.code,
-            token: hashToken,
+            // token: hashToken,
         });
 
-        await sendEmail({
-            to: body.email,
-            subject: 'Sign-up Verification',
-            html: `<h4>Verify Email</h4>
-                    <p>Thanks for being seller!</p><p>Please use the below token to verify your email address with the <code>/account/verify/TOKEN</code> api route:</p>
-                    <p><code>${hashToken}</code></p>`
+        // await sendEmail({
+        //     to: body.email,
+        //     subject: 'Sign-up Verification',
+        //     html: `<h4>Verify Email</h4>
+        //             <p>Thanks for being seller!</p><p>Please use the below token to verify your email address with the <code>/account/verify/TOKEN</code> api route:</p>
+        //             <p><code>${hashToken}</code></p>`
                     
-        });
+        // });
         
         res.status(201).json({
             msg: 'You have successfully registered.'
