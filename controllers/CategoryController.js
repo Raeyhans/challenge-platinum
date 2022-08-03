@@ -9,7 +9,7 @@ exports.createCategory = async (req,res,next) => {
         } = req;
 
         const data = {
-            seotitle: req.body.seotitle,
+            seotitle: req.body.title.toLowerCase().split(' ').join('-'),
             title: req.body.title,
             created_by: adminId,
             updated_by: adminId,
@@ -40,9 +40,21 @@ exports.getCategories = async (req,res,next) => {
 
 exports.editCategory = async (req,res,next) => {
     try{
+        const {
+            user: {
+                id: adminId
+            }
+        } = req;
+
+        const data = {
+            seotitle: req.body.title.toLowerCase().split(' ').join('-'),
+            title: req.body.title,
+            updated_by: adminId,
+        }
+
         await db.Categories.findByPk(req.params.id).then(function (result) {
-            if (!!result) {
-                db.Categories.update(req.body, {
+            if (result != null) {
+                db.Categories.update(data, {
                     where: {
                         id: req.params.id
                     }
@@ -62,13 +74,20 @@ exports.editCategory = async (req,res,next) => {
 
 exports.deleteCategory = async (req,res,next) => {
     try{
-        await db.Categories.destroy({
-            where: {
-                id: req.params.id
-            }
-        });
-        return res.status(200).json({
-            msg: 'Category deleted.'
+        await db.Categories.findByPk(req.params.id).then(function (result) {
+            if (result != null) {
+                db.Categories.destroy({
+                    where: {
+                        id: req.params.id
+                    }
+                });
+                return res.status(200).json({
+                    msg: 'Category deleted.'
+                });
+            } 
+            return res.status(404).json({
+                msg: 'Category not found.'
+            });
         });
 
     }catch (e) {

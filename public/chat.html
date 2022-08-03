@@ -175,10 +175,9 @@
             }
         }
 
-        .colorme .chat-bubble {
+        .offset-md-9 .chat-bubble {
             background: #74b9ff;
             color: #fff;
-          
         }
 
         .chat-box-tray {
@@ -205,9 +204,6 @@
         .chat-box-tray i:last-of-type {
             margin-left: 25px;
         }
-        ul {
-            list-style: none;
-        }
     </style>
 
     <script>
@@ -222,7 +218,32 @@
 <body translate="no">
     <div class="container">
         <div class="row no-gutters">
-            <div class="col-md-12">
+            <div class="col-md-4 border-right">
+                <div class="settings-tray">
+                    <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/filip.jpg" alt="Profile img">
+                    <span class="settings-tray--right">
+                        <i class="material-icons">cached</i>
+                        <i class="material-icons">message</i>
+                        <i class="material-icons">menu</i>
+                    </span>
+                </div>
+                <div class="search-box">
+                    <div class="input-wrapper">
+                        <i class="material-icons">search</i>
+                        <input placeholder="Search here" type="text">
+                    </div>
+                </div>
+                <div class="friend-drawer friend-drawer--onhover">
+                    <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">
+                    <div class="text">
+                        <h6>Robo Cop</h6>
+                        <p class="text-muted">Hey, you're arrested!</p>
+                    </div>
+                    <span class="time text-muted small">13:21</span>
+                </div>
+                <hr>
+            </div>
+            <div class="col-md-8">
                 <div class="settings-tray">
                     <div class="friend-drawer no-gutters friend-drawer--grey">
                         <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">
@@ -230,6 +251,11 @@
                             <h6>Robo Cop</h6>
                             <p class="text-muted">Layin' down the law since like before Christ...</p>
                         </div>
+                        <span class="settings-tray--right">
+                            <i class="material-icons">cached</i>
+                            <i class="material-icons">message</i>
+                            <i class="material-icons">menu</i>
+                        </span>
                     </div>
                 </div>
                 <div class="chat-panel">
@@ -241,24 +267,19 @@
                         </div>
                     </div>
                     <div class="row no-gutters">
-                        <div class="col-md-12 colorme">
-                            <div class="chat-bubble chat-bubble--right" id="message-chats">
+                        <div class="col-md-3 offset-md-9">
+                            <div class="chat-bubble chat-bubble--right">
                                 <!-- <span id="meChat"></span> -->
-                                <!-- <div id="message-container"></div> -->
-                                    <!-- <ul id="message-chat"></ul> -->
-                                    <!-- <li id="message-container"></li> -->
-                                <!-- <div class="message__area"></div> -->
-                                <div id="message-container"></div>
+                                <ul id="messages"></ul>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <form id="send-container">
+                            <form id="form" method="post">
                                 <div class="chat-box-tray">
-                                    <input type="hidden" name="id" value="1">
-                                    <input type="text" name="content" id="message-input" autocomplete="off" placeholder="Type your message here...">
-                                    <button  type="submit" id="send-button"><i class="material-icons">send</i></button>
+                                    <input type="text" id="input" autocomplete="off" placeholder="Type your message here...">
+                                    <button id="sending"><i class="material-icons">send</i></button>
                                 </div>
                             </form>
                         </div>
@@ -268,18 +289,56 @@
         </div>
     </div>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
-    <script defer src="/socket.io/socket.io.js"></script>
-    <script defer src="/scripts.js"></script>
+    <script src="/public/js/socket.io.min.js"></script>
     
     <script id="rendered-js">
+        // var socket = io('/socket', {
+        //         autoConnect: false
+        //     });
         $('.friend-drawer--onhover').on('click', function() {
             $('.chat-bubble').hide('slow').show('slow');
         });
-        $(document).ready(function() {
-            $('#logout').click(function() {
-                localStorage.clear();
+        // $('#sending').on('click', function() {
+        //     $('.chat-bubble').hide('slow').show('slow');
+        //     socket.emit('join_room',
+        //     'Hello'
+        //     );
+        // });
+    </script>
+    <script>
+        $(function() {
+            var socket = io();
+              var messages = document.getElementById('messages');
+              var form = document.getElementById('form');
+              var input = document.getElementById('input');
+             
+        
+              form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (input.value) {
+                  socket.emit('join_room', input.value);
+                  input.value = '';
+                }
+              });
+            socket.auth = localStorage.getItem('token');
+            // socket.connect();
+            socket.onAny(function(event) {
+                console.log(event);
             });
         });
+    //     var socket = io();
+
+
+    //   socket.onAny(function(event) {
+    //             console.log(event);
+    //         });
+
+    //   socket.on('join_room', function(msg) {
+    //     var item = document.createElement('li');
+    //     item.textContent = msg;
+    //     messages.appendChild(item);
+    //     window.scrollTo(0, document.body.scrollHeight);
+    //   });
     </script>
 </body>
 </html>

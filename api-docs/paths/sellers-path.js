@@ -51,62 +51,6 @@ module.exports = {
             }
           }
         },
-        // parameters: [
-        //   {
-        //     in: "path",
-        //     name: "firstname",
-        //     description: "username yang akan digunakan",
-        //     required: true,
-        //     schema: {
-        //       type: "string"
-        //     }
-        //   },
-        //   {
-        //     in: "path",
-        //     name: "lastname",
-        //     description: "Nama yang akan digunakan",
-        //     required: true,
-        //     schema: {
-        //       type: "string"
-        //     }
-        //   },
-        //   {
-        //     in: "path",
-        //     name: "Email",
-        //     description: "email yang akan digunakan",
-        //     required: true,
-        //     schema: {
-        //       type: "string",
-        //     }
-        //   },
-        //   {
-        //     in: "path",
-        //     name: "Password",
-        //     description: "Password yang akan digunakan",
-        //     required: true,
-        //     schema: {
-        //       type: "string",
-        //     }
-        //   },
-        //   {
-        //     in: "path",
-        //     name: "address",
-        //     description: "Address yang akan digunakan",
-        //     required: true,
-        //     schema: {
-        //       type: "string",
-        //     }
-        //   },
-        //   {
-        //     in: "path",
-        //     name: "city",
-        //     description: "City yang akan digunakan",
-        //     required: true,
-        //     schema: {
-        //       type: "string",
-        //     }
-        //   },
-        // ],
         responses: {
           201: {
             description: "You have successfully registered.",
@@ -123,6 +67,8 @@ module.exports = {
           }
         },
       },
+    },
+    '/sellers': {
       get: {
         tags: ['Seller'],
         summary: 'get all Seller',
@@ -142,11 +88,14 @@ module.exports = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/Seller'
                 }
               }
             },
           },
+          404: {
+            description: "Empty seller"
+          }
         },
       }
     },

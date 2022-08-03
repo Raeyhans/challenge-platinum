@@ -222,48 +222,19 @@
 <body translate="no">
     <div class="container">
         <div class="row no-gutters">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="settings-tray">
-                    <div class="friend-drawer no-gutters friend-drawer--grey">
-                        <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">
-                        <div class="text">
-                            <h6>Robo Cop</h6>
-                            <p class="text-muted">Layin' down the law since like before Christ...</p>
-                        </div>
-                    </div>
+                    <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/filip.jpg" alt="Profile img">
                 </div>
-                <div class="chat-panel">
-                    <div class="row no-gutters">
-                        <div class="col-md-3">
-                            <div class="chat-bubble chat-bubble--left">
-                                <span id="yourChat"></span>
-                            </div>
-                        </div>
+                <div class="friend-drawer friend-drawer--onhover">
+                    <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">
+                    <div class="text">
+                        <h6><%=title%></h6>
+                        <p class="text-muted">Hey, you're arrested!</p>
                     </div>
-                    <div class="row no-gutters">
-                        <div class="col-md-12 colorme">
-                            <div class="chat-bubble chat-bubble--right" id="message-chats">
-                                <!-- <span id="meChat"></span> -->
-                                <!-- <div id="message-container"></div> -->
-                                    <!-- <ul id="message-chat"></ul> -->
-                                    <!-- <li id="message-container"></li> -->
-                                <!-- <div class="message__area"></div> -->
-                                <div id="message-container"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <form id="send-container">
-                                <div class="chat-box-tray">
-                                    <input type="hidden" name="id" value="1">
-                                    <input type="text" name="content" id="message-input" autocomplete="off" placeholder="Type your message here...">
-                                    <button  type="submit" id="send-button"><i class="material-icons">send</i></button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    <span class="time text-muted small">13:21</span>
                 </div>
+                <hr>
             </div>
         </div>
     </div>
@@ -274,11 +245,6 @@
     <script id="rendered-js">
         $('.friend-drawer--onhover').on('click', function() {
             $('.chat-bubble').hide('slow').show('slow');
-        });
-        $(document).ready(function() {
-            $('#logout').click(function() {
-                localStorage.clear();
-            });
         });
     </script>
 </body>

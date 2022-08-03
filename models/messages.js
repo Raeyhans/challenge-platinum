@@ -24,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     id_customer: DataTypes.INTEGER,
     id_user: DataTypes.INTEGER,
     message: DataTypes.STRING,
-    status: DataTypes.INTEGER,
+    read_by: DataTypes.STRING,
+    rechat_groupad_by: DataTypes.STRING,
     created_at: DataTypes.DATE,
     updated_at: DataTypes.DATE
   }, {

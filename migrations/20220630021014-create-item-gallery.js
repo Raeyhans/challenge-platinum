@@ -14,6 +14,12 @@ module.exports = {
       picture: {
         type: Sequelize.STRING
       },
+      public_id: {
+        type: Sequelize.STRING
+      },
+      asset_id: {
+        type: Sequelize.STRING
+      },
       created_by: {
         type: Sequelize.INTEGER
       },

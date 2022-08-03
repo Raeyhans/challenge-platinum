@@ -17,9 +17,6 @@ module.exports = {
       code: {
         type: Sequelize.STRING
       },
-      seotitle: {
-        type: Sequelize.STRING
-      },
       title: {
         type: Sequelize.STRING
       },

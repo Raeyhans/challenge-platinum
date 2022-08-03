@@ -20,20 +20,18 @@ module.exports = {
               schema: {
                 type: "object",
                 properties: {
-                  id: { 
-                    description: "ID",
-                    type: "integer"
-                  },
-                  price: {
-                    description: "Price",
-                    type: "integer"
-                  },
-                  qty: {
-                    description: "Qty",
-                    type: "integer"
+                  items: {
+                    type: "array",
+                    xml: {
+                      name: "items",
+                      wrapped: true
+                    },
+                    items: {
+                      $ref: "#/components/schemas/Order"
+                    }
                   }
                 },
-                required: ["username","name","email","password"] 
+                required: ["id","price","qty"] 
               }
             }
           }
@@ -42,12 +40,25 @@ module.exports = {
             201: {
               description: "Successfully Created Order",
               content: {
-                  'application/json': {
-                    schema: {
-                      $ref: '#/components/schemas/Order'
-                    }
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      items: {
+                        type: "array",
+                        xml: {
+                          name: "items",
+                          wrapped: true
+                        },
+                        items: {
+                          $ref: "#/components/schemas/Order"
+                        }
+                      }
+                    },
+                    required: ["id","price","qty"] 
                   }
-                },
+                }
+              }
             },
             400: {
               description: "Invalid"
@@ -85,7 +96,7 @@ module.exports = {
           }, 
         }     
     },
-    '/orders/{orderID}':{
+    '/orders/{id}':{
         get:{
           tags: ["Order"],
           summary: "Get Order by ID",
@@ -103,7 +114,7 @@ module.exports = {
           parameters: [
               {
                 in: "path",
-                name: "OrderID",
+                name: "id",
                 description: "OrderID",
                 required: true,
                 schema: {
@@ -112,13 +123,13 @@ module.exports = {
               },
           ],
           responses: {
-              201: {
+              200: {
                 description: "Successfully Found Order",
                 content: {
                     'application/json': {
                       schema: {
-                        $ref: '#/components/schemas/Order'
-                      }
+                        $ref: '#/components/schemas/OrderById'
+                      },
                     }
                   },
               },
@@ -126,7 +137,7 @@ module.exports = {
                 description: "Invalid"
               },
               404: {
-                description: "Item not Found"
+                description: "Order not Found"
               }
             },            
         },
@@ -147,7 +158,7 @@ module.exports = {
           parameters: [
               {
                 in: "path",
-                name: "order_id",
+                name: "id",
                 description: "order id",
                 required: true,
                 schema: {
@@ -155,16 +166,39 @@ module.exports = {
                 }
               },
           ],
-          responses: {
-              201: {
-                description: "Successfully Edited Item",
-                content: {
-                    'application/json': {
-                      schema: {
-                        $ref: '#/components/schemas/Order'
-                      }
+          requestBody: {
+            content: {
+              "application/x-www-form-urlencoded": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { 
+                      description: "status",
+                      type: "string"
                     }
                   },
+                  required: ["status"] 
+                }
+              }
+            }
+          },
+          responses: {
+              200: {
+                description: "Status updated",
+                content: {
+                  "application/x-www-form-urlencoded": {
+                    schema: {
+                      type: "object",
+                      properties: {
+                        status: { 
+                          description: "status",
+                          type: "string"
+                        }
+                      },
+                      required: ["status"] 
+                    }
+                  }
+                }
               },
               401: {
                 description: "Invalid"

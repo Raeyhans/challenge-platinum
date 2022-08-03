@@ -35,8 +35,8 @@ const doUploadFile = (req, res, next) => {
 
 router.get('/', item.getItems);
 router.get('/:id/images', item.getImage);
-router.post('/', userLoginJwt (['seller','admin']), item.createItem);
-router.post('/addImage', userLoginJwt (['seller','admin']), doUploadFile, item.addImage);
+router.post('/', userLoginJwt (['seller']), item.createItem);
+router.post('/addImage', userLoginJwt (['seller']), doUploadFile, item.addImage);
 router.get('/:id', item.getItem);
 router.put('/:id', userLoginJwt (['seller','admin']), item.editItem);
 router.delete('/:id', userLoginJwt (['seller','admin']), item.deleteItem);

@@ -6,6 +6,6 @@ const order = require('../controllers/OrderController');
 router.post('/', userLoginJwt (['customer']), order.createOrder);
 router.get('/', userLoginJwt (['admin','seller','customer']), order.getOrders);
 router.get('/:id', userLoginJwt (['admin','seller','customer']), order.getOneOrder);
-router.put('/:id', userLoginJwt (['admin']), order.updateOrder);
+router.put('/:id', userLoginJwt (['admin','seller']), order.updateOrder);
 
 module.exports = router;

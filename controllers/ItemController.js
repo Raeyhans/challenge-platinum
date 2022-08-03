@@ -1,4 +1,6 @@
 const db = require('../models');
+const fs = require("fs");
+const cloudinary = require('../config/cloudinary');
 
 exports.createItem = async (req, res, next) => {
     try {
@@ -18,36 +20,38 @@ exports.createItem = async (req, res, next) => {
                 code: req.body.items.code
             }
         });
-
-        // if(finder != req.body.items.code){
+        console.log(req.body.items.code);
+        if(finder != null){
+            return res.status(100).json({
+                msg: 'This item has been insert.'
+            });
+            
+        }
         const data = {
             seller_code: sellerCode,
             category_id: req.body.items.category_id,
             code: req.body.items.code,
-            seotitle: req.body.items.seotitle,
             title: req.body.items.title,
             price: req.body.items.price,
             qty: req.body.items.qty,
-            itemGalleries: pictures?.map(item => {
-                return {
-                    picture: item.picture,
-                    created_by: sellerId
-                }
-            })
+            // itemGalleries: pictures?.map(item => {
+            //     return {
+            //         picture: item.picture,
+            //         created_by: sellerId
+            //     }
+            // })
         }
+        
         const item = await db.Items.create(data, {
-            include: [{
-                model: db.ItemGallery,
-                as: 'itemGalleries',
-            }]
+            // include: [{
+            //     model: db.ItemGallery,
+            //     as: 'itemGalleries',
+            // }]
         });
         return res.status(201).json({
+            msg: 'New item successfully insert.',
             data: item
         });
-        // }
-        // return res.status(100).json({
-        //     msg: 'This item has been insert.'
-        // })
 
     } catch (e) {
         next(e);
@@ -65,7 +69,17 @@ exports.addImage = async (req, res, next) => {
                 image
             }
         } = req;
+        
+        console.log("di addImage " + image);
+        
+        const file = image[0];
+        const result = await cloudinary.uploader.upload(file, {
+            overwrite: true,
+            use_filename: true,
+            unique_filename: true
+          });
 
+        fs.unlinkSync(image[0]);
         if(!image.length) {
             return res.status(400).json({
                 msg: 'Image is required.'
@@ -75,20 +89,60 @@ exports.addImage = async (req, res, next) => {
         const data = image.map(item => {
             return {
                 id_item,
-                picture: item,
+                picture: result.secure_url,
+                public_id: result.public_id,
+                asset_id: result.asset_id,
                 created_by: sellerId
             }
         });
         
         await db.ItemGallery.bulkCreate(data);
+
         return res.status(201).json({
             msg: 'Image added.'
         });
+    
 
     } catch (e) {
         next(e);
     }
 }
+
+// exports.addImage = async (req, res, next) => {
+//     try {
+//         const {
+//             user: {
+//                 id: sellerId
+//             },
+//             body: {
+//                 id_item,
+//                 image
+//             }
+//         } = req;
+
+//         if(!image.length) {
+//             return res.status(400).json({
+//                 msg: 'Image is required.'
+//             })
+//         }
+        
+//         const data = image.map(item => {
+//             return {
+//                 id_item,
+//                 picture: item,
+//                 created_by: sellerId
+//             }
+//         });
+        
+//         await db.ItemGallery.bulkCreate(data);
+//         return res.status(201).json({
+//             msg: 'Image added.'
+//         });
+
+//     } catch (e) {
+//         next(e);
+//     }
+// }
 
 exports.getItems = async (req, res, next) => {
     try {
@@ -96,7 +150,10 @@ exports.getItems = async (req, res, next) => {
             include: [{
                 model: db.ItemGallery,
                 as: 'itemGalleries'
-            }]
+            }],
+            order: [
+                ['id', 'DESC']
+            ]
         });
         if (item != null) {
             return res.status(200).json(item);
@@ -136,13 +193,32 @@ exports.editItem = async (req, res, next) => {
 
 exports.deleteItem = async (req, res, next) => {
     try {
-        const item = await db.Items.destroy({
-            where: {
-                id: req.params.id
+        await db.Items.findByPk(req.params.id).then(function (result) {
+            if (result != null) {
+                db.Items.destroy({
+                    where: {
+                        id: req.params.id
+                    },
+                });
+                return res.status(200).json({
+                    msg: 'Item deleted.'
+                });
             }
+            return res.status(404).json({
+                msg: 'Item not found.'
+            });
         });
+
+    } catch (e) {
+        next(e);
+    }
+}
+
+exports.deleteImage = async (publicID) => {
+    try {
+        const res = await cloudinary.uploader.destroy(publicID);
         return res.status(200).json({
-            msg: 'Item deleted.'
+            msg: 'Image deleted.'
         });
 
     } catch (e) {

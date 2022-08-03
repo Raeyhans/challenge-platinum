@@ -9,11 +9,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <!-- favicon -->
-        <link rel="shortcut icon" href="../../images/favicon.ico" />
+        <link rel="shortcut icon" href="/images/favicon.ico" />
 
         <!-- Css -->
         <!-- Main Css -->
-        <link rel="stylesheet" href="../../css/tailwind.min.css" />
+        <link rel="stylesheet" href="/css/tailwind.min.css" />
         <style>
             .success-msg,
             .err-msg {
@@ -38,7 +38,7 @@
                 <div class="flex justify-center">
                     <div class="max-w-[400px] w-full m-auto p-6 bg-white dark:bg-slate-900 shadow-md dark:shadow-gray-700 rounded-md">
                         <h5 class="my-6 text-xl font-semibold">Login</h5>
-                        <form class="text-left" action="http://localhost:3000/auth/account/login" method="POST">
+                        <form class="text-left" action="/auth/account/login" method="POST" id="lg-form">
                             <div class="grid grid-cols-1">
                                 <div class="mb-4">
                                     <label class="font-semibold" for="Email">Email:</label>
@@ -47,11 +47,12 @@
 
                                 <div class="mb-4">
                                     <label class="font-semibold" for="LoginPassword">Password:</label>
-                                    <input id="LoginPassword" type="password" name="password" class="form-input mt-3" placeholder="Password:" required>
+                                    <input id="password" type="password" name="password" class="form-input mt-3" placeholder="Password:" required>
                                 </div>
 
                                 <div class="mb-4">
-                                    <input type="submit" class="btn btn-primary rounded-md w-full" value="Sign in">
+                                    <button type="submit" class="btn btn-primary rounded-md w-full" id="login">Sign in</button>
+                                    <!-- <input type="submit" class="btn btn-primary rounded-md w-full" value="Sign in"> -->
                                 </div>
 
                                 <div class="text-center">
@@ -59,9 +60,43 @@
                                 </div>
                             </div>
                         </form>
+                        <div id="message"></div>
                     </div>
                 </div>
             </div>
         </section><!--end section -->
     </body>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script>
+        $(document).ready(function(){
+            $("#login").click(function(){
+        
+                var action = $("#lg-form").attr('action');
+                var form_data = {
+                    email: $("#email").val(),
+                    password: $("#password").val()
+                };
+        
+                $.ajax({
+                    type: "POST",
+                    url: action,
+                    data: form_data,
+                    success: function(response)
+                    {
+                        console.log(response);
+                        if(response.token){
+                            localStorage.setItem("token", response.token);
+                            $("#lg-form").slideUp('slow', function(){
+                                $("#message").html('<p class="success">You have logged in successfully!</p><p>Redirecting....</p>');
+                            });
+                            window.location.href = "/messages/chats";
+                        }else{
+                            $("#message").html('<p class="error">ERROR: Invalid username and/or password.</p>');
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+        </script>
 </html>
