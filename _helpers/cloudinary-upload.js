@@ -9,7 +9,6 @@ const upload = async (file, array={ }) => {
       unique_filename: true,
       ...array
     })
-    fs.unlinkSync(file)
     return res;
     
   } catch (err) {

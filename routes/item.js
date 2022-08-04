@@ -11,5 +11,6 @@ router.post('/addImage', userLoginJwt (['seller']), multer.array('image'), item.
 router.get('/:id', item.getItem);
 router.put('/:id', userLoginJwt (['seller','admin']), item.editItem);
 router.delete('/:id', userLoginJwt (['seller','admin']), item.deleteItem);
+router.delete('/image/', userLoginJwt (['seller','admin']), item.deleteImage);
 
 module.exports = router;

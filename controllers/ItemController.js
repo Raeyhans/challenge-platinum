@@ -81,7 +81,7 @@ exports.addImage = async (req, res, next) => {
 
         for(let i = 0 ; i < req.files.length ; i++){
             const uploadItem= await upload (req.files[i].path)
-
+            fs.unlinkSync(req.files[i].path)
             await db.ItemGallery.create({
               id_item: id_item,
               picture: uploadItem.secure_url,

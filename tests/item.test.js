@@ -1,7 +1,9 @@
 const app = require('../app');
 const request = require('supertest');
 const db = require("../models");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const testImage = './filetest/TEST.jpg';
+const { delImage } =require ('../_helpers/cloudinary-destroy')
 
 const loginSeller = {
     email: 'seller123@mail.com',
@@ -75,11 +77,6 @@ const editItem={
   qty:50
 }
 
-const testImage ={
-    id_item : 12,
-    image: "image=@077107500_1547445338-telor.jpg;type=image/jpeg", 
-}
-
 afterAll(() => {
   db.Items.destroy({
     where: {
@@ -89,6 +86,7 @@ afterAll(() => {
 });
 
 let validtoken= '';
+let hasilcloudinary = '';
 
 
 describe('Item end point', () => {
@@ -137,15 +135,16 @@ describe('Item end point', () => {
     expect(res.status).toBe(500);
   })
 
-  // it('POST /item/addImage with valid values, response should be 201', async () => {
-  //   const res = await request(app)
-  //     .post('/items/addImage')
-  //     .set('Accept', 'application/json')
-  //     .set('authorization', 'Bearer ' + validtoken)
-  //     .send(testImage);
+  it('POST /item/addImage with valid values, response should be 201', async () => {
+    const res = await request(app)
+      .post('/items/addImage')
+      .set('Accept', 'application/json')
+      .set('authorization', 'Bearer ' + validtoken)
+      .field('id_item', 49)
+      .attach('image', testImage)
     
-  //   expect(res.status).toBe(201);
-  // })
+    expect(res.status).toBe(201);
+  })
 
   it('POST /item/addImage with invalid id item, response should be 400', async () => {
     const res = await request(app)
@@ -259,17 +258,6 @@ describe('Item end point', () => {
 
     expect(response.status).toEqual(500);
   })
-
-    // it('CLOUDINARY DELETE IMAGE', async () => {
-  //   const res = await request(app)
-  //     .post('/items/addImage')
-  //     .set('Accept', 'application/json')
-  //     .set('authorization', 'Bearer ' + validtoken)
-  //     .send(testImage);
-    
-  //   expect(res.status).toBe(201);
-  // })
-
 
 }
 )
