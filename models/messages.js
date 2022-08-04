@@ -15,17 +15,17 @@ module.exports = (sequelize, DataTypes) => {
         as: 'chatCustomer',
       })
       this.belongsTo(models.Users, {
-        foreignKey: 'id_user',
+        foreignKey: 'id_seller',
         as: 'chatUser',
       })
     }
   }
   Messages.init({
     id_customer: DataTypes.INTEGER,
-    id_user: DataTypes.INTEGER,
+    id_seller: DataTypes.INTEGER,
     message: DataTypes.STRING,
     read_by: DataTypes.STRING,
-    rechat_groupad_by: DataTypes.STRING,
+    chat_group: DataTypes.STRING,
     created_at: DataTypes.DATE,
     updated_at: DataTypes.DATE
   }, {

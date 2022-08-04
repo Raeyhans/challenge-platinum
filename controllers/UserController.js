@@ -12,7 +12,15 @@ exports.createUser = async (req,res,next) => {
 
         if (user != null) {
             return res.status(400).json({
+                status: 400,
                 msg: 'Please choose another username.'
+            });
+        }
+
+        if (body.password == null || body.username == null || body.password == null || body.name == null) {
+            return res.status(400).json({
+                status: 400,
+                msg: 'All field cannot empty.'
             });
         }
 
@@ -24,6 +32,7 @@ exports.createUser = async (req,res,next) => {
         });
         
         res.status(201).json({
+            status: 201,
             msg: 'You have successfully registered.'
         });
 

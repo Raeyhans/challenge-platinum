@@ -10,7 +10,7 @@ const chat = ({ socket, io }) => {
           to,
           read_by: JSON.stringify([socket.userID]),
         };
-        console.log(socket.userID);
+        console.log(message);
         const chat = await db.Messages.create(message, {
           to,
           from: socket.userID,
@@ -20,7 +20,7 @@ const chat = ({ socket, io }) => {
           "chat_group": chat.chat_group,
           "created_at": chat.created_at,
           "id": chat.id,
-          "read_by": [socket.userID],
+          "read_by": socket.userID,
           "message": chat.message,
           "user": {
               "id": socket.userID,

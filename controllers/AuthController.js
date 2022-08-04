@@ -24,7 +24,7 @@ exports.loginAdmin = async (req, res, next) => {
 
         if (user == null) {
             return res.status(400).json({
-                error: 'Invalid username or password.'
+                msg: 'Invalid username or password.'
             });
         }
 
@@ -36,13 +36,14 @@ exports.loginAdmin = async (req, res, next) => {
                 role: 'admin'
              }, 'secret');
             return res.status(200).json({
+                status: 200,
                 msg: 'You have successfully logged in.',
                 token
             });
         }
 
         res.status(400).json({
-            error: 'Invalid username or password.'
+            msg: 'Invalid username or password.'
         });
     }
     catch (e) {
@@ -89,6 +90,7 @@ exports.loginCustomer = async (req, res, next) => {
                     role: 'customer',
                 }, 'secret');
                 return res.status(200).json({
+                    status: 200,
                     msg: 'You have successfully logged in.',
                     token
                 });
@@ -124,7 +126,7 @@ exports.loginSeller = async (req, res, next) => {
 
         if (seller == null) {
             return res.json({
-                error: 'Invalid email or password.'
+                msg: 'Invalid email or password.'
             });
         }
 
@@ -142,13 +144,14 @@ exports.loginSeller = async (req, res, next) => {
                     role: 'seller'
                 }, 'secret');
                 return res.status(200).json({
+                    status: 200,
                     msg: 'You have successfully logged in.',
                     token
                 });
             }
         }
         res.json({
-            error: 'Invalid email or password.'
+            msg: 'Invalid email or password.'
         });
     }
     catch (e) {

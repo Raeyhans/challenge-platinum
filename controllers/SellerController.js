@@ -62,7 +62,7 @@ exports.getAllSeller = async (req,res,next) => {
     try{
         const user = await db.Sellers.findAll({
             attributes: {
-                exclude: ['password']
+                exclude: ['password','token']
             },
             order: [
                 ['id', 'DESC']
@@ -133,7 +133,7 @@ exports.getSeller = async (req,res,next) => {
 
         const user = await db.Sellers.findOne({
             attributes: {
-                exclude: ['password']
+                exclude: ['password','token']
             },
             where: {
                 id: req.params.id
@@ -215,11 +215,11 @@ exports.deleteSeller = async (req,res,next) => {
     }
 }
 
-exports.getAllSeller = async (req,res,next) => {
+exports.getContactSeller = async (req,res,next) => {
     try{
         const user = await db.Sellers.findAll({
             attributes: {
-                exclude: ['password']
+                exclude: ['password','token']
             },
             order: [
                 ['id', 'DESC']
