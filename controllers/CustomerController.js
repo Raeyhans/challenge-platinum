@@ -15,6 +15,12 @@ exports.registerCustomer = async (req, res, next) => {
     }
 
     try {
+        if (body.firstname == null || body.password == null || body.email == null) {
+            return res.status(400).json({
+                status: 400,
+                msg: 'All field cannot empty.'
+            });
+        }
 
         const user = await db.Customers.findOne({
             where: {
