@@ -235,6 +235,27 @@
     <script defer src="/scripts.js"></script>
     
     <script id="rendered-js">
+        function anchorScr(id){
+            $.ajax(
+                {
+                    url: '/messages/init-chat',
+                    type: 'POST',
+                    data: {
+                        sellerID: id
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader ("authorization", "Bearer " + window.localStorage.getItem('token'));
+                    },
+                    success: function(data) {
+                        window.location = "/messages/chats/" + data;
+                    }
+                }
+            );
+            console.log(id);
+        }
+
+        $(document).ready(function() {
+            
         $('.friend-drawer--onhover').on('click', function() {
             $('.chat-bubble').hide('slow').show('slow');
         });
@@ -248,19 +269,23 @@
 			success: function (response) {
                 var html = '';
                 for (var i = 0; i < response.length; i++) {
-                    html += '<div class="friend-drawer friend-drawer--onhover">';
+                    html += '<a data-id="'+response[i].id+'" class="contact-chat" onclick="anchorScr('+response[i].id+')"><div class="friend-drawer friend-drawer--onhover">';
                     html += '<img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">';
                     html += '<div class="text">';
                     html += '<h6>'+response[i].firstname+'</h6>';
                     html += '<p class="text-muted">bla bla bla</p>';
                     html += '</div>';
                     html += '<span class="time text-muted small">12.30</span>';
-                    html += '</div>';
+                    html += '</div></a>';
                     html += '<hr>';
                 }
                 $('#container-chat').append(html);
 			}
 		});
+
+        $('.contact-chat').click();
+     
+        });
     </script>
 </body>
 </html>

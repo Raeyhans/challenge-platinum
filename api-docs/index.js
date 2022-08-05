@@ -30,10 +30,10 @@ module.exports = {
         url: "https://google.com",
       }
     },
-    host: 'localhost:3000',
+    host: process.env.APP_HOST,
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: process.env.APP_HOST,
         description: 'Server Dev',
       },
     ],

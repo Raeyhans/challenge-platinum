@@ -1,6 +1,8 @@
 const db = require('../models');
 const fs = require("fs");
 const cloudinary = require('../config/cloudinary');
+const { upload } =require ('../_helpers/cloudinary-upload')
+const { delImage } =require ('../_helpers/cloudinary-destroy')
 
 exports.createItem = async (req, res, next) => {
     try {
@@ -70,33 +72,57 @@ exports.addImage = async (req, res, next) => {
             }
         } = req;
         
-        console.log("di addImage " + image);
+        // console.log("di addImage " + image);
         
-        const file = image[0];
-        const result = await cloudinary.uploader.upload(file, {
-            overwrite: true,
-            use_filename: true,
-            unique_filename: true
-          });
+        // const file = image[0];
+        // const result = await cloudinary.uploader.upload(file, {
+        //     overwrite: true,
+        //     use_filename: true,
+        //     unique_filename: true
+        //   });
 
-        fs.unlinkSync(image[0]);
-        if(!image.length) {
-            return res.status(400).json({
-                msg: 'Image is required.'
-            })
-        }
+        // fs.unlinkSync(image[0]);
+        // if(!image.length) {
+        //     return res.status(400).json({
+        //         msg: 'Image is required.'
+        //     })
+        // }
         
-        const data = image.map(item => {
-            return {
-                id_item,
-                picture: result.secure_url,
-                public_id: result.public_id,
-                asset_id: result.asset_id,
-                created_by: sellerId
+        // const data = image.map(item => {
+        //     return {
+        //         id_item,
+        //         picture: result.secure_url,
+        //         public_id: result.public_id,
+        //         asset_id: result.asset_id,
+        //         created_by: sellerId
+        //     }
+        // });
+        
+        // await db.ItemGallery.bulkCreate(data);
+
+        let finder = await db.Items.findOne({
+            where: {
+                id: req.body.id_item
             }
         });
-        
-        await db.ItemGallery.bulkCreate(data);
+
+        if(finder == null){
+            return res.status(400).json({
+                msg: 'Cant input Image, item not found'
+            });        
+        }
+
+        for(let i = 0 ; i < req.files.length ; i++){
+            const uploadItem= await upload (req.files[i].path)
+            fs.unlinkSync(req.files[i].path)
+            await db.ItemGallery.create({
+              id_item: id_item,
+              picture: uploadItem.secure_url,
+              public_id: uploadItem.public_id,
+              asset_id: uploadItem.asset_id,
+              created_by:sellerId,
+          })
+          }
 
         return res.status(201).json({
             msg: 'Image added.'

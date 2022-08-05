@@ -1,22 +1,20 @@
 const db = require('../../models');
 
 const chat = ({ socket, io }) => {
-    socket.on("sendPrivateChat", async ({content, to}) => {
+    socket.on("sendPrivateChat", async ({message, id_seller}) => {
   
       try {
-        const message = {
-          content,
-          from: socket.userID,
-          to,
+        const NewMessage = {
+          message,
+          id_customer: socket.userID,
           read_by: JSON.stringify([socket.userID]),
+          chat_group: `${socket.userID}-${id_seller}`,
         };
-        console.log(message);
-        const chat = await db.Messages.create(message, {
-          to,
-          from: socket.userID,
-        })
+        console.log(NewMessage);
+        const chat = await db.Messages.create(NewMessage)
     
         const chatResponse = {
+          "id_customer": chat.id_customer,
           "chat_group": chat.chat_group,
           "created_at": chat.created_at,
           "id": chat.id,
@@ -27,7 +25,7 @@ const chat = ({ socket, io }) => {
           }
         }
     
-        const toSocket = 'room-' + to
+        const toSocket = 'room-' + id_seller
         const fromSocket = 'room-' + socket.userID
     
         const isReceiverConnected = io.adapter.rooms.has(toSocket)
@@ -54,7 +52,7 @@ const chat = ({ socket, io }) => {
 
         const notification = {
           title: 'Anda Menerima Pesan Baru',
-          body: `${sender.firstname}: ${content}`
+          body: `${sender.firstname}: ${message}`
         }
     
         if (isReceiverConnected) {
@@ -125,6 +123,73 @@ console.log(error);
     //   }
     // })
   }
+
+  const chatSeller = ({ socket, io }) => {
+    socket.on("sendPrivateChatSeller", async ({message, id_customer}) => {
   
-module.exports = chat;
+      try {
+        const NewMessage = {
+          message,
+          id_seller: socket.userID,
+          read_by: JSON.stringify([socket.userID]),
+          chat_group: `${id_customer}-${socket.userID}`,
+        };
+        console.log(NewMessage);
+        const chat = await db.Messages.create(NewMessage)
+    
+        const chatResponse = {
+          "id_seller": chat.id_seller,
+          "chat_group": chat.chat_group,
+          "created_at": chat.created_at,
+          "id": chat.id,
+          "read_by": socket.userID,
+          "message": chat.message,
+          "user": {
+              "id": socket.userID,
+          }
+        }
+    
+        const toSocket = 'room-' + id_customer
+        const fromSocket = 'room-' + socket.userID
+    
+        const isReceiverConnected = io.adapter.rooms.has(toSocket)
+        const isSenderConnected = io.adapter.rooms.has(fromSocket)
+  
+        if (isReceiverConnected) {
+          socket.to(toSocket).emit("receivePrivateChat", chatResponse);
+        }
+  
+        if (isSenderConnected) {
+          socket.to(fromSocket).emit("receivePrivateChat", chatResponse);
+        }
+        let ModelSender = null;
+    
+        if(socket.userRole == 'customer'){
+            ModelSender = db.Customers;
+        }else{
+            ModelSender = db.Sellers;
+        }
+        
+        const [sender] = await Promise.all([
+            ModelSender.findByPk(socket.userID),
+        ])
+
+        const notification = {
+          title: 'Anda Menerima Pesan Baru',
+          body: `${sender.firstname}: ${message}`
+        }
+    
+        if (isReceiverConnected) {
+          socket.to(toSocket).emit("notification", notification)
+        } 
+        
+      } catch (error) {
+console.log(error);
+        // logger.error(JSON.stringify(error))
+      }
+    });
+
+  }
+  
+module.exports = { chat, chatSeller };
   

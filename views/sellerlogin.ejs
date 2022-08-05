@@ -38,7 +38,7 @@
                 <div class="flex justify-center">
                     <div class="max-w-[400px] w-full m-auto p-6 bg-white dark:bg-slate-900 shadow-md dark:shadow-gray-700 rounded-md">
                         <h5 class="my-6 text-xl font-semibold">Login</h5>
-                        <form class="text-left" action="/auth/account/login" method="POST" id="lg-form">
+                        <form class="text-left" action="/auth/seller/login" method="POST" id="lg-form">
                             <div class="grid grid-cols-1">
                                 <div class="mb-4">
                                     <label class="font-semibold" for="Email">Email:</label>
@@ -86,7 +86,7 @@
                         console.log(response);
                         if(response.token){
                             localStorage.setItem("token", response.token);
-                            localStorage.setItem("role", 'cs');
+                            localStorage.setItem("role", 'sl');
                             $("#lg-form").slideUp('slow', function(){
                                 $("#message").html('<p class="success">You have logged in successfully!</p><p>Redirecting....</p>');
                             });

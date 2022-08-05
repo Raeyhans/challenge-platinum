@@ -1,0 +1,35 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "root",
+    "database": "platinum",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "root",
+    "database": "platinum",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "root",
+    "database": "platinum",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "emailFrom": "no-reply@domain.com",
+  "smtpOptions": {
+      "host": "smtp.ethereal.email",
+      "port": 587,
+      "auth": {
+          "user": "jermey.thompson@ethereal.email",
+          "pass": "19s8CjbF5StNgVsjPm"
+      }
+  },
+  "socket": {
+    "path": "/socket"
+  }
+}

@@ -1,5 +1,7 @@
 require ('dotenv').config();
 
+exports.NODE_ENV = process.env.NODE_ENV
+
 exports.CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME
 exports.CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY
 exports.CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET
@@ -16,3 +18,10 @@ exports.EMAIL_HOST = process.env.EMAIL_HOST
 exports.EMAIL_PORT = process.env.EMAIL_PORT
 exports.EMAIL_USER = process.env.EMAIL_PORT
 exports.EMAIL_PASS = process.env.EMAIL_PASS
+
+exports.HEROKU_API_KEY = process.env.HEROKU_API_KEY
+exports.HEROKU_APP_NAME = process.env.HEROKU_APP_NAME
+exports.HEROKU_EMAIL = process.env.HEROKU_EMAIL
+
+exports.APP_HOST = process.env.APP_HOST
+exports.APP_PORT = process.env.APP_PORT
