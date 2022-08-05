@@ -15,6 +15,12 @@ exports.registerSeller = async (req, res, next) => {
     }
 
     try {
+        if (body.firstname == null || body.password == null || body.email == null || body.code == null) {
+            return res.status(400).json({
+                status: 400,
+                msg: 'All field cannot empty.'
+            });
+        }
 
         const user = await db.Sellers.findOne({
             where: {
@@ -26,6 +32,7 @@ exports.registerSeller = async (req, res, next) => {
                 error: 'Please choose another email.'
             });
         }
+
 
         const hashToken = jwt.sign(body.email, body.password);
 
@@ -68,7 +75,7 @@ exports.getAllSeller = async (req,res,next) => {
                 ['id', 'DESC']
             ]
         });
-        res.json(user);
+        res.status(200).json(user);
     }catch (e) {
         next(e);
     }

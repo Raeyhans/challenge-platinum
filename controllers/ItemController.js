@@ -22,9 +22,9 @@ exports.createItem = async (req, res, next) => {
                 code: req.body.items.code
             }
         });
-        console.log(req.body.items.code);
+       
         if(finder != null){
-            return res.status(100).json({
+            return res.status(400).json({
                 msg: 'This item has been insert.'
             });
             
@@ -182,7 +182,9 @@ exports.getItems = async (req, res, next) => {
             ]
         });
         if (item != null) {
-            return res.status(200).json(item);
+            return res.status(200).json({
+                data: item
+            });
         }
         throw new Error('Item not found.');
 
