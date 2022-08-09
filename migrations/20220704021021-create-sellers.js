@@ -35,6 +35,9 @@ module.exports = {
       status: {
         type: Sequelize.INTEGER
       },
+      role: {
+        type: Sequelize.STRING
+      },
       updated_by: {
         type: Sequelize.INTEGER
       },

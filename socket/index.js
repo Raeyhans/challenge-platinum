@@ -10,7 +10,7 @@ const onConnection = (io) => {
   
     io.on("connection", (socket) => {
       console.log("connected");
-      socket.join('room-' + socket.userID)
+      socket.join('room-' + socket.userRole + socket.userID)
   
       socket.emit("connected", socket.userID)
   
@@ -35,7 +35,7 @@ const onConnection = (io) => {
   
           try {
             
-            socket.leave('room-' + socket.userID)
+            socket.leave('room-' + socket.userRole + socket.userID)
             
           } catch (error) {
             console.log(JSON.stringify(error))

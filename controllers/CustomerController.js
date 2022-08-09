@@ -43,6 +43,7 @@ exports.registerCustomer = async (req, res, next) => {
             address: body.address,
             city: body.city,
             token: hashToken,
+            role: 'customer',
         });
 
         await sendEmail({

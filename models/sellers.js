@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     code: DataTypes.STRING,
     token: DataTypes.STRING,
     status: DataTypes.INTEGER,
+    role: DataTypes.STRING,
     created_at: DataTypes.DATE,
     updated_at: DataTypes.DATE,
     updated_by: DataTypes.INTEGER

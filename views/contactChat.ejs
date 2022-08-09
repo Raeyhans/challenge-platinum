@@ -221,20 +221,24 @@
 </head>
 <body translate="no">
     <div class="container">
-        <div class="row no-gutters">
-            <div class="col-md-6">
+        <div id="container-chat"></div>
+        <!-- <div class="row no-gutters" id="message-chat">
+            <div class="col-md-12">
                 <div class="settings-tray">
                     <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/filip.jpg" alt="Profile img">
                 </div>
-                <div id="container-chat"></div>
+                <div id="message-chat"></div>
             </div>
-        </div>
+        </div> -->
     </div>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
     <script defer src="/socket.io/socket.io.js"></script>
     <script defer src="/scripts.js"></script>
     
     <script id="rendered-js">
+        if (localStorage.getItem('token') === "") {  
+            window.location='/';
+        }
         function anchorScr(id){
             $.ajax(
                 {
@@ -249,10 +253,8 @@
                     success: function(data) {
                         window.location = "/messages/chats/" + data;
                     }
-                }
-            );
-            console.log(id);
-        }
+                });
+            }
 
         $(document).ready(function() {
             
@@ -268,24 +270,31 @@
             },
 			success: function (response) {
                 var html = '';
+                html += '<div class="row no-gutters">';
+                html += '<div class="col-md-12">';
+                html += '<div class="settings-tray">';
+                html += '<img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/filip.jpg" alt="Profile img">';
+                html += '</div>';       
+                html += '</div>';
+                html += '</div>';
+                
                 for (var i = 0; i < response.length; i++) {
-                    html += '<a data-id="'+response[i].id+'" class="contact-chat" onclick="anchorScr('+response[i].id+')"><div class="friend-drawer friend-drawer--onhover">';
+                    html += '<a class="contact-chat" onclick="anchorScr('+response[i].id+')"><div class="friend-drawer friend-drawer--onhover">';
                     html += '<img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">';
                     html += '<div class="text">';
                     html += '<h6>'+response[i].firstname+'</h6>';
-                    html += '<p class="text-muted">bla bla bla</p>';
                     html += '</div>';
-                    html += '<span class="time text-muted small">12.30</span>';
                     html += '</div></a>';
-                    html += '<hr>';
+                    html += '<hr class="col-md-12">';
                 }
                 $('#container-chat').append(html);
+			},
+			error: function (response) {
+				window.location = "/";
 			}
 		});
-
         $('.contact-chat').click();
-     
-        });
+    });
     </script>
 </body>
 </html>

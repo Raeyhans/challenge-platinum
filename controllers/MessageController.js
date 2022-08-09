@@ -1,48 +1,51 @@
 const db = require('../models');
 
-exports.getMessage = async (req,res,next) => {
-    try{
-        const messages = await db.Messages.findAll({
-            where: {
-                id_customer: req.body.sender,
-                id_seller: req.body.receiver
-            },
-            group: ['id_customer', 'id_seller']
-        });
-        if(messages != null){
-            return res.status(200).json(messages);
-        }
-        return res.status(404).json({
-            msg: 'Message not found.'
-        });
-    }catch (e) {
-        next(e);
-    }
-}
+// exports.getMessage = async (req,res,next) => {
+//     try{
+//         const messages = await db.Messages.findAll({
+//             where: {
+//                 id_customer: req.body.sender,
+//                 id_seller: req.body.receiver
+//             },
+//             group: ['id_customer', 'id_seller']
+//         });
+//         if(messages != null){
+//             return res.status(200).json(messages);
+//         }
+//         return res.status(404).json({
+//             msg: 'Message not found.'
+//         });
+//     }catch (e) {
+//         next(e);
+//     }
+// }
 
-exports.getSellerContactChat = async (req,res,next) => {
+exports.getConversation = async (req,res,next) => {
     try{
         const {
             user: {
-                id: customerId
+                id: userId,
+                role: roleUser
             }
         } = req;
 
-        const data = {
-            id_customer: customerId,
-            id_seller: 3,
-            created_by: customerId,
-            updated_by: customerId,
+        let selectOption = `m.id_seller as id, s.firstname`;
+        let whereOption = `m.id_customer = ${userId}`;
+        let joinOption =  `sellers s ON m.id_seller = s.id`;
+        if(roleUser == 'seller'){
+            selectOption = `m.id_customer as id, c.firstname`;
+            whereOption = `m.id_seller = ${userId}`;
+            joinOption = `customers c ON m.id_customer = c.id`;
         }
-console.log(data);
-        const messages = await db.sequelize.query('SELECT distinct chat_group FROM messages WHERE id_customer = :id_customer', {
-            replacements: {
-                id_customer: customerId
-            },
+
+
+        const messages = await db.sequelize.query(`SELECT distinct ON (m.chat_group) m.chat_group, m.message, ${selectOption} FROM messages m
+            LEFT JOIN ${joinOption}
+            WHERE ${whereOption} ORDER BY m.chat_group, m.id DESC`, {
             type: db.sequelize.QueryTypes.SELECT
         });
 
-        res.json(messages);
+        res.status(200).json(messages);
 
     }catch (e) {
         next(e);
@@ -53,14 +56,18 @@ exports.initChat = async (req,res,next) => {
     try{
         const {
             user: {
-                id: customerId
+                id: customerId,
+                role: roleUser
             },
             body: {
                 sellerID
             }
         } = req;
 
-        const chatGroup = `${customerId}-${sellerID}`;
+        let chatGroup = `cs${customerId}-sl${sellerID}`;
+        if(roleUser == 'seller'){
+            chatGroup = `cs${sellerID}-sl${customerId}`;
+        }
         
         await db.Messages.findOrCreate({
             where: {
@@ -69,8 +76,6 @@ exports.initChat = async (req,res,next) => {
             defaults: {
                 chat_group: chatGroup,
                 message: 'Percakapan dimulai',
-                created_by: customerId,
-                updated_by: customerId,
             }
         });
         res.status(200).json(chatGroup);
@@ -116,7 +121,7 @@ exports.getSeller = async (req,res,next) => {
             }
         } = req;
 
-        const other = chatGroup.split('-')[1];
+        const other = chatGroup.split('-')[1].replace('sl', '');
         const data = await db.Sellers.findByPk(other);
 
         res.status(200).json(data);
@@ -137,7 +142,7 @@ exports.getCustomer = async (req,res,next) => {
             }
         } = req;
 
-        const other = chatGroup.split('-')[0];
+        const other = chatGroup.split('-')[0].replace('cs', '');
         const data = await db.Customers.findByPk(other);
 
         res.status(200).json(data);

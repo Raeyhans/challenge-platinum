@@ -28,7 +28,8 @@ exports.createUser = async (req,res,next) => {
             username: body.username,
             name: body.name,
             email: body.email,
-            password: body.password
+            password: body.password,
+            role: 'admin'
         });
         
         res.status(201).json({
@@ -48,7 +49,7 @@ exports.getAllUser = async (req,res,next) => {
                 exclude: ['password']
             }
         });
-        res.status(200).json(user);
+        res.status(200).json({ data: user});
     }catch (e) {
         next(e);
     }
