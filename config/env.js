@@ -6,6 +6,7 @@ exports.CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME
 exports.CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY
 exports.CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET
 
+exports.DATABASE_URL = process.env.DATABASE_URL
 exports.DB_USER = process.env.DB_USER
 exports.DB_PASS = process.env.DB_PASS
 exports.DB_NAME = process.env.DB_NAME
