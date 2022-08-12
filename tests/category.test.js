@@ -142,14 +142,14 @@ describe('Category end point', () => {
     expect(response.status).toEqual(404);
   })
 
-  // it('Delete /categories/id with valid token, response should be 200.', async () => {
-  //   const parameter = testID.id;
+  it('Delete /categories/id with invalid id, response should be 404.', async () => {
+    const parameter = 2387325;
 
-  //   const response = await request(app)
-  //       .delete('/categories/'+ parameter)
-  //       .set('Accept', 'application/json')
-  //       .set('authorization', 'Bearer ' + validtoken)
+    const response = await request(app)
+        .delete('/categories/'+ parameter)
+        .set('Accept', 'application/json')
+        .set('authorization', 'Bearer ' + validtoken)
 
-  //   expect(response.status).toEqual(200);
-  //   })
+    expect(response.status).toEqual(404);
+    })
 })
