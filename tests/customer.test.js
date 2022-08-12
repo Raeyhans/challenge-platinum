@@ -78,7 +78,7 @@ describe('Login customer', () => {
       .post('/auth/account/login')
       .set('Accept', 'application/json')
       .send({
-        email: 'WRONG EMAIL',
+        email: 'wrong.email@gmail.com',
         password: loginUser.password
       });
 

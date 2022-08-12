@@ -160,14 +160,14 @@ describe('Login admin end point', () => {
     expect(response.status).toEqual(404);
   })
 
-  // it('Delete /sellers/id with valid token, response should be 200.', async () => {
-  //   const parameter = 9;
+  it('Delete /sellers/id with invalid id, response should be 404.', async () => {
+    const parameter = 4449;
 
-  //   const response = await request(app)
-  //     .delete('/sellers/'+ parameter)
-  //     .set('Accept', 'application/json')
-  //     .set('authorization', 'Bearer ' + validtoken)
+    const response = await request(app)
+      .delete('/sellers/'+ parameter)
+      .set('Accept', 'application/json')
+      .set('authorization', 'Bearer ' + validtoken)
 
-  //   expect(response.status).toEqual(200);
-  // })
+    expect(response.status).toEqual(404);
+  })
 })

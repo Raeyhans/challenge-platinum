@@ -58,7 +58,7 @@ exports.getAllUser = async (req,res,next) => {
 exports.editUser = async (req,res,next) => {
     try{
         await db.Users.findByPk(req.params.id).then(function (result) {
-            if (!!result) {
+            if (result != null) {
                 db.Users.update(req.body, {
                     where: {
                         id: req.params.id
@@ -80,7 +80,7 @@ exports.editUser = async (req,res,next) => {
 exports.deleteUser = async (req,res,next) => {
     try{
         await db.Users.findByPk(req.params.id).then(function (result) {
-            if (!!result) {
+            if (result != null) {
                 db.Users.destroy({
                     where: {
                         id: req.params.id

@@ -57,11 +57,11 @@ exports.loginCustomer = async (req, res, next) => {
     const errors = validationResult(req);
     const { body } = req;
 
-    if (!errors.isEmpty()) {
-        return res.json({
-            error: errors.array()[0].msg
-        });
-    }
+    // if (!errors.isEmpty()) {
+    //     return res.json({
+    //         error: errors.array()[0].msg
+    //     });
+    // }
 
     try {
 

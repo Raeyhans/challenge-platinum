@@ -93,7 +93,7 @@ exports.editSeller = async (req,res,next) => {
                 id
             }
         } = req;
-console.log(roleID);
+
         if(roleID === 'seller'){
             if(sellerId != id){
                 return res.status(404).json({
@@ -149,10 +149,7 @@ exports.getSeller = async (req,res,next) => {
         });
         if (user != null) {
             return res.status(200).json(user);
-        } 
-        return res.status(404).json({
-            msg: 'Seller not found.'
-        });
+        }
 
     } catch (e) {
         next(e);
