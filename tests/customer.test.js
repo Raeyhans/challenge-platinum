@@ -39,7 +39,7 @@ describe('Register customer', () => {
       .send(testUser)
       .set('Accept', 'application/json');
     expect(res.status).toBe(201);
-  }, 10000)
+  }, 15000)
 
   it('POST /customers/account/register without password, response should be 400', async () => {
     const res = await request(app)
