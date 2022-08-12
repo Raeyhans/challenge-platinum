@@ -23,5 +23,7 @@ exports.HEROKU_API_KEY = process.env.HEROKU_API_KEY
 exports.HEROKU_APP_NAME = process.env.HEROKU_APP_NAME
 exports.HEROKU_EMAIL = process.env.HEROKU_EMAIL
 
-exports.APP_HOST = process.env.APP_HOST
-exports.APP_PORT = process.env.APP_PORT
+exports.HOST = process.env.HOST
+exports.PORT = process.env.PORT
+
+exports.PGSSLMODE = process.env.PGSSLMODE
