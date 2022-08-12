@@ -32,10 +32,10 @@ module.exports = {
         url: "https://google.com",
       }
     },
-    host: process.env.APP_HOST,
+    host: process.env.HOST,
     servers: [
       {
-        url: process.env.APP_HOST,
+        url: process.env.HOST,
         description: 'Server Dev',
       },
     ],
