@@ -72,6 +72,30 @@ describe('Login customer', () => {
 
     expect(res.status).toBe(200);
   })
+
+  it('POST /auth/account/login with wrong email, response should be 400', async () => {
+    const res = await request(app)
+      .post('/auth/account/login')
+      .set('Accept', 'application/json')
+      .send({
+        email: 'WRONG EMAIL',
+        password: loginUser.password
+      });
+
+    expect(res.status).toBe(400);
+  })
+
+  it('POST /auth/account/login with wrong password, response should be 400', async () => {
+    const res = await request(app)
+      .post('/auth/account/login')
+      .set('Accept', 'application/json')
+      .send({
+        email: loginUser.email,
+        password: 'WRONG PASSWORD'
+      });
+
+    expect(res.status).toBe(400);
+  })
 })
 
 describe('Get all customer', () => {
@@ -100,7 +124,7 @@ describe('Login admin end point', () => {
     validtoken = res.body.token;
   })
 
-  it('GET /customers with valid login admin, response should be 200', async () => {
+  it('GET /customers with valid login customer, response should be 200', async () => {
     const res = await request(app)
       .get('/customers')
       .set('Accept', 'application/json')

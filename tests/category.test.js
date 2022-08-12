@@ -27,7 +27,7 @@ afterAll(() => {
 let validtoken= '';
 
 describe('Category end point', () => {
-  it('POST /auth/admin/login with valid email and pass, response should be 200', async () => {
+  it('POST /auth/admin/login with valid username and password, response should be 200', async () => {
     const res = await request(app)
       .post('/auth/admin/login')
       .set('Accept', 'application/json')

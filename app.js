@@ -41,11 +41,6 @@ app.use('/items', itemRouter);
 app.use('/orders', orderRoute);
 app.use('/categories', categoryRouter);
 app.use('/messages', messageRouter);
-app.post("/logout", (req, res) => {
-  res.clearCookie();
-  res.status(200);
-  res.send("OK");
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -51,6 +51,15 @@ describe('Create admin', () => {
 
     expect(res.status).toBe(400);
   })
+
+  it('POST /users with same data, response should be 400', async () => {
+    const res = await request(app)
+      .post('/users')
+      .send({ username: 'admin1', email: 'admin1@gmail.com', name: 'Test invalid', pass: 'admin1' })
+      .set('Accept', 'application/json');
+
+    expect(res.status).toBe(400);
+  })
 })
 
 describe('Login admin', () => {
