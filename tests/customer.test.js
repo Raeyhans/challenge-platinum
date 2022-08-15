@@ -3,12 +3,12 @@ const request = require('supertest');
 const db = require('../models');
 
 const testUser = {
-    firstname: 'Test123',
-    lastname: 'Test123',
-    email: 'Test123@mail.com',
-    password: 'TestPassword',
-    address: 'TestAddress',
-    city: 'TestCity'
+    firstname: 'RegisterTest123',
+    lastname: 'RegisterTest123',
+    email: 'RegisterTest123@mail.com',
+    password: 'RegisterTestPassword',
+    address: 'RegisterTestAddress',
+    city: 'RegisterTestCity'
   }
 
   const loginAdmin = {
