@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: 16.15.0
       - run: npm install
-      - run: npm run test
+      - run: npm run test --detectOpenHandles
         env:
           CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}

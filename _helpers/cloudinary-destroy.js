@@ -6,7 +6,7 @@ const delImage = async (publicID)=>{
       return dest;
     }
     catch(err){
-    throw err;
+      throw err;
     }
   }
 
