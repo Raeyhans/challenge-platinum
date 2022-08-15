@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 node_modules
 .env
+=======
+/node_modules
+/.idea
+/.vscode
+/.env
+/views.rar
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1

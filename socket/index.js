@@ -1,8 +1,8 @@
-const config = require('../config/config.json');
+const config = require('../config/config');
 const mustAuthenticated = require('./middlewares/mustAuthentication');
 const Server = require('socket.io').Server;
 const room = require('./functions/room');
-const chat = require('./functions/chat');
+const { chat, chatSeller } = require('./functions/chat');
 
 const onConnection = (io) => {
 
@@ -10,9 +10,9 @@ const onConnection = (io) => {
   
     io.on("connection", (socket) => {
       console.log("connected");
-      socket.join('room-' + socket.userID)
+      socket.join('room-' + socket.userRole + socket.userID)
   
-      socket.emit("connected", true)
+      socket.emit("connected", socket.userID)
   
       socket.broadcast.emit("userConnected", {
         user_id: socket.userID
@@ -21,6 +21,8 @@ const onConnection = (io) => {
       room({ socket, io })
   
       chat({ socket, io })
+
+      chatSeller({ socket, io })
   
   
       socket.on("disconnect", async () => {
@@ -33,7 +35,7 @@ const onConnection = (io) => {
   
           try {
             
-            socket.leave('room-' + socket.userID)
+            socket.leave('room-' + socket.userRole + socket.userID)
             
           } catch (error) {
             console.log(JSON.stringify(error))

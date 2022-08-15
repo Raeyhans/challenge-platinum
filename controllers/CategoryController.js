@@ -8,6 +8,19 @@ exports.createCategory = async (req,res,next) => {
             }
         } = req;
 
+        const finder = await db.Categories.findOne({
+            where: {
+                title: req.body.title
+            }
+        });
+       
+        if(finder != null){
+            return res.status(400).json({
+                msg: 'This category has been insert.'
+            });
+            
+        }
+
         const data = {
             seotitle: req.body.title.toLowerCase().split(' ').join('-'),
             title: req.body.title,
@@ -29,7 +42,7 @@ exports.getCategories = async (req,res,next) => {
     try{
         const category = await db.Categories.findAll();
         if(category != null){
-            return res.json(category);
+            return res.json({ data: category });
         }
         throw new Error('Category not found.');
 

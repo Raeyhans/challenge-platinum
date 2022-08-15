@@ -13,5 +13,8 @@ router.get('/account/register', function(req, res, next) {
 router.post('/account/login', authController.loginCustomer);
 
 router.post('/seller/login', authController.loginSeller);
+router.get('/seller/login', function(req, res, next) {
+    res.render('sellerlogin', { title: 'Login' });
+});
 
 module.exports = router;

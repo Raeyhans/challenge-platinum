@@ -12,7 +12,15 @@ exports.createUser = async (req,res,next) => {
 
         if (user != null) {
             return res.status(400).json({
+                status: 400,
                 msg: 'Please choose another username.'
+            });
+        }
+
+        if (body.password == null || body.username == null || body.password == null || body.name == null) {
+            return res.status(400).json({
+                status: 400,
+                msg: 'All field cannot empty.'
             });
         }
 
@@ -20,10 +28,12 @@ exports.createUser = async (req,res,next) => {
             username: body.username,
             name: body.name,
             email: body.email,
-            password: body.password
+            password: body.password,
+            role: 'admin'
         });
         
         res.status(201).json({
+            status: 201,
             msg: 'You have successfully registered.'
         });
 
@@ -39,7 +49,7 @@ exports.getAllUser = async (req,res,next) => {
                 exclude: ['password']
             }
         });
-        res.status(200).json(user);
+        res.status(200).json({ data: user});
     }catch (e) {
         next(e);
     }
@@ -48,7 +58,7 @@ exports.getAllUser = async (req,res,next) => {
 exports.editUser = async (req,res,next) => {
     try{
         await db.Users.findByPk(req.params.id).then(function (result) {
-            if (!!result) {
+            if (result != null) {
                 db.Users.update(req.body, {
                     where: {
                         id: req.params.id
@@ -70,7 +80,7 @@ exports.editUser = async (req,res,next) => {
 exports.deleteUser = async (req,res,next) => {
     try{
         await db.Users.findByPk(req.params.id).then(function (result) {
-            if (!!result) {
+            if (result != null) {
                 db.Users.destroy({
                     where: {
                         id: req.params.id

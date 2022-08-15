@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chat App</title>
+    <title><%=title%></title>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css'>
     <style>
@@ -222,42 +222,25 @@
 <body translate="no">
     <div class="container">
         <div class="row no-gutters">
+            <!-- <div id="container-chat"></div> -->
             <div class="col-md-12">
                 <div class="settings-tray">
                     <div class="friend-drawer no-gutters friend-drawer--grey">
                         <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">
-                        <div class="text">
-                            <h6>Robo Cop</h6>
-                            <p class="text-muted">Layin' down the law since like before Christ...</p>
+                        <div class="text" id="otherUser">
+                            <input type="hidden">
+                            <h6>Name</h6>
                         </div>
                     </div>
                 </div>
                 <div class="chat-panel">
-                    <div class="row no-gutters">
-                        <div class="col-md-3">
-                            <div class="chat-bubble chat-bubble--left">
-                                <span id="yourChat"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row no-gutters">
-                        <div class="col-md-12 colorme">
-                            <div class="chat-bubble chat-bubble--right" id="message-chats">
-                                <!-- <span id="meChat"></span> -->
-                                <!-- <div id="message-container"></div> -->
-                                    <!-- <ul id="message-chat"></ul> -->
-                                    <!-- <li id="message-container"></li> -->
-                                <!-- <div class="message__area"></div> -->
-                                <div id="message-container"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="row no-gutters" id="message-container"></div>
                     <div class="row">
                         <div class="col-12">
                             <form id="send-container">
                                 <div class="chat-box-tray">
-                                    <input type="hidden" name="id" value="1">
-                                    <input type="text" name="content" id="message-input" autocomplete="off" placeholder="Type your message here...">
+                                    <input type="hidden" id="chatGroup" name="id" value="<%=chat_group%>">
+                                    <input type="text" name="content" id="message-input" autocomplete="off" placeholder="Type your message here..." required>
                                     <button  type="submit" id="send-button"><i class="material-icons">send</i></button>
                                 </div>
                             </form>
@@ -279,6 +262,39 @@
             $('#logout').click(function() {
                 localStorage.clear();
             });
+            let chatGroup = $('#chatGroup').val();
+            $.ajax({
+                dataType: 'json',
+                type:'GET',
+                url: "/messages/history-chat/"+chatGroup,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader ("authorization", "Bearer " + window.localStorage.getItem('token'));
+                },
+                success: function (response) {
+                    for (var i = 0; i < response.length; i++) {
+                        listMessage(response[i]);
+                    }
+                },
+                error: function (response) {
+                    window.location = "/";
+                }
+		    });
+            let otherUserurl = '/getSeller/';
+            if(localStorage.getItem('role') == 'sl') {
+                otherUserurl = '/getCustomer/';
+            }
+            $.ajax({
+                dataType: 'json',
+                type:'GET',
+                url: "/messages" +otherUserurl+chatGroup,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader ("authorization", "Bearer " + window.localStorage.getItem('token'));
+                },
+                success: function (response) {
+                    $('#otherUser input').val(response.id);
+                    $('#otherUser h6').text(response.firstname);
+                }
+		    });
         });
     </script>
 </body>

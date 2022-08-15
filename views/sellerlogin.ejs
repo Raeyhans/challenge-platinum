@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta content="Tailwind CSS Saas & Software Landing Page Template" name="description" />
+        <meta name="author" content="Dadin" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <!-- favicon -->
+        <link rel="shortcut icon" href="/images/favicon.ico" />
+
+        <!-- Css -->
+        <!-- Main Css -->
+        <link rel="stylesheet" href="/css/tailwind.min.css" />
+        <style>
+            .success-msg,
+            .err-msg {
+                color: #dc3545;
+                border: 1px solid #dc3545;
+                padding: 10px;
+                border-radius: 3px;
+            }
+
+            .success-msg {
+                color: #ffffff;
+                background-color: #20c997;
+                border-color: rgba(0, 0, 0, 0.1);
+            }
+        </style>
+    </head>
+    
+    <body class="dark:bg-slate-900">
+        <section class="md:h-screen py-36 flex items-center bg-[url('/images/auth.jpg')] bg-no-repeat bg-center">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black"></div>
+            <div class="container">
+                <div class="flex justify-center">
+                    <div class="max-w-[400px] w-full m-auto p-6 bg-white dark:bg-slate-900 shadow-md dark:shadow-gray-700 rounded-md">
+                        <h5 class="my-6 text-xl font-semibold">Login</h5>
+                        <form class="text-left" action="/auth/seller/login" method="POST" id="lg-form">
+                            <div class="grid grid-cols-1">
+                                <div class="mb-4">
+                                    <label class="font-semibold" for="Email">Email:</label>
+                                    <input id="email" type="email" name="email" class="form-input mt-3" placeholder="Email" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="font-semibold" for="LoginPassword">Password:</label>
+                                    <input id="password" type="password" name="password" class="form-input mt-3" placeholder="Password:" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <button type="submit" class="btn btn-primary rounded-md w-full" id="login">Sign in</button>
+                                    <!-- <input type="submit" class="btn btn-primary rounded-md w-full" value="Sign in"> -->
+                                </div>
+
+                                <div class="text-center">
+                                    <span class="text-slate-400 me-2">Don't have an account ?</span> <a href="./register" class="text-black dark:text-white font-bold">Sign Up</a>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="message"></div>
+                    </div>
+                </div>
+            </div>
+        </section><!--end section -->
+    </body>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script>
+        $(document).ready(function(){
+            $("#login").click(function(){
+        
+                var action = $("#lg-form").attr('action');
+                var form_data = {
+                    email: $("#email").val(),
+                    password: $("#password").val()
+                };
+        
+                $.ajax({
+                    type: "POST",
+                    url: action,
+                    data: form_data,
+                    success: function(response)
+                    {
+                        console.log(response);
+                        if(response.token){
+                            localStorage.setItem("token", response.token);
+                            localStorage.setItem("role", 'sl');
+                            $("#lg-form").slideUp('slow', function(){
+                                $("#message").html('<p class="success">You have logged in successfully!</p><p>Redirecting....</p>');
+                            });
+                            window.location.href = "/messages/lists";
+                        }else{
+                            $("#message").html('<p class="error">ERROR: Invalid username and/or password.</p>');
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+        </script>
+</html>

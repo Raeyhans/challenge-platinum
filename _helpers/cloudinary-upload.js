@@ -16,4 +16,8 @@ const upload = async (file, array={ }) => {
   }
 }
 
+<<<<<<< HEAD
 module.exports = { upload };
+=======
+module.exports = { upload };
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1

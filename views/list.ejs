@@ -222,19 +222,11 @@
 <body translate="no">
     <div class="container">
         <div class="row no-gutters">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="settings-tray">
                     <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/filip.jpg" alt="Profile img">
                 </div>
-                <div class="friend-drawer friend-drawer--onhover">
-                    <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">
-                    <div class="text">
-                        <h6><%=title%></h6>
-                        <p class="text-muted">Hey, you're arrested!</p>
-                    </div>
-                    <span class="time text-muted small">13:21</span>
-                </div>
-                <hr>
+                <div id="container-chat"></div>
             </div>
         </div>
     </div>
@@ -243,8 +235,54 @@
     <script defer src="/scripts.js"></script>
     
     <script id="rendered-js">
-        $('.friend-drawer--onhover').on('click', function() {
-            $('.chat-bubble').hide('slow').show('slow');
+            $('.friend-drawer--onhover').on('click', function() {
+                $('.chat-bubble').hide('slow').show('slow');
+            });
+            if (localStorage.getItem('token') === "") {  
+                window.location='/';
+            }
+            function anchorScr(id){
+                $.ajax(
+                    {
+                        url: '/messages/init-chat',
+                        type: 'POST',
+                        data: {
+                            sellerID: id
+                        },
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader ("authorization", "Bearer " + window.localStorage.getItem('token'));
+                        },
+                        success: function(data) {
+                            window.location = "/messages/chats/" + data;
+                        }
+                    }
+                );
+            }
+            $(document).ready(function() {
+            $.ajax({
+                dataType: 'json',
+                type:'GET',
+                url: "/messages/conversation",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader ("authorization", "Bearer " + window.localStorage.getItem('token'));
+                },
+                success: function (response) {
+                    var html = '';
+                    for (var i = 0; i < response.length; i++) {
+                        html += '<a id="chatGroup-'+response[i].chat_group+'" class="contact-chat" onclick="anchorScr('+response[i].id+')"><div class="friend-drawer friend-drawer--onhover">';
+                        html += '<img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">';
+                        html += '<div class="text">';
+                        html += '<h6>'+response[i].firstname+'</h6>';
+                        html += '<p class="text-muted">'+response[i].message+'</p>';
+                        html += '</div>';
+                        html += '</div></a>';
+                        html += '<hr class="col-md-12">';
+                    }
+                    $('#container-chat').append(html);               
+                }
+		    });
+
+            $('.contact-chat').click();
         });
     </script>
 </body>

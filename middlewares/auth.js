@@ -29,7 +29,7 @@ exports.userLoginJwt = (roles = []) => async (req,res,next) => {
         throw new Error('Invalid credentials.');
 
     }catch{
-        return res.json({
+        return res.status(401).json({
             msg: 'You are not authorized to access this page.'
         });
     }

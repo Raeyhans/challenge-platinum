@@ -101,7 +101,7 @@ exports.getOrders = async (req, res, next) => {
                 msg: 'Your order is empty.'
             });
         }
-        return res.status(200).json(orders);
+        return res.status(200).json({ data: orders });
             
     } catch (e) {
         next(e);

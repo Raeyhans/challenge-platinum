@@ -38,6 +38,10 @@ app.use('/auth', authRouter);
 app.use('/items', itemRouter);
 app.use('/orders', orderRoute);
 app.use('/categories', categoryRouter);
+<<<<<<< HEAD
+=======
+app.use('/messages', messageRouter);
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
 
 app.use(function(req, res, next) {
   next(createError(404));

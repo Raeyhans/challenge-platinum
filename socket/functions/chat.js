@@ -1,34 +1,39 @@
 const db = require('../../models');
 
 const chat = ({ socket, io }) => {
-    socket.on("sendPrivateChat", async ({content, to}) => {
+    socket.on("sendPrivateChat", async ({message, id_seller}) => {
   
       try {
-        const message = {
-          content,
-          from: socket.userID,
-          to,
+        const customer = await db.Customers.findByPk(socket.userID);
+
+        const NewMessage = {
+          message,
+          from: 'cs' + socket.userID,
+          id_customer: socket.userID,
+          id_seller: id_seller,
           read_by: JSON.stringify([socket.userID]),
+          chat_group: `cs${socket.userID}-sl${id_seller}`,
         };
-        console.log(socket.userID);
-        const chat = await db.Messages.create(message, {
-          to,
-          from: socket.userID,
-        })
+
+        const chat = await db.Messages.create(NewMessage)
     
         const chatResponse = {
+          "from": chat.from,
+          "id_customer": chat.id_customer,
+          "id_seller": id_seller,
           "chat_group": chat.chat_group,
           "created_at": chat.created_at,
           "id": chat.id,
-          "read_by": [socket.userID],
+          "read_by": socket.userID,
           "message": chat.message,
+          "firstname": customer.firstname,
           "user": {
               "id": socket.userID,
           }
         }
     
-        const toSocket = 'room-' + to
-        const fromSocket = 'room-' + socket.userID
+        const toSocket = 'room-seller' + id_seller
+        const fromSocket = 'room-customer' + socket.userID
     
         const isReceiverConnected = io.adapter.rooms.has(toSocket)
         const isSenderConnected = io.adapter.rooms.has(fromSocket)
@@ -54,7 +59,7 @@ const chat = ({ socket, io }) => {
 
         const notification = {
           title: 'Anda Menerima Pesan Baru',
-          body: `${sender.firstname}: ${content}`
+          body: `${sender.firstname}: ${message}`
         }
     
         if (isReceiverConnected) {
@@ -67,64 +72,79 @@ console.log(error);
       }
     });
   
-    // socket.on(readMessage, async (chatID) => {
-    //   try {
-    //     const chats = await db.Messages.findAll({where: {
-    //       id: {
-    //         [Op.in]: chatID
-    //       }
-    //     }})
+  }
+
+  const chatSeller = ({ socket, io }) => {
+    socket.on("sendPrivateChatSeller", async ({message, id_customer}) => {
   
-    //     const readedMessage = [];
-  
-    //     const updatePromise = chats.map(item => {
-    //       let newReadBy = item.parsed_read_by || []
-    //       newReadBy.push(socket.userID);
-  
-    //       newReadBy = uniqBy(newReadBy, item => item)
-  
-    //       readedMessage.push({
-    //         id: item.id,
-    //         chat_group: item.chat_group,
-    //         id_seller: item.id_seller,
-    //         id_customer: item.id_customer,
-    //         read_by: newReadBy
-    //       })
-  
-    //       item.read_by = JSON.stringify(newReadBy);
-  
-    //       return item.save();
-    //     })
-  
-    //     await Promise.all(updatePromise);
-  
-    //     readedMessage.forEach(item => {
-    //       const toSocket = 'room-' + item.to
-    //       const fromSocket = 'room-' + item.from
-      
-    //       const isReceiverConnected = io.adapter.rooms.has(toSocket)
-    //       const isSenderConnected = io.adapter.rooms.has(fromSocket)
-  
-    //       const socketResponse = {
-    //         _id: item.id,
-    //         chat_group: item.chat_group,
-    //         read_by: item.read_by
-    //       }
+      try {
+
+        const NewMessage = {
+          message,
+          from: 'sl' + socket.userID,
+          id_customer: id_customer,
+          id_seller: socket.userID,
+          read_by: JSON.stringify([socket.userID]),
+          chat_group: `cs${id_customer}-sl${socket.userID}`,
+        };
+       
+        const chat = await db.Messages.create(NewMessage)
     
-    //       if (isReceiverConnected) {
-    //         socket.to(toSocket).emit(socketEvent.readMessage, socketResponse);
-    //       }
+        const chatResponse = {
+          "from": chat.from,
+          "id_customer": id_customer,
+          "id_seller": chat.id_seller,
+          "chat_group": chat.chat_group,
+          "created_at": chat.created_at,
+          "id": chat.id,
+          "read_by": socket.userID,
+          "message": chat.message,
+          "user": {
+              "id": socket.userID,
+          }
+        }
+        
+        const toSocket = 'room-customer' + id_customer
+        const fromSocket = 'room-seller' + socket.userID
+        
+        const isReceiverConnected = io.adapter.rooms.has(toSocket)
+        const isSenderConnected = io.adapter.rooms.has(fromSocket)
+        
+        if (isReceiverConnected) {
+          socket.to(toSocket).emit("receivePrivateChat", chatResponse);
+        }
+        
+        if (isSenderConnected) {
+          socket.to(fromSocket).emit("receivePrivateChat", chatResponse);
+        }
+        let ModelSender = null;
+        
+        if(socket.userRole == 'customer'){
+            ModelSender = db.Customers;
+        }else{
+            ModelSender = db.Sellers;
+        }
+        
+        const [sender] = await Promise.all([
+            ModelSender.findByPk(socket.userID),
+        ])
+
+        const notification = {
+          title: 'Anda Menerima Pesan Baru',
+          body: `${sender.firstname}: ${message}`
+        }
     
-    //       if (isSenderConnected) {
-    //         socket.to(fromSocket).emit(socketEvent.readMessage, socketResponse);
-    //       }
-    //     })
-  
-    //   } catch (error) {
-    //     logger.error(JSON.stringify(error))  
-    //   }
-    // })
+        if (isReceiverConnected) {
+          socket.to(toSocket).emit("notification", notification)
+        } 
+        
+      } catch (error) {
+console.log(error);
+        // logger.error(JSON.stringify(error))
+      }
+    });
+
   }
   
-module.exports = chat;
+module.exports = { chat, chatSeller };
   

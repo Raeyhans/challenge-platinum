@@ -17,7 +17,11 @@ exports.createItem = async (req, res, next) => {
                 code: req.body.code
             }
         });
+<<<<<<< HEAD
 
+=======
+       
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
         if(finder != null){
             return res.status(400).json({
                 msg: 'This item has been insert.'
@@ -66,12 +70,65 @@ exports.addImage = async (req, res, next) => {
                 image
             }
         } = req;
+<<<<<<< HEAD
 
+=======
+        
+        // console.log("di addImage " + image);
+        
+        // const file = image[0];
+        // const result = await cloudinary.uploader.upload(file, {
+        //     overwrite: true,
+        //     use_filename: true,
+        //     unique_filename: true
+        //   });
+
+        // fs.unlinkSync(image[0]);
+        // if(!image.length) {
+        //     return res.status(400).json({
+        //         msg: 'Image is required.'
+        //     })
+        // }
+        
+        // const data = image.map(item => {
+        //     return {
+        //         id_item,
+        //         picture: result.secure_url,
+        //         public_id: result.public_id,
+        //         asset_id: result.asset_id,
+        //         created_by: sellerId
+        //     }
+        // });
+        
+        // await db.ItemGallery.bulkCreate(data);
+
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
         let finder = await db.Items.findOne({
             where: {
                 id: req.body.id_item
             }
         });
+<<<<<<< HEAD
+=======
+
+        if(finder == null){
+            return res.status(400).json({
+                msg: 'Cant input Image, item not found'
+            });        
+        }
+
+        for(let i = 0 ; i < req.files.length ; i++){
+            const uploadItem= await upload (req.files[i].path)
+            fs.unlinkSync(req.files[i].path)
+            await db.ItemGallery.create({
+              id_item: id_item,
+              picture: uploadItem.secure_url,
+              public_id: uploadItem.public_id,
+              asset_id: uploadItem.asset_id,
+              created_by:sellerId,
+          })
+          }
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
 
         if(finder == null){
             return res.status(400).json({

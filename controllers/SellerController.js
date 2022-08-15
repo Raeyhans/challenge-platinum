@@ -15,6 +15,12 @@ exports.registerSeller = async (req, res, next) => {
     }
 
     try {
+        if (body.firstname == null || body.password == null || body.email == null || body.code == null) {
+            return res.status(400).json({
+                status: 400,
+                msg: 'All field cannot empty.'
+            });
+        }
 
         const user = await db.Sellers.findOne({
             where: {
@@ -27,7 +33,12 @@ exports.registerSeller = async (req, res, next) => {
             });
         }
 
+<<<<<<< HEAD
         // const hashToken = jwt.sign(body.email, body.password);
+=======
+
+        const hashToken = jwt.sign(body.email, body.password);
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
 
         await db.Sellers.create({
             firstname: body.firstname,
@@ -37,7 +48,12 @@ exports.registerSeller = async (req, res, next) => {
             address: body.address,
             city: body.city,
             code: body.code,
+<<<<<<< HEAD
             // token: hashToken,
+=======
+            token: hashToken,
+            role: 'seller'
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
         });
 
         // await sendEmail({
@@ -62,13 +78,13 @@ exports.getAllSeller = async (req,res,next) => {
     try{
         const user = await db.Sellers.findAll({
             attributes: {
-                exclude: ['password']
+                exclude: ['password','token']
             },
             order: [
                 ['id', 'DESC']
             ]
         });
-        res.json(user);
+        res.status(200).json(user);
     }catch (e) {
         next(e);
     }
@@ -85,7 +101,7 @@ exports.editSeller = async (req,res,next) => {
                 id
             }
         } = req;
-console.log(roleID);
+
         if(roleID === 'seller'){
             if(sellerId != id){
                 return res.status(404).json({
@@ -133,7 +149,7 @@ exports.getSeller = async (req,res,next) => {
 
         const user = await db.Sellers.findOne({
             attributes: {
-                exclude: ['password']
+                exclude: ['password','token']
             },
             where: {
                 id: req.params.id
@@ -141,10 +157,7 @@ exports.getSeller = async (req,res,next) => {
         });
         if (user != null) {
             return res.status(200).json(user);
-        } 
-        return res.status(404).json({
-            msg: 'Seller not found.'
-        });
+        }
 
     } catch (e) {
         next(e);
@@ -210,6 +223,22 @@ exports.deleteSeller = async (req,res,next) => {
             });
         });
 
+    }catch (e) {
+        next(e);
+    }
+}
+
+exports.getContactSeller = async (req,res,next) => {
+    try{
+        const user = await db.Sellers.findAll({
+            attributes: {
+                exclude: ['password','token']
+            },
+            order: [
+                ['id', 'DESC']
+            ]
+        });
+        res.json(user);
     }catch (e) {
         next(e);
     }

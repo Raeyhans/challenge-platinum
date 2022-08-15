@@ -12,6 +12,8 @@ const itemPath= require('./paths/item-path');
 const itemSchema= require ('./schema/item-schema');
 const orderPath= require('./paths/order-path');
 const orderSchema= require ('./schema/order-schema');
+const messagePath= require('./paths/message-path');
+const messageSchema= require ('./schema/message-schema');
 
 module.exports = {
     openapi: '3.0.0',
@@ -30,10 +32,10 @@ module.exports = {
         url: "https://google.com",
       }
     },
-    host: 'localhost:3000',
+    host: process.env.HOST,
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: process.env.HOST,
         description: 'Server Dev',
       },
     ],
@@ -66,6 +68,10 @@ module.exports = {
       name: "Order",
       description: "Everything about Order API"
     },
+    {
+      name: "Message",
+      description: "Everything about Message Chat"
+    },
   ],
   paths: {
     ...authPath,
@@ -75,6 +81,7 @@ module.exports = {
     ...categoryPath,
     ...itemPath,
     ...orderPath,
+    ...messagePath,
   },
   components: {
     schemas: {
@@ -85,6 +92,7 @@ module.exports = {
       ...categorySchema,
       ...itemSchema,
       ...orderSchema,
+      ...messageSchema,
     },
     securitySchemes: {
       bearerAuth: {

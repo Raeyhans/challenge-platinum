@@ -11,7 +11,11 @@ module.exports = {
   // bail: 0,
 
   // The directory where Jest should store its cached dependency information
+<<<<<<< HEAD
   // cacheDirectory: "C:\\Users\\USER\\AppData\\Local\\Temp\\jest",
+=======
+  // cacheDirectory: "C:\\Users\\Raya\\AppData\\Local\\Temp\\jest",
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
 
   // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,
@@ -34,17 +38,34 @@ module.exports = {
   coverageProvider: "v8",
 
   // A list of reporter names that Jest uses when writing coverage reports
+<<<<<<< HEAD
   coverageReporters: [
     "text",
   ],
 
   // An object that configures minimum threshold enforcement for coverage results
+=======
+  // coverageReporters: [
+  //   "json",
+  //   "text",
+  //   "lcov",
+  //   "clover"
+  // ],
+  coverageReporters: ['text'],
+
+  // An object that configures minimum threshold enforcement for coverage results
+  // coverageThreshold: undefined,
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
   coverageThreshold: {
     "global": {
       "branches": 80,
       "functions": 80,
       "lines": 80,
+<<<<<<< HEAD
       "statements": -10
+=======
+      // "statements": -10
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
     }
   },
 
@@ -189,7 +210,11 @@ module.exports = {
   // unmockedModulePathPatterns: undefined,
 
   // Indicates whether each individual test should be reported during the run
+<<<<<<< HEAD
   // verbose: undefined,
+=======
+  verbose: true,
+>>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
 
   // An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode
   // watchPathIgnorePatterns: [],

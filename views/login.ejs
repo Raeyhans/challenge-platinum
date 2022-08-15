@@ -32,7 +32,7 @@
     </head>
     
     <body class="dark:bg-slate-900">
-        <section class="md:h-screen py-36 flex items-center bg-[url('../../images/auth.jpg')] bg-no-repeat bg-center">
+        <section class="md:h-screen py-36 flex items-center bg-[url('/images/auth.jpg')] bg-no-repeat bg-center">
             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black"></div>
             <div class="container">
                 <div class="flex justify-center">
@@ -86,10 +86,11 @@
                         console.log(response);
                         if(response.token){
                             localStorage.setItem("token", response.token);
+                            localStorage.setItem("role", 'cs');
                             $("#lg-form").slideUp('slow', function(){
                                 $("#message").html('<p class="success">You have logged in successfully!</p><p>Redirecting....</p>');
                             });
-                            window.location.href = "/messages/chats";
+                            window.location.href = "/messages/contact-chat";
                         }else{
                             $("#message").html('<p class="error">ERROR: Invalid username and/or password.</p>');
                         }

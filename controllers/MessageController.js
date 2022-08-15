@@ -1,43 +1,129 @@
 const db = require('../models');
 
-exports.getMessage = async (req,res,next) => {
+exports.getConversation = async (req,res,next) => {
     try{
-        const messages = await db.Messages.findAll({
-            where: {
-                id_customer: req.body.sender,
-                id_seller: req.body.receiver
-            },
-            group: ['id_customer', 'id_seller']
-        });
-        if(messages != null){
-            return res.status(200).json(messages);
+        const {
+            user: {
+                id: userId,
+                role: roleUser
+            }
+        } = req;
+
+        let selectOption = `m.id_seller as id, s.firstname`;
+        let whereOption = `m.id_customer = ${userId}`;
+        let joinOption =  `sellers s ON m.id_seller = s.id`;
+        if(roleUser == 'seller'){
+            selectOption = `m.id_customer as id, c.firstname`;
+            whereOption = `m.id_seller = ${userId}`;
+            joinOption = `customers c ON m.id_customer = c.id`;
         }
-        return res.status(404).json({
-            msg: 'Message not found.'
+
+
+        const messages = await db.sequelize.query(`SELECT distinct ON (m.chat_group) m.chat_group, m.message, ${selectOption} FROM messages m
+            LEFT JOIN ${joinOption}
+            WHERE ${whereOption} ORDER BY m.chat_group, m.id DESC`, {
+            type: db.sequelize.QueryTypes.SELECT
         });
+
+        res.status(200).json(messages);
+
     }catch (e) {
         next(e);
     }
 }
 
-exports.createMessage = async (req,res,next) => {
+exports.initChat = async (req,res,next) => {
     try{
         const {
             user: {
-                id: adminId
+                id: customerId,
+                role: roleUser
+            },
+            body: {
+                sellerID
             }
         } = req;
 
-        const data = {
-            id_customer: adminId,
-            id_seller: 3,
-            created_by: adminId,
-            updated_by: adminId,
+        let chatGroup = `cs${customerId}-sl${sellerID}`;
+        if(roleUser == 'seller'){
+            chatGroup = `cs${sellerID}-sl${customerId}`;
         }
+        
+        await db.Messages.findOrCreate({
+            where: {
+                chat_group: chatGroup
+            },
+            defaults: {
+                chat_group: chatGroup,
+                message: 'Percakapan dimulai',
+            }
+        });
+        res.status(200).json(chatGroup);
 
-        await db.Messages.create(data);
-        return res.status(201);
+    }catch (e) {
+        next(e);
+    }
+}
 
+exports.getHistoryChat = async (req,res,next) => {
+    try{
+        const {
+            user: {
+                id: customerId
+            },
+            params: {
+                chatGroup
+            }
+        } = req;
+
+        const messages = await db.Messages.findAll({
+            where: {
+                chat_group: chatGroup
+            },
+            limit: 31,
+        });
+
+        res.status(200).json(messages);
+    }catch (e) {
+        next(e);
+    }
+}
+
+exports.getSeller = async (req,res,next) => {
+    try{
+        const {
+            user: {
+                id: sellerId
+            },
+            params: {
+                chatGroup
+            }
+        } = req;
+
+        const other = chatGroup.split('-')[1].replace('sl', '');
+        const data = await db.Sellers.findByPk(other);
+
+        res.status(200).json(data);
+    }catch (e) {
+        next(e);
+    }
+}
+
+exports.getCustomer = async (req,res,next) => {
+    try{
+        const {
+            user: {
+                id: customerId
+            },
+            params: {
+                chatGroup
+            }
+        } = req;
+
+        const other = chatGroup.split('-')[0].replace('cs', '');
+        const data = await db.Customers.findByPk(other);
+
+        res.status(200).json(data);
     }catch (e) {
         next(e);
     }
