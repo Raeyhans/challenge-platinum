@@ -8,11 +8,11 @@ exports.registerCustomer = async (req, res, next) => {
     const errors = validationResult(req);
     const { body } = req;
 
-    if (!errors.isEmpty()) {
-        return res.render('register', {
-            error: errors.array()[0].msg
-        });
-    }
+    // if (!errors.isEmpty()) {
+    //     return res.render('register', {
+    //         error: errors.array()[0].msg
+    //     });
+    // }
 
     try {
         if (body.firstname == null || body.password == null || body.email == null) {
