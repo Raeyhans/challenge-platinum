@@ -13,9 +13,9 @@ describe('Item Delete Endpoints',()=>{
         expect(typeof res.public_id).toBe('string');
 
         tespubid = res.public_id
-    })
+    }, 10000)
 
     it("destroy cloudinary", async()=>{
         await delImage(tespubid)
-    })
+    }, 10000)
 })

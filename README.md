@@ -3,7 +3,7 @@ Express server
 
 ## Deployed to heroku. 
 
-### <a href='https://quiet-fortress-90834.herokuapp.com/api-docs'>Try it here!</a>
+### <a href='https://mysterious-earth-40405.herokuapp.com/api-docs'>Try it here!</a>
 
 ### Steps to run it on local:
 - install nodejs
