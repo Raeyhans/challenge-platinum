@@ -8,33 +8,34 @@ exports.createItem = async (req, res, next) => {
     try {
         const {
             user: {
+                code: sellerCode,
                 id: sellerId
             },
+            body: {
+                items,
+                pictures
+            }
         } = req;
 
-        let finder = await db.Items.findOne({
+        const finder = await db.Items.findOne({
             where: {
-                code: req.body.code
+                code: req.body.items.code
             }
         });
-<<<<<<< HEAD
-
-=======
        
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
         if(finder != null){
             return res.status(400).json({
                 msg: 'This item has been insert.'
-            });        
+            });
+            
         }
-
         const data = {
-            seller_code: sellerId,
-            category_id: req.body.category_id,
-            code: req.body.code,
-            title: req.body.title,
-            price: req.body.price,
-            qty: req.body.qty,
+            seller_code: sellerCode,
+            category_id: req.body.items.category_id,
+            code: req.body.items.code,
+            title: req.body.items.title,
+            price: req.body.items.price,
+            qty: req.body.items.qty,
             // itemGalleries: pictures?.map(item => {
             //     return {
             //         picture: item.picture,
@@ -70,9 +71,6 @@ exports.addImage = async (req, res, next) => {
                 image
             }
         } = req;
-<<<<<<< HEAD
-
-=======
         
         // console.log("di addImage " + image);
         
@@ -102,14 +100,11 @@ exports.addImage = async (req, res, next) => {
         
         // await db.ItemGallery.bulkCreate(data);
 
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
         let finder = await db.Items.findOne({
             where: {
                 id: req.body.id_item
             }
         });
-<<<<<<< HEAD
-=======
 
         if(finder == null){
             return res.status(400).json({
@@ -128,33 +123,52 @@ exports.addImage = async (req, res, next) => {
               created_by:sellerId,
           })
           }
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
 
-        if(finder == null){
-            return res.status(400).json({
-                msg: 'Cant input Image, item not found'
-            });        
-        }
-
-        for(let i = 0 ; i < req.files.length ; i++){
-            const uploadItem= await upload (req.files[i].path)
-            fs.unlinkSync(req.files[i].path)
-            await db.ItemGallery.create({
-              id_item: id_item,
-              picture: uploadItem.secure_url,
-              public_id: uploadItem.public_id,
-              asset_id: uploadItem.asset_id,
-              created_by:sellerId,
-          })
-          }
-            return res.status(201).json({
+        return res.status(201).json({
             msg: 'Image added.'
         });
+    
 
     } catch (e) {
         next(e);
     }
 }
+
+// exports.addImage = async (req, res, next) => {
+//     try {
+//         const {
+//             user: {
+//                 id: sellerId
+//             },
+//             body: {
+//                 id_item,
+//                 image
+//             }
+//         } = req;
+
+//         if(!image.length) {
+//             return res.status(400).json({
+//                 msg: 'Image is required.'
+//             })
+//         }
+        
+//         const data = image.map(item => {
+//             return {
+//                 id_item,
+//                 picture: item,
+//                 created_by: sellerId
+//             }
+//         });
+        
+//         await db.ItemGallery.bulkCreate(data);
+//         return res.status(201).json({
+//             msg: 'Image added.'
+//         });
+
+//     } catch (e) {
+//         next(e);
+//     }
+// }
 
 exports.getItems = async (req, res, next) => {
     try {
@@ -172,7 +186,7 @@ exports.getItems = async (req, res, next) => {
                 data: item
             });
         }
-        return res.status(404).json('Item not found.');
+        throw new Error('Item not found.');
 
     } catch (e) {
         next(e);
@@ -183,10 +197,7 @@ exports.editItem = async (req, res, next) => {
     try {
         await db.Items.findByPk(req.params.id).then(function (result) {
             if (result != null) {
-                db.Items.update({
-                    price:req.body.price,
-                    qty:req.body.qty
-                }, {
+                db.Items.update(req.body, {
                     where: {
                         id: req.params.id
                     },
@@ -194,8 +205,7 @@ exports.editItem = async (req, res, next) => {
                         model: db.Sellers,
                         as: 'updatedBy',
                     }]
-                }
-                );
+                });
                 return res.status(200).json({
                     msg: 'Item updated.'
                 });

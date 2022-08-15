@@ -6,77 +6,6 @@ const testImage = './filetest/TEST.jpg';
 const { delImage } =require ('../_helpers/cloudinary-destroy')
 
 const loginSeller = {
-<<<<<<< HEAD
-    email: 'seller123@mail.com',
-    password: 'seller123'
-  }
-
-const testdelItem = {
-    category_id: 778,
-    code: "DELETE",
-    title: "DELETE",
-    price: 5000,
-    qty: 100,
-}
-
-describe('Item Delete Endpoints',()=>{
-  it('POST /auth/seller/login with valid email and pass, response should be 200', async () => {
-    const res = await request(app)
-      .post('/auth/seller/login')
-      .set('Accept', 'application/json')
-      .send({
-        email: loginSeller.email,
-        password: loginSeller.password
-      });
-
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('token');
-    expect(typeof res.body.token).toMatch('string');
-    validtoken = res.body.token;
-  })
-
-  it('POST /items with valid values, response should be 201', async () => {
-    const res = await request(app)
-      .post('/items/')
-      .set('Accept', 'application/json')
-      .set('authorization', 'Bearer ' + validtoken)
-      .send(testdelItem);
- 
-    expect(res.status).toBe(201);
-  })
-
-  it('Delete /item/id with valid token, response should be 200.', async () => {
-    let cek = await db.Items.findOne({
-      where:{
-        category_id : testdelItem.category_id
-      }
-    })
-
-console.log(cek.id,"<<<CEK ID")
-    
-    const parameter = cek.id
-    const response = await request(app)
-      .delete('/items/'+ parameter)
-      .set('Accept', 'application/json')
-      .set('authorization', 'Bearer ' + validtoken)
-
-    expect(response.status).toEqual(200);
-  })
-})
-
-
-const testItem = {
-    category_id: 888,
-    code: "600",
-    title: "Bakmie",
-    price: 5000,
-    qty: 100,
-}
-
-const editItem={
-  price: 100,
-  qty:50
-=======
   email: 'seller1@gmail.com',
   password: 'seller1'
 }
@@ -93,17 +22,12 @@ const testItem = {
       price : "199900",
       qty : 12
   }
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
 }
 
 afterAll(() => {
   db.Items.destroy({
     where: {
-<<<<<<< HEAD
-      category_id: testItem.category_id
-=======
       category_id: testItem.items.category_id
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
     }
   })
 });
@@ -128,15 +52,9 @@ describe('Item end point', () => {
     validtoken = res.body.token;
   })
 
-<<<<<<< HEAD
-  it('POST /item with valid values, response should be 201', async () => {
-    const res = await request(app)
-      .post('/items/')
-=======
   it('POST /items with valid values, response should be 201', async () => {
     const res = await request(app)
       .post('/items')
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
       .set('Accept', 'application/json')
       .set('authorization', 'Bearer ' + validtoken)
       .send(testItem);
@@ -144,15 +62,9 @@ describe('Item end point', () => {
     expect(res.status).toBe(201);
   })
 
-<<<<<<< HEAD
-  it('POST /item with same code, response should be 400', async () => {
-    const res = await request(app)
-      .post('/items/')
-=======
   it('POST /items with same code, response should be 400', async () => {
     const res = await request(app)
       .post('/items')
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
       .set('Accept', 'application/json')
       .set('authorization', 'Bearer ' + validtoken)
       .send(testItem);
@@ -160,15 +72,9 @@ describe('Item end point', () => {
     expect(res.status).toBe(400);
   })
 
-<<<<<<< HEAD
-  it('POST /item invalid, response should be 500', async () => {
-    const res = await request(app)
-      .post('/items/')
-=======
   it('POST /items invalid, response should be 500', async () => {
     const res = await request(app)
       .post('/items')
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
       .set('Accept', 'application/json')
       .set('authorization', 'Bearer ' + validtoken)
       .send("tes invalid");
@@ -181,11 +87,7 @@ describe('Item end point', () => {
       .post('/items/addImage')
       .set('Accept', 'application/json')
       .set('authorization', 'Bearer ' + validtoken)
-<<<<<<< HEAD
-      .field('id_item', 49)
-=======
       .field('id_item', 13) // set item_id sesuai item yang telah dibuat sebelumnya
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
       .attach('image', testImage)
     
     expect(res.status).toBe(201);
@@ -196,49 +98,27 @@ describe('Item end point', () => {
       .post('/items/addImage')
       .set('Accept', 'application/json')
       .set('authorization', 'Bearer ' + validtoken)
-<<<<<<< HEAD
-      .send({
-        id_item: 9999,
-      }
-      );
-=======
       .field('id_item', 9999)
       .attach('image', testImage);
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
     
     expect(res.status).toBe(400);
   })
 
-<<<<<<< HEAD
-  it('POST /item/addImage with invalid id item, response should be 500', async () => {
-=======
   it('POST /items/addImage with invalid id item, response should be 500', async () => {
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
     const res = await request(app)
       .post('/items/addImage')
       .set('Accept', 'application/json')
       .set('authorization', 'Bearer ' + validtoken)
       .send({
         id_item: "asdac123",
-<<<<<<< HEAD
-      }
-=======
         }
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
       );
     expect(res.status).toBe(500);
   })
 
-<<<<<<< HEAD
-  it('GET /items/ with valid token, response should be 200.', async () => {
-
-    const response = await request(app)
-      .get('/items/')
-=======
   it('GET /items with valid token, response should be 200.', async () => {
     const response = await request(app)
       .get('/items')
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
       .set('Accept', 'application/json')
       .set('authorization', 'Bearer ' + validtoken)
 
@@ -247,13 +127,8 @@ describe('Item end point', () => {
   })
 
   it('GET /items/id with valid token, response should be 200.', async () => {
-<<<<<<< HEAD
-    const parameter = 12
-    //12 ADALAH ITEM_ID YANG SUDAH TERDAFTAR
-=======
     const parameter = 13 // set item_id sesuai item yang telah dibuat sebelumnya
    
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
     const response = await request(app)
       .get('/items/'+ parameter)
       .set('Accept', 'application/json')
@@ -264,11 +139,7 @@ describe('Item end point', () => {
 
   it('GET /items/id with valid token with not registered item, response should be 404.', async () => {
     const parameter = 7899
-<<<<<<< HEAD
-    //7899 ADALAH ITEM_ID YANG SUDAH TIDAK TERDAFTAR
-=======
     
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
     const response = await request(app)
       .get('/items/'+ parameter)
       .set('Accept', 'application/json')
@@ -288,23 +159,14 @@ describe('Item end point', () => {
   })
 
   it('PUT /items/id with valid token, response should be 200.', async () => {
-<<<<<<< HEAD
-    const parameter = 12
-    //12 ADALAH ITEM_ID YANG SUDAH TERDAFTAR
-=======
     const parameter = 15 // set item_id sesuai item yang telah dibuat sebelumnya
     
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
     const response = await request(app)
       .put('/items/'+ parameter)
       .set('Accept', 'application/json')
       .set('authorization', 'Bearer ' + validtoken)
       .send({
-<<<<<<< HEAD
-        price: 8800,
-=======
         price: 145900,
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
         qty: 80
       })
 
@@ -313,11 +175,7 @@ describe('Item end point', () => {
 
   it('PUT /items/id item id not found, response should be 404.', async () => {
     const parameter = 909091
-<<<<<<< HEAD
-    //12 ADALAH ITEM_ID YANG SUDAH TERDAFTAR
-=======
     
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
     const response = await request(app)
       .put('/items/'+ parameter)
       .set('Accept', 'application/json')
@@ -330,25 +188,6 @@ describe('Item end point', () => {
     expect(response.status).toEqual(404);
   })
 
-<<<<<<< HEAD
-  it('PUT /items/id with valid token, response should be 500.', async () => {
-    const parameter = "zxcasd123"
-    //12 ADALAH ITEM_ID YANG SUDAH TERDAFTAR
-    const response = await request(app)
-      .put('/items/'+ parameter)
-      .set('Accept', 'application/json')
-      .set('authorization', 'Bearer ' + validtoken)
-      .send({
-        price: 8800,
-        qty: 80
-      })
-
-    expect(response.status).toEqual(500);
-  })
-
-}
-)
-=======
   // it('Delete /items/id with valid token, response should be 200.', async () => {
   //   const parameter = testID.id;
 
@@ -360,4 +199,3 @@ describe('Item end point', () => {
   //   expect(response.status).toEqual(200);
   // })
 })
->>>>>>> 4c9541e7560bbfcefa7264fefac0981d96f70ca1
