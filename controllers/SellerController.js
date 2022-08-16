@@ -53,11 +53,11 @@ exports.registerSeller = async (req, res, next) => {
             subject: 'Sign-up Verification',
             html: `<h4>Verify Email</h4>
                     <p>Thanks for being seller!</p><p>Please use the below token to verify your email address with the <code>/account/verify/TOKEN</code> api route:</p>
-                    <p><code>${hashToken}</code></p>`
-                    
+                    <p><code>${hashToken}</code></p>`             
         });
         
         res.status(201).json({
+            status: 201,
             msg: 'You have successfully registered.'
         });
 

@@ -57,6 +57,7 @@ exports.registerCustomer = async (req, res, next) => {
         });
 
         res.status(201).json({
+            status: 201,
             msg: 'You have successfully registered, please check your email and verify.'
         });
 
