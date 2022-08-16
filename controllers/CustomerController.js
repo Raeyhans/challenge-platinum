@@ -15,24 +15,25 @@ exports.registerCustomer = async (req, res, next) => {
     // }
 
     try {
+        
+        const user = await db.Customers.findOne({
+            where: {
+                email: body.email
+        }});
+        
+        if (user != null) {
+            return res.status(400).json({
+                error: 'Please choose another email.'
+            });
+        }
+        
         if (body.firstname == null || body.password == null || body.email == null) {
             return res.status(400).json({
                 status: 400,
                 msg: 'All field cannot empty.'
             });
         }
-
-        const user = await db.Customers.findOne({
-            where: {
-                email: body.email
-            }});
-
-        if (user != null) {
-            return res.status(400).json({
-                error: 'Please choose another email.'
-            });
-        }
-
+        
         const hashToken = jwt.sign(body.email, body.password);
 
         await db.Customers.create({
