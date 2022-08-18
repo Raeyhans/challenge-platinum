@@ -35,7 +35,7 @@ let invalidToken = 'invalid-token';
 describe('Register customer', () => {
   it('POST /customers/account/register with valid values, response should be 201', async () => {
     const res = await request(app)
-      .post('/customers/account/register')
+      .post('/account/register')
       .send(testUser)
       .set('Accept', 'application/json');
     expect(res.status).toBe(201);

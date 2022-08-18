@@ -12,15 +12,15 @@ const testUser = {
     name: 'Test123',
     email: 'Test123@mail.com',
     password: 'TestPassword'
-  }
+}
 
-  afterAll(() => {
-    db.Users.destroy({
-      where: {
-        username: testUser.username
-      }
-    })
-  });
+afterAll(() => {
+  db.Users.destroy({
+    where: {
+      username: testUser.username
+    }
+  })
+});
 
 let validToken = '';
 let invalidToken = 'invalid-token';
