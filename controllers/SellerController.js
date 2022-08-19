@@ -15,13 +15,6 @@ exports.registerSeller = async (req, res, next) => {
     // }
 
     try {
-        if (body.firstname == null || body.password == null || body.email == null || body.code == null) {
-            return res.status(400).json({
-                status: 400,
-                msg: 'All field cannot empty.'
-            });
-        }
-
         const user = await db.Sellers.findOne({
             where: {
                 email: body.email
@@ -33,6 +26,12 @@ exports.registerSeller = async (req, res, next) => {
             });
         }
 
+        if (body.firstname == null || body.password == null || body.email == null || body.code == null) {
+            return res.status(400).json({
+                status: 400,
+                msg: 'All field cannot empty.'
+            });
+        }
 
         const hashToken = jwt.sign(body.email, body.password);
 
@@ -54,7 +53,7 @@ exports.registerSeller = async (req, res, next) => {
             subject: 'Sign-up Verification',
             html: `<h4>Verify Email</h4>
                     <p>Thanks for being seller!</p><p>Please use the below token to verify your email address with the <code>/account/verify/TOKEN</code> api route:</p>
-                    <p><code>${hashToken}</code></p>, <p> or click this <a href="${process.env.HOST}/sellers/account/verify/${hashToken}">link</a> to verify your email address.</p>`             
+                    <p><code>${hashToken}</code></p><p> or click this <a href="${process.env.HOST}/sellers/account/verify/${hashToken}">link</a> to verify your email address.</p>`             
         });
         
         res.status(201).json({

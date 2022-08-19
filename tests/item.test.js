@@ -3,6 +3,7 @@ const request = require('supertest');
 const db = require("../models");
 const jwt = require("jsonwebtoken");
 const testImage = './filetest/TEST.jpg';
+const testImageInvalid = './filetest/';
 const { delImage } =require ('../_helpers/cloudinary-destroy')
 
 const loginSeller = {
@@ -100,16 +101,6 @@ describe('Item end point', () => {
       .set('authorization', 'Bearer ' + validtoken)
       .field('id_item', 9999)
       .attach('image', testImage);
-    
-    expect(res.status).toBe(400);
-  })
-
-  it('POST /item/addImage with empty image, response should be 400', async () => {
-    const res = await request(app)
-      .post('/items/addImage')
-      .set('Accept', 'application/json')
-      .set('authorization', 'Bearer ' + validtoken)
-      .field('id_item', 13);
     
     expect(res.status).toBe(400);
   })

@@ -41,8 +41,6 @@ module.exports = {
   "smtpOptions": {
       "host": process.env.EMAIL_HOST,
       "port": process.env.EMAIL_PORT,
-      "ssl": false,
-      "tls": false,
       "auth": {
           "user": process.env.EMAIL_USER,
           "pass": process.env.EMAIL_PASS

@@ -52,7 +52,7 @@ exports.registerCustomer = async (req, res, next) => {
             subject: 'Sign-up Verification',
             html: `<h4>Verify Email</h4>
                     <p>Thanks for registering!</p><p>Please use the below token to verify your email address with the <code>/account/verify/TOKEN</code> api route:</p>
-                    <p><code>${hashToken}</code></p>`
+                    <p><code>${hashToken}</code></p><p> or click this <a href="${process.env.HOST}/customers/account/verify/${hashToken}">link</a> to verify your email address.</p>`
                     
         });
 
