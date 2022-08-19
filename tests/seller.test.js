@@ -54,7 +54,7 @@ describe('Register seller', () => {
   it('POST /sellers/register without email, response should be 400', async () => {
     const res = await request(app)
       .post('/sellers/register')
-      .send({ firstname: 'User invalid', code: 'TESTCODE', pass: 'pass' })
+      .send({ firstname: 'User invalid', lastname: 'Last Invalid Name', code: 'TESTCODE', pass: 'pass' })
       .set('Accept', 'application/json');
 
     expect(res.status).toBe(400);

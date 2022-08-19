@@ -3,7 +3,6 @@ const request = require('supertest');
 const db = require("../models");
 const jwt = require("jsonwebtoken");
 const testImage = './filetest/TEST.jpg';
-const testImageInvalid = './filetest/';
 const { delImage } =require ('../_helpers/cloudinary-destroy')
 
 const loginSeller = {

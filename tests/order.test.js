@@ -26,7 +26,7 @@ const testItem = {
 }
 
 afterAll(() => {
-  db.Items.destroy({
+  db.Orders.destroy({
     where: {
         qty: testID.qty
     }
