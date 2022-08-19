@@ -34,13 +34,13 @@ let validToken = '';
 let invalidToken = 'invalid-token';
 
 describe('Register seller', () => {
-  it('POST /sellers/register with valid values, response should be 201', async () => {
-    const res = await request(app)
-      .post('/sellers/register')
-      .send(testUser)
-      .set('Accept', 'application/json');
-    expect(res.status).toBe(201);
-  })
+  // it('POST /sellers/register with valid values, response should be 201', async () => {
+  //   const res = await request(app)
+  //     .post('/sellers/register')
+  //     .send(testUser)
+  //     .set('Accept', 'application/json');
+  //   expect(res.status).toBe(201);
+  // })
 
   it('POST /sellers/register without password, response should be 400', async () => {
     const res = await request(app)

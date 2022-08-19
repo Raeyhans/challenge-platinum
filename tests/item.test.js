@@ -104,6 +104,16 @@ describe('Item end point', () => {
     expect(res.status).toBe(400);
   })
 
+  it('POST /item/addImage with empty image, response should be 400', async () => {
+    const res = await request(app)
+      .post('/items/addImage')
+      .set('Accept', 'application/json')
+      .set('authorization', 'Bearer ' + validtoken)
+      .field('id_item', 13);
+    
+    expect(res.status).toBe(400);
+  })
+
   it('POST /items/addImage with invalid id item, response should be 500', async () => {
     const res = await request(app)
       .post('/items/addImage')

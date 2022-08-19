@@ -112,6 +112,12 @@ exports.addImage = async (req, res, next) => {
             });        
         }
 
+        if(req.body.image == null){
+            return res.status(400).json({
+                msg: 'Image cannot empty.'
+            });        
+        }
+
         for(let i = 0 ; i < req.files.length ; i++){
             const uploadItem= await upload (req.files[i].path)
             fs.unlinkSync(req.files[i].path)

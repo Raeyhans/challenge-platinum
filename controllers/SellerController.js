@@ -50,10 +50,11 @@ exports.registerSeller = async (req, res, next) => {
 
         await sendEmail({
             to: body.email,
+            from: process.env.EMAIL_FROM,
             subject: 'Sign-up Verification',
             html: `<h4>Verify Email</h4>
                     <p>Thanks for being seller!</p><p>Please use the below token to verify your email address with the <code>/account/verify/TOKEN</code> api route:</p>
-                    <p><code>${hashToken}</code></p>`             
+                    <p><code>${hashToken}</code></p>, <p> or click this <a href="${process.env.HOST}/sellers/account/verify/${hashToken}">link</a> to verify your email address.</p>`             
         });
         
         res.status(201).json({
