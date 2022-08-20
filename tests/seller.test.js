@@ -40,7 +40,7 @@ describe('Register seller', () => {
       .send(testUser)
       .set('Accept', 'application/json');
     expect(res.status).toBe(201);
-  })
+  }, 15000)
 
   it('POST /sellers/register without password, response should be 400', async () => {
     const res = await request(app)

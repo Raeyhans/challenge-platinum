@@ -5,7 +5,7 @@ const db = require('../models');
 const testUser = {
     firstname: 'RegisterTest123',
     lastname: 'RegisterTest123',
-    email: 'RegisterTest123@mail.com',
+    email: 'platinum.test@yopmail.com',
     password: 'RegisterTestPassword',
     address: 'RegisterTestAddress',
     city: 'RegisterTestCity'
@@ -39,7 +39,7 @@ describe('Register customer', () => {
       .send(testUser)
       .set('Accept', 'application/json');
     expect(res.status).toBe(201);
-  })
+  }, 15000)
 
   it('POST /customers/account/register without password, response should be 400', async () => {
     const res = await request(app)
