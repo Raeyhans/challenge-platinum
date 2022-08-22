@@ -5,7 +5,7 @@ const db = require('../models');
 const testUser = {
     firstname: 'Test123',
     lastname: 'Test123',
-    email: 'Test123@mail.com',
+    email: 'platinum.test@yopmail.com',
     password: 'TestPassword',
     address: 'TestAddress',
     city: 'TestCity',
