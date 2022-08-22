@@ -49,6 +49,7 @@ exports.registerCustomer = async (req, res, next) => {
 
         await sendEmail({
             to: body.email,
+            from: process.env.EMAIL_FROM,
             subject: 'Sign-up Verification',
             html: `<h4>Verify Email</h4>
                     <p>Thanks for registering!</p><p>Please use the below token to verify your email address with the <code>/account/verify/TOKEN</code> api route:</p>
