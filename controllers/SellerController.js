@@ -8,11 +8,11 @@ exports.registerSeller = async (req, res, next) => {
     const errors = validationResult(req);
     const { body } = req;
 
-    if (!errors.isEmpty()) {
-        return res.render('register', {
-            error: errors.array()[0].msg
-        });
-    }
+    // if (!errors.isEmpty()) {
+    //     return res.render('register', {
+    //         error: errors.array()[0].msg
+    //     });
+    // }
 
     try {
         if (body.firstname == null || body.password == null || body.email == null || body.code == null) {
@@ -21,11 +21,10 @@ exports.registerSeller = async (req, res, next) => {
                 msg: 'All field cannot empty.'
             });
         }
-
         const user = await db.Sellers.findOne({
             where: {
                 email: body.email
-            }});
+        }});
 
         if (user != null) {
             return res.status(400).json({
@@ -50,15 +49,16 @@ exports.registerSeller = async (req, res, next) => {
 
         await sendEmail({
             to: body.email,
+            from: 'register.seller@domain.com',
             subject: 'Sign-up Verification',
             html: `<h4>Verify Email</h4>
                     <p>Thanks for being seller!</p><p>Please use the below token to verify your email address with the <code>/account/verify/TOKEN</code> api route:</p>
-                    <p><code>${hashToken}</code></p>`
-                    
+                    <p><code>${hashToken}</code></p><p> or click this <a href="${process.env.HOST}/sellers/account/verify/${hashToken}">link</a> to verify your email address.</p>`             
         });
         
         res.status(201).json({
-            msg: 'You have successfully registered.'
+            status: 201,
+            msg: 'You have successfully registered, please check your email and verify.'
         });
 
     } catch (e) {

@@ -5,6 +5,12 @@ exports.createUser = async (req,res,next) => {
     const errors = validationResult(req);
     const { body } = req;
     try {
+        if (body.password == null || body.username == null || body.password == null || body.name == null) {
+            return res.status(400).json({
+                status: 400,
+                msg: 'All field cannot empty.'
+            });
+        }
         const user = await db.Users.findOne({
             where: {
                 username: body.username
@@ -17,12 +23,6 @@ exports.createUser = async (req,res,next) => {
             });
         }
 
-        if (body.password == null || body.username == null || body.password == null || body.name == null) {
-            return res.status(400).json({
-                status: 400,
-                msg: 'All field cannot empty.'
-            });
-        }
 
         await db.Users.create({
             username: body.username,

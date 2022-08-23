@@ -5,42 +5,42 @@ const db = require('../models');
 const testUser = {
     firstname: 'Test123',
     lastname: 'Test123',
-    email: 'Test123@mail.com',
+    email: 'platinum.test@yopmail.com',
     password: 'TestPassword',
     address: 'TestAddress',
     city: 'TestCity',
     code: 'TestCode'
-  }
+}
 
-  const loginAdmin = {
-    username: 'admin1',
-    password: 'admin1',
-  }
+const loginAdmin = {
+  username: 'admin1',
+  password: 'admin1',
+}
 
-  const loginUser = {
-    email: 'seller1@gmail.com',
-    password: 'seller1',
-  }
+const loginUser = {
+  email: 'seller1@gmail.com',
+  password: 'seller1',
+}
 
-  afterAll(() => {
-    db.Sellers.destroy({
-      where: {
-        email: testUser.email
-      }
-    })
-  });
+afterAll(() => {
+  db.Sellers.destroy({
+    where: {
+      email: testUser.email
+    }
+  })
+});
 
 let validToken = '';
 let invalidToken = 'invalid-token';
 
-describe('Create seller', () => {
+describe('Register seller', () => {
   it('POST /sellers/register with valid values, response should be 201', async () => {
     const res = await request(app)
       .post('/sellers/register')
       .send(testUser)
       .set('Accept', 'application/json');
     expect(res.status).toBe(201);
-  }, 10000)
+  }, 15000)
 
   it('POST /sellers/register without password, response should be 400', async () => {
     const res = await request(app)
@@ -54,7 +54,7 @@ describe('Create seller', () => {
   it('POST /sellers/register without email, response should be 400', async () => {
     const res = await request(app)
       .post('/sellers/register')
-      .send({ firstname: 'User invalid', code: 'TESTCODE', pass: 'pass' })
+      .send({ firstname: 'User invalid', lastname: 'Last Invalid Name', code: 'TESTCODE', pass: 'pass' })
       .set('Accept', 'application/json');
 
     expect(res.status).toBe(400);

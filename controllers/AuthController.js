@@ -8,13 +8,14 @@ exports.loginAdmin = async (req, res, next) => {
     const errors = validationResult(req);
     const { body } = req;
 
-    if (!errors.isEmpty()) {
-        return res.json({
-            error: errors.array()[0].msg
-        });
-    }
+    // if (!errors.isEmpty()) {
+    //     return res.json({
+    //         error: errors.array()[0].msg
+    //     });
+    // }
 
     try {
+
 
         const user = await db.Users.findOne({
             where: {
@@ -64,6 +65,12 @@ exports.loginCustomer = async (req, res, next) => {
     // }
 
     try {
+        if (body.password == null || body.email == null) {
+            return res.status(400).json({
+                status: 400,
+                msg: 'Email or password cannot be empty.'
+            });
+        }
 
         const customer = await db.Customers.findOne({
             where: {
@@ -76,7 +83,6 @@ exports.loginCustomer = async (req, res, next) => {
             });
         }
 
-        const checkPass = await bcrypt.compare(body.password, customer.password);
         const checkStatus = await db.Customers.findOne({
             where: {
                 email: body.email,
@@ -84,6 +90,8 @@ exports.loginCustomer = async (req, res, next) => {
             }
         });
         if(checkStatus != null){
+            const checkPass = await bcrypt.compare(body.password, customer.password);
+
             if (checkPass === true) {
                 const token = jwt.sign({
                     id: customer.id,
@@ -111,13 +119,19 @@ exports.loginSeller = async (req, res, next) => {
     const errors = validationResult(req);
     const { body } = req;
 
-    if (!errors.isEmpty()) {
-        return res.json({
-            error: errors.array()[0].msg
-        });
-    }
+    // if (!errors.isEmpty()) {
+    //     return res.json({
+    //         error: errors.array()[0].msg
+    //     });
+    // }
 
     try {
+        if (body.password == null || body.email == null) {
+            return res.status(400).json({
+                status: 400,
+                msg: 'Email or password cannot be empty.'
+            });
+        }
 
         const seller = await db.Sellers.findOne({
             where: {
@@ -125,12 +139,11 @@ exports.loginSeller = async (req, res, next) => {
             }});
 
         if (seller == null) {
-            return res.json({
+            return res.status(400).json({
                 msg: 'Invalid email or password.'
             });
         }
 
-        const checkPass = await bcrypt.compare(body.password, seller.password);
         const checkStatus = await db.Sellers.findOne({
             where: {
                 email: body.email,
@@ -138,6 +151,8 @@ exports.loginSeller = async (req, res, next) => {
             }
         });
         if(checkStatus != null){
+            const checkPass = await bcrypt.compare(body.password, seller.password);
+
             if (checkPass === true) {
                 const token = jwt.sign({
                     id: seller.id,
@@ -150,7 +165,7 @@ exports.loginSeller = async (req, res, next) => {
                 });
             }
         }
-        res.json({
+        res.status(400).json({
             msg: 'Invalid email or password.'
         });
     }
