@@ -1,0 +1,37 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "ragnarok",
+    "database": "bersama",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port":"5432"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "ragnarok",
+    "database": "bersama",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port":"5432"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "root",
+    "database": "platinum",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "emailFrom": "no-reply@domain.com",
+  "smtpOptions": {
+      "host": "smtp.ethereal.email",
+      "port": 587,
+      "auth": {
+          "user": "jermey.thompson@ethereal.email",
+          "pass": "19s8CjbF5StNgVsjPm"
+      }
+  },
+  "socket": {
+    "path": "/socket"
+  }
+}

@@ -1,82 +1,53 @@
 module.exports = {
-    '/items':{
-      post:{
-        tags: ["Item"],
-        summary: "Create Item",
-        description: "An endpoint to Create Item (Seller/Admin Access)",
-        operationId: "CreateItem",
-        security: [{
-          bearerAuth: []
-        }],
-        consumes: [
-          "application/json"
-        ],
-        produces: [
-          "application/json"
-        ],   
-        requestBody: {
+  '/items/': {
+    post: {
+      tags: ["Item"],
+      summary: "Create Item",
+      description: "An endpoint to create Item",
+      requestBody: {
+        required: true,
+        content: {
+          'application/x-www-form-urlencoded': {
+            schema: {
+              type: 'object',
+              properties: {
+                category_id: {
+                  type: 'integer',
+                },
+                code: {
+                  type: 'string',
+                },
+                title: {
+                  type: 'string',
+                },
+                price: {
+                  type: 'integer',
+                },
+                qty: {
+                  type: 'integer',
+                },
+              },
+            },
+          }
+        }
+      },
+      responses: {
+        200: {
           content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                properties: {
-                    items: {
-                      $ref: "#/components/schemas/AddItem"
-                    }
-                }
+            'application/json': {
+              example: {
+                status: 201,
+                message: 'Create item success',
               }
             }
           }
-        },
-        responses: {
-            201: {
-              description: "Successfully Created Item",
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "object",
-                    properties: {
-                      items: {
-                        $ref: "#/components/schemas/AddItem"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            400: {
-              description: "Invalid"
-            },
-          },                      
+        }
       },
-      get:{
-        tags: ["Item"],
-        summary: "Get all Item",
-        description: "An endpoint to Get All Items",
-        operationId: "GetItem",
-        consumes: [
-          "application/json"
-        ],
-        produces: [
-          "application/json"
-        ],   
-        responses: {
-            200: {
-              description: "Successfully Get All Items",
-              content: {
-                  'application/json': {
-                    schema: {
-                      $ref: '#/components/schemas/Item'
-                    }
-                  }
-                },
-            },
-            400: {
-              description: "Invalid"
-            },
-          }, 
-        }     
-    },
+      security: [{
+        bearerAuth: []
+      }],
+    }
+},
     '/items/{id}':{
         get:{
           tags: ["Item"],
@@ -256,9 +227,12 @@ module.exports = {
                       description: "id item",
                       type: "integer"
                     },
-                    image: { 
-                      description: "image",
-                      type: "file"
+                    image:{
+                      type: 'array',
+                      items:{
+                        type: 'string',
+                        format: 'binary'
+                      }
                     }
                   },
                   required: ["id_item","image"] 
